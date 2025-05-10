@@ -3,7 +3,7 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - main  # Se activará en cada push a la rama 'main'
+      - main
 
 jobs:
   build:
@@ -22,11 +22,14 @@ jobs:
       - name: Build with Maven
         run: mvn clean install -DskipTests
 
+      - name: Set up SSH key
+        run: |
+          echo "${{ secrets.EC2_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
       - name: Deploy to EC2
         run: |
-          # Aquí puedes agregar tus comandos para desplegar el .war en EC2
-          # Como ejemplo:
-          scp -i ${{ secrets.EC2_PRIVATE_KEY }} target/webapp-1.0-SNAPSHOT.war ubuntu@23.22.192.42:/opt/tomcat/webapps/
-          ssh -i ${{ secrets.EC2_PRIVATE_KEY }} ubuntu@23.22.192.42 'sudo systemctl restart tomcat'
+          scp -i ~/.ssh/id_rsa target/webapp-1.0-SNAPSHOT.war ubuntu@${{ secrets.EC2_IP }}:/opt/tomcat/webapps/
+          ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_IP }} 'sudo systemctl restart tomcat'
         env:
           EC2_IP: ${{ secrets.EC2_IP }}
