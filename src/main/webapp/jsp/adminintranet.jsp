@@ -1,0 +1,37 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page session="true" %>
+<%
+    String rol = (String) session.getAttribute("rol");
+    if (!"admin".equals(rol)) {
+        response.sendRedirect(request.getContextPath() + "/jsp/accesoDenegado.jsp");
+        return;
+    }
+%>
+<html>
+<head>
+    <title>Intranet - Administrador</title>
+</head>
+<body>
+
+<% if ("ok".equals(request.getParameter("login"))) { %>
+    <p style="color: green;">✅ Has iniciado sesión con éxito.</p>
+<% } %>
+
+<h1>Bienvenido, ${usuario.nombre}!</h1>
+<h2>Panel de Administrador</h2>
+
+<p>Accede a las funcionalidades administrativas:</p>
+<ul>
+    <li><a href="${pageContext.request.contextPath}/verUsuarios">Ver Usuarios</a></li>
+    <li><a href="${pageContext.request.contextPath}/gestionarPedidos">Gestionar Pedidos</a></li>
+    <li><a href="${pageContext.request.contextPath}/gestionarProductos">Gestionar Productos</a></li>
+    <li><a href="${pageContext.request.contextPath}/gestionarRoles">Gestionar Roles</a></li>
+</ul>
+
+<form action="${pageContext.request.contextPath}/FrontController" method="post">
+    <input type="hidden" name="action" value="LogoutAction">
+    <input type="submit" value="Cerrar sesión">
+</form>
+
+</body>
+</html>
