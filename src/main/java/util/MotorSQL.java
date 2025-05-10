@@ -6,9 +6,13 @@ import java.sql.SQLException;
 
 public class MotorSQL {
     // Aquí debes poner la URL de conexión correcta (localhost si lo tienes local, o el endpoint de tu RDS si lo tienes en la nube)
-    private static final String URL = "jdbc:postgresql://localhost:5432/postgres";  // Cambia 'localhost' si estás usando un servidor diferente
+    private static final String URL = "jdbc:postgresql://postgres.cidzcgfuc16l.us-east-1.rds.amazonaws.com:5432/postgres";  // Cambia 'localhost' si estás usando un servidor diferente
     private static final String USER = "postgres";  // Tu usuario de PostgreSQL
-    private static final String PASSWORD = "1234";  // Tu contraseña de PostgreSQL
+    private static final String PASSWORD = "postgres1234";  // Tu contraseña de PostgreSQL
+
+    //private static final String URL = "jdbc:postgresql://localhost:5432/postgres";  // Cambia 'localhost' si estás usando un servidor diferente
+    //private static final String USER = "postgres";  // Tu usuario de PostgreSQL
+    //private static final String PASSWORD = "1234";  // Tu contraseña de PostgreSQL
 
     public static Connection getConnection() throws SQLException {
         try {
