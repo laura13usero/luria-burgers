@@ -31,9 +31,9 @@ public class UserLoginAction implements Action {
 
                 if ("intranet".equals(origen)) {
                     String rol = usuario.getRol();
-                    if ("2".equals(rol)) { //rol 2 es admin
+                    if ("admin".equals(rol)) { //rol 2 es admin
                         response.sendRedirect(request.getContextPath() + "/jsp/adminintranet.jsp?login=ok");
-                    } else if ("3".equals(rol)) { //rol 3 es empleado
+                    } else if ("empleado".equals(rol)) { //rol 3 es empleado
                         response.sendRedirect(request.getContextPath() + "/jsp/empleadointranet.jsp?login=ok");
                     } else {
                         response.sendRedirect(request.getContextPath() + "/jsp/accesodenegado.jsp");
