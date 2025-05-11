@@ -39,6 +39,34 @@ public class CompraDAO {
         return null;
     }
 
+    // Método para obtener todas las compras completadas
+    public List<Compra> getComprasCompletadas() {
+        List<Compra> compras = new ArrayList<>();
+        String query = "SELECT * FROM compra WHERE estado = 'completado' ORDER BY fecha_hora DESC";
+
+        try (Connection connection = MotorSQL.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                compras.add(new Compra(
+                        rs.getInt("id_compra"),
+                        rs.getInt("id_usuario"),
+                        rs.getTimestamp("fecha_hora"),
+                        rs.getString("metodo_pago"),
+                        rs.getBigDecimal("total")
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();  // Sustituir por logger si tienes uno
+        }
+
+        return compras;
+    }
+
+
+
 
     // Método para crear una nueva compra pendiente
     public Compra crearCompra(Usuario usuario) {

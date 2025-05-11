@@ -28,7 +28,17 @@
              <button type="submit">Gestionar Plantilla</button>
          </form>
     </li>
+
+    <li>
+        <form action="<%= request.getContextPath() %>/control" method="get">
+             <input type="hidden" name="action" value="pedidos-completados">
+             <button type="submit">Ver Pedidos Completados</button>
+         </form>
+    </li>
+
 </ul>
+
+
 
         <!-- Botón de cerrar sesión -->
         <form action="<%= request.getContextPath() %>/control" method="post" style="margin-top: 20px;">

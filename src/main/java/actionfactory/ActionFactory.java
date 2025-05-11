@@ -16,7 +16,8 @@ public class ActionFactory {
             case "addToCart" -> new AddToCartAction();
             case "eliminarProductoCarrito" -> new EliminarProductoCarritoAction();
             case "verCarrito" -> new ViewCartAction();
-            case "empleado-register" -> new EmpleadoRegisterAction(); // 💡 NUEVA ACCIÓN
+            case "empleado-register" -> new EmpleadoRegisterAction();
+            case "pedidos-completados" -> new PedidosCompletadosAction();
             default -> new UnknownAction();
         };
     }
