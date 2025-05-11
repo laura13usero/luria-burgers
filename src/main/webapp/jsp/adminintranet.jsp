@@ -25,7 +25,7 @@
     <li>
         <form action="<%= request.getContextPath() %>/control" method="get">
              <input type="hidden" name="action" value="usuario-listado">
-             <button type="submit">Ver Hamburguesas</button>
+             <button type="submit">Gestionar Plantilla</button>
          </form>
     </li>
 

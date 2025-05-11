@@ -47,5 +47,10 @@
     <p>No hay empleados registrados todavía.</p>
 <% } %>
 
+<form action="<%= request.getContextPath() %>/jsp/adminintranet.jsp" method="get" style="margin-top: 20px;">
+    <button type="submit">Volver al panel de administración</button>
+</form>
+
+
 </body>
 </html>
