@@ -28,9 +28,14 @@ jobs:
           echo "${{ secrets.EC2_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
+      - name: Verificar que el WAR existe
+        run: ls -lh luria-burgers/target/
+
       - name: Deploy to EC2
         run: |
+          cd luria-burgers
           scp -i ~/.ssh/id_rsa target/webapp-1.0-SNAPSHOT.war ubuntu@${{ secrets.EC2_IP }}:/opt/tomcat/webapps/
           ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_IP }} 'sudo systemctl restart tomcat'
+
         env:
           EC2_IP: ${{ secrets.EC2_IP }}
