@@ -10,6 +10,7 @@ model\Hamburguesa.class
 model\Usuario.class
 action\HamburguesasAction.class
 action\EliminarProductoCarritoAction.class
+action\EmpleadoRegisterAction.class
 org\example\Main.class
 dao\BebidaDAO.class
 action\UserLoginAction.class

@@ -22,7 +22,13 @@
 
 <p>Accede a las funcionalidades administrativas:</p>
 <ul>
-    <li><a href="${pageContext.request.contextPath}/jsp/registrarEmpleado.jsp">Gestionar Plantilla</a></li>
+    <li>
+        <form action="<%= request.getContextPath() %>/control" method="get">
+             <input type="hidden" name="action" value="usuario-listado">
+             <button type="submit">Ver Hamburguesas</button>
+         </form>
+    </li>
+
     <li><a href="${pageContext.request.contextPath}/gestionarPedidos">Gestionar Pedidos</a></li>
     <li><a href="${pageContext.request.contextPath}/gestionarRoles">Gestionar Roles</a></li>
 </ul>

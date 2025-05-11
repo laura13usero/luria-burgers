@@ -14,6 +14,9 @@ public class UsuarioListadoAction implements Action {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        System.out.println("EMPLEADOS ENCONTRADOS:");
+
+
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         List<Usuario> empleados = usuarioDAO.obtenerUsuariosPorRol(3); // Solo empleados (rol 3)
 

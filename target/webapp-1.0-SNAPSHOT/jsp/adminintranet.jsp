@@ -22,16 +22,16 @@
 
 <p>Accede a las funcionalidades administrativas:</p>
 <ul>
-    <li><a href="${pageContext.request.contextPath}/verUsuarios">Ver Usuarios</a></li>
+    <li><a href="${pageContext.request.contextPath}/jsp/registrarEmpleado.jsp">Gestionar Plantilla</a></li>
     <li><a href="${pageContext.request.contextPath}/gestionarPedidos">Gestionar Pedidos</a></li>
-    <li><a href="${pageContext.request.contextPath}/gestionarProductos">Gestionar Productos</a></li>
     <li><a href="${pageContext.request.contextPath}/gestionarRoles">Gestionar Roles</a></li>
 </ul>
 
-<form action="${pageContext.request.contextPath}/FrontController" method="post">
-    <input type="hidden" name="action" value="LogoutAction">
-    <input type="submit" value="Cerrar sesión">
-</form>
+        <!-- Botón de cerrar sesión -->
+        <form action="<%= request.getContextPath() %>/control" method="post" style="margin-top: 20px;">
+            <input type="hidden" name="action" value="logout">
+            <button type="submit">Cerrar sesión</button>
+        </form>
 
 </body>
 </html>

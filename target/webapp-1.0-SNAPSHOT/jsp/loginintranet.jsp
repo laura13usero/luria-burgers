@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1>Iniciar sesión en la Intranet</h1>
-    <form action="${pageContext.request.contextPath}/control" method="post">
+    <form action="${pageContext.request.contextPath}/control?action=login" method="post">
         <input type="hidden" name="action" value="UserLoginAction">
         <input type="hidden" name="origen" value="intranet"> <!-- para distinguirlo -->
 
