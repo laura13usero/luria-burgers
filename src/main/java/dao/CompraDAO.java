@@ -95,7 +95,6 @@ public class CompraDAO {
         return null;
     }
 
-
     // Método para actualizar el total de la compra
     public boolean actualizarTotalCompra(int idCompra, BigDecimal nuevoTotal) {
         String sql = "UPDATE compra SET total = ? WHERE id_compra = ?";
