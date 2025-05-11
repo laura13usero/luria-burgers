@@ -31,7 +31,6 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          cd luria-burgers
           scp -i ~/.ssh/id_rsa target/webapp-1.0-SNAPSHOT.war ubuntu@${{ secrets.EC2_IP }}:/opt/tomcat/webapps/
           ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_IP }} 'sudo systemctl restart tomcat'
 
