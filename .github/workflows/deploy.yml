@@ -31,8 +31,8 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          scp -i ~/.ssh/id_rsa target/webapp-1.0-SNAPSHOT.war ubuntu@${{ secrets.EC2_IP }}:/opt/tomcat/webapps/
-          ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_IP }} 'sudo systemctl restart tomcat'
+          scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no target/webapp-1.0-SNAPSHOT.war ubuntu@${{ secrets.EC2_IP }}:/opt/tomcat/webapps/
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'sudo systemctl restart tomcat'
 
         env:
           EC2_IP: ${{ secrets.EC2_IP }}
