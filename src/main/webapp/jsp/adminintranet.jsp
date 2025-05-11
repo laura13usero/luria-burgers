@@ -28,9 +28,6 @@
              <button type="submit">Gestionar Plantilla</button>
          </form>
     </li>
-
-    <li><a href="${pageContext.request.contextPath}/gestionarPedidos">Gestionar Pedidos</a></li>
-    <li><a href="${pageContext.request.contextPath}/gestionarRoles">Gestionar Roles</a></li>
 </ul>
 
         <!-- Botón de cerrar sesión -->
