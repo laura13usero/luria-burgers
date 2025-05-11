@@ -26,9 +26,9 @@
     <li><a href="${pageContext.request.contextPath}/gestionarProductos">Gestionar Productos</a></li>
 </ul>
 
-<form action="${pageContext.request.contextPath}/FrontController" method="post">
-    <input type="hidden" name="action" value="LogoutAction">
-    <input type="submit" value="Cerrar sesión">
+<form action="<%= request.getContextPath() %>/control" method="post" style="margin-top: 20px;">
+            <input type="hidden" name="action" value="logout">
+            <button type="submit">Cerrar sesión</button>
 </form>
 
 </body>
