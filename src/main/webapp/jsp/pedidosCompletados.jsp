@@ -16,7 +16,7 @@
 </head>
 <body>
     <h1>📦 Pedidos Completados</h1>
-    <a href="<%= request.getContextPath() %>/jsp/admin.jsp">⬅ Volver al Panel</a>
+
     <table border="1">
         <tr>
             <th>ID Compra</th>
@@ -39,5 +39,10 @@
             }
         %>
     </table>
+
+    <form action="<%= request.getContextPath() %>/jsp/adminintranet.jsp" method="get" style="margin-top: 20px;">
+        <button type="submit">Volver al panel de administración</button>
+    </form>
+
 </body>
 </html>
