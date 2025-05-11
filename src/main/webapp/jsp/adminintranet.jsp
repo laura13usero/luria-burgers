@@ -33,7 +33,6 @@
             <input type="hidden" name="action" value="logout">
             <button type="submit">Cerrar sesión</button>
         </form>
-    <% } %>
 
 </body>
 </html>
