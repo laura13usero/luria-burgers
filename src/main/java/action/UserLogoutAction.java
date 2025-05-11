@@ -16,6 +16,6 @@ public class UserLogoutAction implements Action {
         }
 
         // Redirigimos al login
-        response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
+        response.sendRedirect(request.getContextPath() + "/jsp/index.jsp");
     }
 }
