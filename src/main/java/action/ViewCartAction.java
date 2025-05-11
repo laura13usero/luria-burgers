@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.ServletException;
 import model.Compra;
+import model.Hamburguesa;
 import model.Producto;
 import model.Usuario;
 
@@ -24,41 +25,39 @@ public class ViewCartAction implements Action {
             // Obtener el carrito desde la sesión
             List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
 
-            if (request.getParameter("operation") != null) {
-                String operation = request.getParameter("operation");
-                int index = Integer.parseInt(request.getParameter("index"));
-                Producto producto = carrito.get(index);
 
-                if ("increment".equals(operation)) {
-                    carrito.add(producto); // Aumentar la cantidad
-                } else if ("decrement".equals(operation)) {
-                    if (carrito.contains(producto)) {
-                        carrito.remove(producto); // Disminuir la cantidad
+            CompraDAO compraDAO = new CompraDAO();
+            Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+            Compra compraActiva = compraDAO.getCompraActivaPorUsuario(usuario);
+
+            if (compraActiva != null) {
+                // 2. Obtener los productos de esa compra
+                carrito = compraDAO.obtenerProductosDeCompra(compraActiva.getIdCompra());
+
+                // 3. Guardar el carrito en la sesión
+                session.setAttribute("carrito", carrito);
+            } else {
+                // Si no hay compra activa, podemos crear una nueva compra o manejarlo de otra manera
+                System.out.println("No se encontró compra activa para este usuario.");
+            }
+
+
+            double total = 0.0;
+
+            if (carrito != null) {
+                for (Producto p : carrito) {
+                    if (p != null) {
+                        total += p.getPrecio(); // Evita null y suma bien
                     }
                 }
-
-                // Actualizar la sesión del carrito y recalcular el total
-                session.setAttribute("carrito", carrito);
-                double total = calcularTotalCarrito(carrito); // Método para recalcular el total
-                request.setAttribute("total", total);
-
-                // Actualizar las tablas en la base de datos
-                CompraDAO compraDAO = new CompraDAO();
-                Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-                compraDAO.actualizarLineaCompra(usuario, producto.getId(), carrito.size(), producto.getPrecio());
-
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/carrito.jsp");
-                dispatcher.forward(request, response);
             }
-        }
-    }
 
-    // Método para recalcular el total del carrito
-    private double calcularTotalCarrito(List<Producto> carrito) {
-        double total = 0;
-        for (Producto producto : carrito) {
-            total += producto.getPrecio();
+            // Solo pasamos el total como atributo temporal
+            request.setAttribute("total", total);
+
+            // El carrito ya lo tiene la sesión, no es necesario volverlo a setear
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/carrito.jsp");
+            dispatcher.forward(request, response);
         }
-        return total;
     }
 }

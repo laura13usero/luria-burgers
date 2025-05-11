@@ -95,32 +95,6 @@ public class CompraDAO {
         return null;
     }
 
-    public boolean actualizarLineaCompra(Usuario usuario, int idProducto, int cantidad, double precio) {
-        Compra compra = getCompraActivaPorUsuario(usuario);
-        if (compra == null) return false;
-
-        String query = "UPDATE lineacompra SET cantidad = ?, subtotal = ? WHERE id_compra = ? AND id_producto = ?";
-        BigDecimal nuevoSubtotal = BigDecimal.valueOf(cantidad * precio);
-
-        try (Connection conn = MotorSQL.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, cantidad);
-            stmt.setBigDecimal(2, nuevoSubtotal);
-            stmt.setInt(3, compra.getIdCompra());
-            stmt.setInt(4, idProducto);
-
-            int rowsUpdated = stmt.executeUpdate();
-            if (rowsUpdated > 0) {
-                actualizarTotalCompra(compra.getIdCompra(), calcularTotalCompra(compra.getIdCompra()));
-                return true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-
 
     // Método para actualizar el total de la compra
     public boolean actualizarTotalCompra(int idCompra, BigDecimal nuevoTotal) {
