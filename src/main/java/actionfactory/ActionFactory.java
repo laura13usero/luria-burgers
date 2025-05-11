@@ -12,10 +12,11 @@ public class ActionFactory {
             case "hamburguesas" -> new HamburguesasAction();
             case "bebidas" -> new BebidasAction();
             case "postres" -> new PostreAction();
-            case "guarniciones" -> new GuarnicionesAction(); // Añadido para guarniciones
+            case "guarniciones" -> new GuarnicionesAction();
             case "addToCart" -> new AddToCartAction();
             case "eliminarProductoCarrito" -> new EliminarProductoCarritoAction();
             case "verCarrito" -> new ViewCartAction();
+            case "empleado-register" -> new EmpleadoRegisterAction(); // 💡 NUEVA ACCIÓN
             default -> new UnknownAction();
         };
     }

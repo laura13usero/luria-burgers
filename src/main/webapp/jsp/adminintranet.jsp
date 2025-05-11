@@ -22,9 +22,8 @@
 
 <p>Accede a las funcionalidades administrativas:</p>
 <ul>
-    <li><a href="${pageContext.request.contextPath}/verUsuarios">Ver Usuarios</a></li>
+    <li><a href="${pageContext.request.contextPath}/jsp/registrarEmpleado.jsp">Gestionar Plantilla</a></li>
     <li><a href="${pageContext.request.contextPath}/gestionarPedidos">Gestionar Pedidos</a></li>
-    <li><a href="${pageContext.request.contextPath}/gestionarProductos">Gestionar Productos</a></li>
     <li><a href="${pageContext.request.contextPath}/gestionarRoles">Gestionar Roles</a></li>
 </ul>
 

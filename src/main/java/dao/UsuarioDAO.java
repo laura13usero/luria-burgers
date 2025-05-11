@@ -51,6 +51,65 @@ public class UsuarioDAO {
         }
     }
 
+    public void agregarEmpleado(Usuario usuario) throws SQLException {
+        String queryUsuario = "INSERT INTO Usuario (nombre, email, contraseña, telefono, direccion, fecha_registro) VALUES (?, ?, ?, ?, ?, ?)";
+
+        // 1. Insertar el usuario y obtener el ID generado
+        try (PreparedStatement stmt = connection.prepareStatement(queryUsuario, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, usuario.getNombre());
+            stmt.setString(2, usuario.getEmail());
+            stmt.setString(3, usuario.getContrasena()); // Contraseña ya encriptada
+            stmt.setString(4, usuario.getTelefono());
+            stmt.setString(5, usuario.getDireccion());
+            stmt.setTimestamp(6, Timestamp.valueOf(usuario.getFechaRegistro()));
+            stmt.executeUpdate();
+
+            // 2. Obtener el ID autogenerado
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int idUsuario = generatedKeys.getInt(1);
+
+                    // 3. Insertar en la tabla usuariorol (Asumimos que el rol predeterminado es 1 para "cliente")
+                    String queryRol = "INSERT INTO usuariorol (id_usuario, id_rol) VALUES (?, ?)";
+                    try (PreparedStatement stmtRol = connection.prepareStatement(queryRol)) {
+                        stmtRol.setInt(1, idUsuario);
+                        stmtRol.setInt(2, 3);  // Asignamos rol 3 por defecto
+                        stmtRol.executeUpdate();
+                    }
+                } else {
+                    throw new SQLException("No se pudo obtener el ID del nuevo usuario.");
+                }
+            }
+        }
+    }
+
+    public List<Usuario> obtenerUsuariosPorRol(int rolId) throws SQLException {
+        List<Usuario> empleados = new ArrayList<>();
+
+        String query = "SELECT u.* FROM usuario u " +
+                "JOIN usuariorol ur ON u.id_usuario = ur.id_usuario " +
+                "WHERE ur.id_rol = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, rolId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Usuario u = new Usuario();
+                    u.setIdUsuario(rs.getInt("id_usuario"));
+                    u.setNombre(rs.getString("nombre"));
+                    u.setEmail(rs.getString("email"));
+                    u.setTelefono(rs.getString("telefono"));
+                    u.setDireccion(rs.getString("direccion"));
+                    u.setFechaRegistro(rs.getTimestamp("fecha_registro").toLocalDateTime());
+                    empleados.add(u);
+                }
+            }
+        }
+
+        return empleados;
+    }
+
+
     public Usuario buscarPorEmailYContrasena(String email, String contrasena) {
         Usuario u = null;
         String sql = "SELECT u.id_usuario, u.nombre, u.email, u.contraseña, u.telefono, u.direccion, u.fecha_registro, r.id_rol " +
