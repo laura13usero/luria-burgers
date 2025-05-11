@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Principal</title>
 </head>
-<body>
+<body style="background-color:red;">
     <h1>Bienvenido a la Página Principal</h1>
 
     <% if (usuario != null) { %>
