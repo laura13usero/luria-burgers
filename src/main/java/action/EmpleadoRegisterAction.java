@@ -48,3 +48,4 @@ public class EmpleadoRegisterAction implements Action {
         request.getRequestDispatcher("/jsp/registrarEmpleado.jsp").forward(request, response);
     }
 }
+

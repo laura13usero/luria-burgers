@@ -110,6 +110,7 @@ public class UsuarioDAO {
     }
 
 
+
     public Usuario buscarPorEmailYContrasena(String email, String contrasena) {
         Usuario u = null;
         String sql = "SELECT u.id_usuario, u.nombre, u.email, u.contraseña, u.telefono, u.direccion, u.fecha_registro, r.id_rol " +
