@@ -34,7 +34,7 @@
         </tr>
         <% for (Usuario u : empleados) { %>
         <tr>
-            <td><%= u.getId() %></td>
+            <td><%= u.getIdUsuario() %></td>
             <td><%= u.getNombre() %></td>
             <td><%= u.getEmail() %></td>
             <td><%= u.getTelefono() %></td>
