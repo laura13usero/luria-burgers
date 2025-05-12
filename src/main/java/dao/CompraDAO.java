@@ -16,6 +16,16 @@ import java.util.List;
 
 public class CompraDAO {
 
+    public boolean finalizarCompra(int idUsuario) throws SQLException {
+        String sql = "UPDATE compra SET estado = 'completado', fecha = current_timestamp WHERE id_usuario = ? AND estado = 'pendiente'";
+        try (Connection con = MotorSQL.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idUsuario);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+
     // Método para obtener la compra pendiente de un usuario
     public Compra getCompraActivaPorUsuario(Usuario usuario) {
         String query = "SELECT * FROM compra WHERE id_usuario = ? AND estado = 'pendiente'";

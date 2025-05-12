@@ -45,5 +45,10 @@
     <button type="submit">Continue shopping</button>
 </form>
 
+<form action="<%= request.getContextPath() %>/jsp/resumenCompra.jsp" method="get">
+    <button type="submit">Finalizar compra</button>
+</form>
+
+
 </body>
 </html>

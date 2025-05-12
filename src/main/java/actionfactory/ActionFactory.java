@@ -22,6 +22,8 @@ public class ActionFactory {
             case "ver-buzon" -> new VerBuzonAction();
             case "empleado-baja" -> new EmpleadoBajaAction();
             case "empleado-editar" -> new EmpleadoEditarAction();
+            case "pagarConPaypal" -> new PagarConPaypalAction();
+
             default -> new UnknownAction();
         };
     }
