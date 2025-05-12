@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page session="true" %>
+<%@ page import="java.util.List" %>
 <%
     String rol = (String) session.getAttribute("rol");
     if (!"admin".equals(rol)) {
