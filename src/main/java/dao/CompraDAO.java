@@ -6,6 +6,7 @@ import model.Usuario;
 import util.MotorSQL;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -227,7 +228,8 @@ public class CompraDAO {
             if (rs.next()) {
                 int cantidadActual = rs.getInt("cantidad");
                 BigDecimal subtotalActual = rs.getBigDecimal("subtotal");
-                BigDecimal precioUnitario = subtotalActual.divide(BigDecimal.valueOf(cantidadActual));
+                BigDecimal precioUnitario = subtotalActual.divide(BigDecimal.valueOf(cantidadActual), 2, RoundingMode.HALF_UP);
+
 
                 if (cantidadActual > 1) {
                     int nuevaCantidad = cantidadActual - 1;
