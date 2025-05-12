@@ -23,7 +23,7 @@
     <h1>Side Dishes</h1>
 
     <% if (usuario != null) { %>
-        <p>こんにちは, <strong><%= usuario.getNombre() %></strong>. Estás logueado.</p>
+        <p>こんにちは, <strong><%= usuario.getNombre() %></strong>. You are logged in!</p>
     <% } else { %>
         <p> Welcome! Please log in to access more features</p>
     <% } %>

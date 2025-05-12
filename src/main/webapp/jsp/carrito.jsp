@@ -38,7 +38,7 @@
             </li>
         <% } %>
     </ul>
-    <p><strong>Total a pagar:</strong> $<%= df.format(total) %></p>
+    <p><strong>Total:</strong> $<%= df.format(total) %></p>
 <% } %>
 
 <form action="<%= request.getContextPath() %>/jsp/index.jsp" method="get">
