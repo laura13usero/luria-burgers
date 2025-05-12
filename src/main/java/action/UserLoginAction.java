@@ -36,7 +36,7 @@ public class UserLoginAction implements Action {
                     } else if ("empleado".equals(rol)) { //rol 3 es empleado
                         response.sendRedirect(request.getContextPath() + "/jsp/empleadointranet.jsp?login=ok");
                     } else {
-                        response.sendRedirect(request.getContextPath() + "/jsp/accesodenegado.jsp");
+                        response.sendRedirect(request.getContextPath() + "/jsp/accesoDenegado.jsp");
                     }
                 } else {
                     response.sendRedirect(request.getContextPath() + "/jsp/loginExitoso.jsp");
