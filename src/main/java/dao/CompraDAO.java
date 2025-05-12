@@ -180,6 +180,39 @@ public class CompraDAO {
     }
 
 
+
+    // Método para añadir una línea de compra (producto) al carrito
+    /*public boolean agregarLineaCompra(Usuario usuario, int idProducto, String tipo_producto, int cantidad, BigDecimal subtotal) {
+        // Primero, obtenemos la compra pendiente del usuario
+        Compra compra = getCompraActivaPorUsuario(usuario);
+        if (compra == null) {
+            // Si no existe una compra pendiente, creamos una nueva
+            compra = crearCompra(usuario);
+        }
+
+        if (compra == null) {
+            return false;  // Si no pudimos crear la compra, devolvemos false
+        }
+
+        // Insertamos la línea de compra
+        String query = "INSERT INTO lineacompra (id_compra, tipo_producto, id_producto, cantidad, subtotal) VALUES (?, ?, ?, ?, ?)";
+        try (Connection connection = MotorSQL.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, compra.getIdCompra());  // Usamos el id_compra de la compra recién creada o existente
+            stmt.setString(2, tipo_producto);
+            stmt.setInt(3, idProducto);
+            stmt.setInt(4, cantidad);
+            stmt.setBigDecimal(5, subtotal);  // Usamos BigDecimal para el subtotal
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }*/
+
     public boolean eliminarLineaCompra(Usuario usuario, int idProducto) {
         Compra compra = getCompraActivaPorUsuario(usuario);
         if (compra == null) return false;
@@ -197,7 +230,7 @@ public class CompraDAO {
                 BigDecimal subtotalActual = rs.getBigDecimal("subtotal");
                 BigDecimal precioUnitario = subtotalActual.divide(BigDecimal.valueOf(cantidadActual), 2, RoundingMode.HALF_UP);
 
-                // Si hay más de una unidad, se reduce la cantidad
+
                 if (cantidadActual > 1) {
                     int nuevaCantidad = cantidadActual - 1;
                     BigDecimal nuevoSubtotal = subtotalActual.subtract(precioUnitario);
@@ -211,7 +244,6 @@ public class CompraDAO {
                         stmtUpdate.executeUpdate();
                     }
                 } else {
-                    // Si solo hay una unidad, eliminamos la línea
                     String deleteQuery = "DELETE FROM lineacompra WHERE id_compra = ? AND id_producto = ?";
                     try (PreparedStatement stmtDelete = conn.prepareStatement(deleteQuery)) {
                         stmtDelete.setInt(1, compra.getIdCompra());
@@ -220,10 +252,8 @@ public class CompraDAO {
                     }
                 }
 
-                // Actualizamos el total de la compra
-                BigDecimal totalActualizado = recalcularTotalCompra(compra.getIdCompra(), subtotalActual);
-                actualizarTotalCompra(compra.getIdCompra(), totalActualizado);
-
+                // Actualizar el total de la compra tras eliminar
+                actualizarTotalCompra(compra.getIdCompra(), calcularTotalCompra(compra.getIdCompra()));
                 return true;
             }
         } catch (SQLException e) {
@@ -232,29 +262,6 @@ public class CompraDAO {
 
         return false;
     }
-
-    // Método para recalcular el total de la compra después de la eliminación
-    private BigDecimal recalcularTotalCompra(int idCompra, BigDecimal subtotalEliminado) {
-        String selectTotalQuery = "SELECT SUM(subtotal) FROM lineacompra WHERE id_compra = ?";
-        try (Connection conn = MotorSQL.getConnection();
-             PreparedStatement stmtSelectTotal = conn.prepareStatement(selectTotalQuery)) {
-
-            stmtSelectTotal.setInt(1, idCompra);
-            ResultSet rs = stmtSelectTotal.executeQuery();
-
-            if (rs.next()) {
-                BigDecimal totalActual = rs.getBigDecimal(1);
-                // Restamos el subtotal del producto eliminado del total actual
-                return totalActual.subtract(subtotalEliminado);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return BigDecimal.ZERO; // Si algo falla, retornamos cero como valor por defecto.
-    }
-
-
 
 
 
