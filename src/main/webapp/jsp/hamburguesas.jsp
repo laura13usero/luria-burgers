@@ -2,7 +2,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="model.Producto" %>
 <%@ page import="model.Usuario" %>
-<%@ page import="dao.HamburguesaDAO" %>
 
 <%
     Usuario usuario = null;
@@ -10,7 +9,6 @@
         usuario = (Usuario) session.getAttribute("usuarioLogueado");
     }
     List<Producto> hamburguesas = (List<Producto>) request.getAttribute("hamburguesas");
-    HamburguesaDAO hamburguesaDAO = new HamburguesaDAO();
 %>
 
 <!DOCTYPE html>
@@ -39,35 +37,6 @@
                         - <%= hamburguesa.getDescripcion() %>
                     <% } %>
 
-                    <!-- Mostrar el like con flor de hibisco -->
-                    <%
-                        boolean yaVoto = false;
-                        if (usuario != null) {
-                            String usuarioVotado = String.valueOf(usuario.getId());
-                            List<String> ranking = hamburguesa.getRanking(); // Obtenemos el ranking de la hamburguesa
-                            yaVoto = ranking.contains(usuarioVotado);  // Si el ID del usuario está en el ranking, ya votó
-                        }
-                    %>
-                    <span>
-                        <% if (yaVoto) { %>
-                            🌺  <!-- Flor a color si el usuario ya votó -->
-                        <% } else { %>
-                            🌸  <!-- Flor gris si no ha votado -->
-                        <% } %>
-                    </span>
-
-                    <!-- Mostrar cantidad de votos -->
-                    <span> Votos: <%= hamburguesaDAO.obtenerCantidadVotos(hamburguesa.getId()) %></span>
-
-                    <!-- El formulario para votar -->
-                    <% if (usuario != null && !yaVoto) { %>
-                        <form action="<%= request.getContextPath() %>/control" method="post" style="margin-top: 10px;">
-                            <input type="hidden" name="action" value="votarHamburguesa">
-                            <input type="hidden" name="idProducto" value="<%= hamburguesa.getId() %>">
-                            <button type="submit">Vote</button>
-                        </form>
-                    <% } %>
-
                     <!-- El precio se muestra solo en el botón, no aquí -->
                     <form action="<%= request.getContextPath() %>/control" method="post" style="margin-top: 10px;">
                         <input type="hidden" name="action" value="addToCart">
@@ -82,14 +51,15 @@
         <p>No burgers available.</p>
     <% } %>
 
-    <h2>Filter burgers by type:</h2>
-    <form action="<%= request.getContextPath() %>/control" method="get" style="margin-bottom: 20px;">
-        <input type="hidden" name="action" value="filtrarHamburguesas" />
-        <button type="submit" name="filtro" value="premium"> Premium</button>
-        <button type="submit" name="filtro" value="spicy"> Spicy</button>
-        <button type="submit" name="filtro" value="chicken"> Chicken</button>
-        <button type="submit" name="filtro" value="">All Burgers</button>
-    </form>
+<h2>Filter burgers by type:</h2>
+<form action="<%= request.getContextPath() %>/control" method="get" style="margin-bottom: 20px;">
+    <input type="hidden" name="action" value="filtrarHamburguesas" />
+    <button type="submit" name="filtro" value="premium"> Premium</button>
+    <button type="submit" name="filtro" value="spicy"> Spicy</button>
+    <button type="submit" name="filtro" value="chicken"> Chicken</button>
+    <button type="submit" name="filtro" value="">All Burgers</button>
+</form>
+
 
     <form action="<%= request.getContextPath() %>/jsp/index.jsp" method="get" style="margin-top: 20px;">
         <button type="submit">Return to Home Page</button>
