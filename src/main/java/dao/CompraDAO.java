@@ -180,44 +180,16 @@ public class CompraDAO {
     }
 
 
-
-    // Método para añadir una línea de compra (producto) al carrito
-    /*public boolean agregarLineaCompra(Usuario usuario, int idProducto, String tipo_producto, int cantidad, BigDecimal subtotal) {
-        // Primero, obtenemos la compra pendiente del usuario
-        Compra compra = getCompraActivaPorUsuario(usuario);
-        if (compra == null) {
-            // Si no existe una compra pendiente, creamos una nueva
-            compra = crearCompra(usuario);
-        }
-
-        if (compra == null) {
-            return false;  // Si no pudimos crear la compra, devolvemos false
-        }
-
-        // Insertamos la línea de compra
-        String query = "INSERT INTO lineacompra (id_compra, tipo_producto, id_producto, cantidad, subtotal) VALUES (?, ?, ?, ?, ?)";
-        try (Connection connection = MotorSQL.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
-
-            stmt.setInt(1, compra.getIdCompra());  // Usamos el id_compra de la compra recién creada o existente
-            stmt.setString(2, tipo_producto);
-            stmt.setInt(3, idProducto);
-            stmt.setInt(4, cantidad);
-            stmt.setBigDecimal(5, subtotal);  // Usamos BigDecimal para el subtotal
-
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }*/
-
     public boolean eliminarLineaCompra(Usuario usuario, int idProducto) {
+        // Obtenemos la compra activa del usuario
         Compra compra = getCompraActivaPorUsuario(usuario);
-        if (compra == null) return false;
+        if (compra == null) return false;  // Si no hay compra activa, no se puede eliminar ninguna línea
 
-        String selectQuery = "SELECT cantidad, subtotal FROM lineacompra WHERE id_compra = ? AND id_producto = ?";
+        // Modificamos la consulta para hacer un JOIN con la tabla 'compra'
+        String selectQuery = "SELECT lc.cantidad, lc.subtotal, c.estado FROM lineacompra lc " +
+                "JOIN compra c ON lc.id_compra = c.id_compra " +
+                "WHERE lc.id_compra = ? AND lc.id_producto = ? AND c.estado = 'pendiente'";
+
         try (Connection conn = MotorSQL.getConnection();
              PreparedStatement stmtSelect = conn.prepareStatement(selectQuery)) {
 
@@ -230,8 +202,8 @@ public class CompraDAO {
                 BigDecimal subtotalActual = rs.getBigDecimal("subtotal");
                 BigDecimal precioUnitario = subtotalActual.divide(BigDecimal.valueOf(cantidadActual), 2, RoundingMode.HALF_UP);
 
-
                 if (cantidadActual > 1) {
+                    // Si hay más de una unidad, solo reducimos la cantidad
                     int nuevaCantidad = cantidadActual - 1;
                     BigDecimal nuevoSubtotal = subtotalActual.subtract(precioUnitario);
 
@@ -244,6 +216,7 @@ public class CompraDAO {
                         stmtUpdate.executeUpdate();
                     }
                 } else {
+                    // Si solo hay una unidad, eliminamos la línea de compra
                     String deleteQuery = "DELETE FROM lineacompra WHERE id_compra = ? AND id_producto = ?";
                     try (PreparedStatement stmtDelete = conn.prepareStatement(deleteQuery)) {
                         stmtDelete.setInt(1, compra.getIdCompra());
@@ -252,7 +225,7 @@ public class CompraDAO {
                     }
                 }
 
-                // Actualizar el total de la compra tras eliminar
+                // Actualizamos el total de la compra tras la eliminación
                 actualizarTotalCompra(compra.getIdCompra(), calcularTotalCompra(compra.getIdCompra()));
                 return true;
             }
@@ -262,6 +235,7 @@ public class CompraDAO {
 
         return false;
     }
+
 
 
 
