@@ -54,6 +54,38 @@
     <p>No hay empleados registrados todavía.</p>
 <% } %>
 
+
+<% if ("editar-ok".equals(request.getAttribute("status"))) { %>
+    <p style="color: green;">✅ Datos actualizados correctamente</p>
+<% } else if ("editar-error".equals(request.getAttribute("status"))) { %>
+    <p style="color: red;">❌ Error al actualizar los datos</p>
+<% } %>
+
+<tr>
+    <td><%= u.getIdUsuario() %></td>
+    <td><%= u.getNombre() %></td>
+    <td><%= u.getEmail() %></td>
+    <form action="${pageContext.request.contextPath}/control" method="post">
+        <input type="hidden" name="action" value="empleado-editar">
+        <input type="hidden" name="id" value="<%= u.getIdUsuario() %>">
+        <td><input type="text" name="telefono" value="<%= u.getTelefono() %>" size="10"></td>
+        <td><input type="text" name="direccion" value="<%= u.getDireccion() %>" size="15"></td>
+        <td><%= u.getFechaRegistro() %></td>
+        <td>
+            <button type="submit">💾</button>
+            <a href="${pageContext.request.contextPath}/control?action=empleado-baja&id=<%= u.getIdUsuario() %>">Dar de baja</a>
+        </td>
+    </form>
+</tr>
+
+
+
+
+
+
+
+
+
 <form action="<%= request.getContextPath() %>/jsp/adminintranet.jsp" method="get" style="margin-top: 20px;">
     <button type="submit">Volver al panel de administración</button>
 </form>

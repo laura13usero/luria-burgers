@@ -20,7 +20,8 @@ public class ActionFactory {
             case "pedidos-completados" -> new PedidosCompletadosAction();
             case "EnviarMensajeAnonimo" -> new EnviarMensajeAnonimoAction();
             case "ver-buzon" -> new VerBuzonAction();
-            case "empleado-baja" -> new EmpleadoBajaAction(); // Aquí agregamos la acción de baja
+            case "empleado-baja" -> new EmpleadoBajaAction();
+            case "empleado-editar" -> new EmpleadoEditarAction();
             default -> new UnknownAction();
         };
     }

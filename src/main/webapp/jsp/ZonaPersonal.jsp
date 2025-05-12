@@ -20,7 +20,7 @@
 <form action="emplecultura.jsp"><button type="submit">Bienestar y Cultura</button></form>
 <form action="emplsostenibilidad.jsp"><button type="submit">Sostenibilidad y RSC</button></form>
 
-<form action="<%= request.getContextPath() %>/jsp/adminintranet.jsp" method="get" style="margin-top: 20px;">
+<form action="<%= request.getContextPath() %>/jsp/empleadointranet.jsp.jsp" method="get" style="margin-top: 20px;">
         <button type="submit">Volver</button>
 </form>
 

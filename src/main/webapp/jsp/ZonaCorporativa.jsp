@@ -18,7 +18,7 @@
 <form action="empledenuncias.jsp"><button type="submit">Canal de Denuncias</button></form>
 <form action="empleriesgos.jsp"><button type="submit">Prevención de Riesgos Laborales</button></form>
 
-<form action="<%= request.getContextPath() %>/jsp/adminintranet.jsp" method="get" style="margin-top: 20px;">
+<form action="<%= request.getContextPath() %>/jsp/empleadointranet.jsp" method="get" style="margin-top: 20px;">
         <button type="submit">Volver</button>
     </form>
 </body>

@@ -89,6 +89,16 @@ public class UsuarioDAO {
         return obtenerUsuariosPorRol(3);
     }
 
+    public boolean actualizarTelefonoYDireccion(int idUsuario, String telefono, String direccion) throws SQLException {
+        String sql = "UPDATE usuario SET telefono = ?, direccion = ? WHERE id_usuario = ?";
+        try (Connection con = MotorSQL.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+            pst.setString(1, telefono);
+            pst.setString(2, direccion);
+            pst.setInt(3, idUsuario);
+            return pst.executeUpdate() > 0;
+        }
+    }
+
 
 
     public List<Usuario> obtenerUsuariosPorRol(int rolId) throws SQLException {
