@@ -20,6 +20,7 @@ public class EmpleadoBajaAction implements Action {
             // 🔥 Este era el que faltaba para actualizar la tabla
             request.setAttribute("empleados", dao.obtenerEmpleadosActivos());
 
+
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("status", "baja-error");

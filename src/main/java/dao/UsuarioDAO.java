@@ -83,10 +83,12 @@ public class UsuarioDAO {
         }
     }
 
+
     public List<Usuario> obtenerEmpleadosActivos() throws SQLException {
         // Aquí asumimos que el rol 3 es el de EMPLEADO, como indicaste antes.
         return obtenerUsuariosPorRol(3);
     }
+
 
 
     public List<Usuario> obtenerUsuariosPorRol(int rolId) throws SQLException {
