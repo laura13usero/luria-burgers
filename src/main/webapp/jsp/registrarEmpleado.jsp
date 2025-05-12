@@ -52,7 +52,7 @@
                 <td><input type="text" name="direccion" value="<%= u.getDireccion() %>" size="15"></td>
                 <td><%= u.getFechaRegistro() %></td>
                 <td>
-                    <button type="submit">💾</button>
+                    <button type="submit">Guardar Cambios</button>
                     <a href="${pageContext.request.contextPath}/control?action=empleado-baja&id=<%= u.getIdUsuario() %>">Dar de baja</a>
                 </td>
             </form>
