@@ -16,28 +16,6 @@ import java.util.List;
 
 public class CompraDAO {
 
-
-    public BigDecimal obtenerSubtotalLineaCompra(int idCompra, int idProducto) {
-        String query = "SELECT subtotal FROM lineacompra WHERE id_compra = ? AND id_producto = ?";
-        try (Connection conn = MotorSQL.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            stmt.setInt(1, idCompra);
-            stmt.setInt(2, idProducto);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                return rs.getBigDecimal("subtotal");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return BigDecimal.ZERO;  // Si no se encuentra, retornamos cero
-    }
-
-
-
     // Método para obtener la compra pendiente de un usuario
     public Compra getCompraActivaPorUsuario(Usuario usuario) {
         String query = "SELECT * FROM compra WHERE id_usuario = ? AND estado = 'pendiente'";

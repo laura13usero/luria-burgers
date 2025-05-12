@@ -38,14 +38,9 @@ public class EliminarProductoCarritoAction implements Action {
                 CompraDAO compraDAO = new CompraDAO();
                 boolean eliminadoDeBBDD = compraDAO.eliminarLineaCompra(usuario, producto.getId());
 
-                // Recuperamos la compra activa para obtener el total antes de la eliminación
+
                 Compra compra = compraDAO.getCompraActivaPorUsuario(usuario);
-
-                // Verificamos si el producto tiene una línea de compra asociada
-                BigDecimal subtotalProductoEliminado = compraDAO.obtenerSubtotalLineaCompra(compra.getIdCompra(), producto.getId());
-
-                // Restamos el subtotal del producto eliminado del total de la compra
-                BigDecimal nuevoTotal = compra.getTotal().subtract(subtotalProductoEliminado);
+                BigDecimal nuevoTotal = compra.getTotal().subtract(BigDecimal.valueOf(producto.getPrecio()));
                 boolean totalActualizado = compraDAO.actualizarTotalCompra(compra.getIdCompra(), nuevoTotal);
 
                 if (eliminadoDeBBDD) {
@@ -62,6 +57,5 @@ public class EliminarProductoCarritoAction implements Action {
         // Redirigimos de vuelta al carrito
         response.sendRedirect(request.getContextPath() + "/control?action=verCarrito");
     }
-
 }
 
