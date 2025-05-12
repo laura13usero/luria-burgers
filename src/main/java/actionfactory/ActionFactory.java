@@ -24,7 +24,7 @@ public class ActionFactory {
             case "empleado-editar" -> new EmpleadoEditarAction();
             case "pagarConPaypal" -> new PagarConPaypalAction();
             case "filtrarHamburguesas" -> new FiltrarHamburguesasAction();
-
+            case "votarHamburguesa" -> new VotarHamburguesaAction(); // Aquí añades la nueva acción
             default -> new UnknownAction();
         };
     }
