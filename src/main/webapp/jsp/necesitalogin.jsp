@@ -9,14 +9,14 @@
 </head>
 <body>
 
-    <h1>Para ver el carrito necesitas registrarte o iniciar sesión.</h1>
+    <h1>To view the cart, you need to register or log in!</h1>
 
     <form action="<%= request.getContextPath() %>/jsp/login.jsp" method="get">
-        <button type="submit">Login</button>
+        <button type="submit">Please, Log In</button>
     </form>
 
     <form action="<%= request.getContextPath() %>/jsp/registro.jsp" method="get">
-            <button type="submit">Sign up!</button>
+            <button type="submit">Or Sign up!</button>
         </form>
 
     <form action="<%= request.getContextPath() %>/jsp/index.jsp" method="get">

@@ -16,14 +16,14 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Carrito de Compras</title>
+    <title>Cart</title>
 </head>
 <body>
 
 <h1>Tu carrito</h1>
 
 <% if (carrito == null || carrito.isEmpty()) { %>
-    <p>El carrito está vacío.</p>
+    <p>The cart is empty.</p>
 <% } else { %>
     <ul>
         <% for (int i = 0; i < carrito.size(); i++) {
