@@ -41,6 +41,7 @@ public class ProductosDAO {
     }
 
     // Método para obtener todos los productos
+    // Método para obtener todos los productos
     public List<Producto> obtenerTodosLosProductos() {
         List<Producto> productos = new ArrayList<>();
         String sql = "SELECT id_producto, nombre, descripcion, precio, categoria FROM Productos";
