@@ -15,7 +15,9 @@ import java.util.List;
 
 public class CompraDAO {
 
-    // Método para obtener la compra pendiente de un usuario.
+    // Método para obtener la compra pendiente de un usuario
+
+    // Método para obtener la compra pendiente de un usuario
     public Compra getCompraActivaPorUsuario(Usuario usuario) {
         String query = "SELECT * FROM compra WHERE id_usuario = ? AND estado = 'pendiente'";
         try (Connection connection = MotorSQL.getConnection();
