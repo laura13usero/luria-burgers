@@ -24,6 +24,7 @@ public class EliminarProductoCarritoAction implements Action {
 
         if (usuario == null) {
             // Si no está logueado, redirigimos a la página de login
+            //si sjsjsjsjjs
             response.sendRedirect(request.getContextPath() + "/jsp/necesitalogin.jsp");
             return;
         }
