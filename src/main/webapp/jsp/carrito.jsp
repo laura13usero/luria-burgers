@@ -45,43 +45,5 @@
     <button type="submit">Seguir comprando</button>
 </form>
 
-<!-- PayPal SDK con tu Client ID (SANDBOX por ahora) -->
-<script src="https://www.paypal.com/sdk/js?client-id=TU_CLIENT_ID_SANDBOX&currency=EUR"></script>
-
-<div id="paypal-button-container"></div>
-
-<script>
-paypal.Buttons({
-    createOrder: function(data, actions) {
-        return actions.order.create({
-            purchase_units: [{
-                amount: {
-                    value: 'TOTAL_DEL_CARRITO' // Sustituye con el total real desde el backend (puedes meterlo con EL o JavaScript)
-                }]
-            }]
-        });
-    },
-    onApprove: function(data, actions) {
-        return actions.order.capture().then(function(details) {
-            // Envía los detalles al servlet para registrar el pago
-            return fetch('FrontController?action=RegistrarPago', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(details)
-            })
-            .then(response => response.text())
-            .then(result => {
-                alert("¡Pago completado! Redirigiendo al resumen...");
-                window.location.href = "FrontController?action=VerResumenPedido";
-            });
-        });
-    }
-}).render('#paypal-button-container');
-</script>
-
-
-
 </body>
 </html>

@@ -23,6 +23,9 @@
 <form action="<%= request.getContextPath() %>/jsp/emplecalendario.jsp" method="get">
     <button type="submit">Calendario</button>
 </form>
+<form action="<%= request.getContextPath() %>/jsp/buzonempleado.jsp" method="get">
+    <button type="submit">Buzón del Empleado</button>
+</form>
 <form action="<%= request.getContextPath() %>/jsp/emplecertificados.jsp" method="get">
     <button type="submit">Certificados</button>
 </form>

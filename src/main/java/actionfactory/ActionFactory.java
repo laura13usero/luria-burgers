@@ -18,6 +18,10 @@ public class ActionFactory {
             case "verCarrito" -> new ViewCartAction();
             case "empleado-register" -> new EmpleadoRegisterAction();
             case "pedidos-completados" -> new PedidosCompletadosAction();
+            case "EnviarMensajeAnonimo" -> new EnviarMensajeAnonimoAction();
+            case "ver-buzon" -> new VerBuzonAction();
+
+
             default -> new UnknownAction();
         };
     }

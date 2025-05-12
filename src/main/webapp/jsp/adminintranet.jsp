@@ -36,6 +36,14 @@
          </form>
     </li>
 
+    <li>
+        <form action="<%= request.getContextPath() %>/control" method="get">
+             <input type="hidden" name="action" value="ver-buzon">
+             <button type="submit">Ver Mensajes del Buzón</button>
+         </form>
+    </li>
+
+
 </ul>
 
 
