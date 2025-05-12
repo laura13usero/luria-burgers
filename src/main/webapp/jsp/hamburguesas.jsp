@@ -51,6 +51,15 @@
         <p>No burgers available.</p>
     <% } %>
 
+<h2>Filter burgers by type:</h2>
+<form action="<%= request.getContextPath() %>/control" method="get" style="margin-bottom: 20px;">
+    <input type="hidden" name="action" value="filtrarHamburguesas" />
+    <button type="submit" name="filtro" value="premium">🍔 Premium</button>
+    <button type="submit" name="filtro" value="spicy">🌶️ Spicy</button>
+    <button type="submit" name="filtro" value="pollo">🐔 Chicken</button>
+    <button type="submit" name="filtro" value="">🔄 All</button>
+</form>
+
 
     <form action="<%= request.getContextPath() %>/jsp/index.jsp" method="get" style="margin-top: 20px;">
         <button type="submit">Return to Home Page</button>

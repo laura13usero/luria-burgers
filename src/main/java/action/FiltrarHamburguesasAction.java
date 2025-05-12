@@ -1,26 +1,23 @@
 package action;
 
 import dao.HamburguesaDAO;
-import model.Producto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Producto;
 
-import java.sql.SQLException;
 import java.util.List;
 
-public class HamburguesasAction implements Action {
-
+public class FiltrarHamburguesasAction implements Action {
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
-        String filtro = request.getParameter("filtro"); // puede ser null
-
+    public void execute(HttpServletRequest request, HttpServletResponse response) {
+        String filtro = request.getParameter("filtro"); // puede ser "", "premium", "spicy" o "pollo"
         HamburguesaDAO hamburguesaDAO = new HamburguesaDAO();
         List<Producto> hamburguesas;
 
-        if (filtro != null && !filtro.trim().isEmpty()) {
-            hamburguesas = hamburguesaDAO.obtenerHamburguesasPorFiltro(filtro);
-        } else {
+        if (filtro == null || filtro.isEmpty()) {
             hamburguesas = hamburguesaDAO.obtenerHamburguesas();
+        } else {
+            hamburguesas = hamburguesaDAO.obtenerHamburguesasPorFiltro(filtro);
         }
 
         request.setAttribute("hamburguesas", hamburguesas);

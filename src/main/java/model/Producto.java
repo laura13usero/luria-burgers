@@ -6,14 +6,7 @@ public class Producto {
     private String descripcion;
     private double precio;
     private String categoria;
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
+    private String filtros; // <-- Nuevo atributo
 
     // Getters y Setters
     public int getId() {
@@ -24,12 +17,12 @@ public class Producto {
         this.id = id;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public String getNombre() {
         return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getDescripcion() {
@@ -46,5 +39,21 @@ public class Producto {
 
     public void setPrecio(double precio) {
         this.precio = precio;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public String getFiltros() {
+        return filtros;
+    }
+
+    public void setFiltros(String filtros) {
+        this.filtros = filtros;
     }
 }

@@ -23,6 +23,7 @@ public class ActionFactory {
             case "empleado-baja" -> new EmpleadoBajaAction();
             case "empleado-editar" -> new EmpleadoEditarAction();
             case "pagarConPaypal" -> new PagarConPaypalAction();
+            case "filtrarHamburguesas" -> new FiltrarHamburguesasAction();
 
             default -> new UnknownAction();
         };
