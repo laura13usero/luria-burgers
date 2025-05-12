@@ -36,13 +36,12 @@
                     <% if (postre.getDescripcion() != null && !postre.getDescripcion().isEmpty()) { %>
                         - <%= postre.getDescripcion() %>
                     <% } %>
-                    - $<%= postre.getPrecio() %>
 
-                    <!-- Añadir al carrito -->
+                    <!-- El botón de añadir al carrito con el precio solo en el botón -->
                     <form action="<%= request.getContextPath() %>/control" method="post" style="margin-top: 10px;">
                         <input type="hidden" name="action" value="addToCart">
                         <input type="hidden" name="idProducto" value="<%= postre.getId() %>">
-                        <button type="submit">Añadir al carrito</button>
+                        <button type="submit">Añadir al carrito - $<%= postre.getPrecio() %></button>
                     </form>
                 </li>
             <% } %>

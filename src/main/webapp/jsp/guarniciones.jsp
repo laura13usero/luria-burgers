@@ -42,7 +42,7 @@
                     <form action="<%= request.getContextPath() %>/control" method="post" style="margin-top: 10px;">
                         <input type="hidden" name="action" value="addToCart">
                         <input type="hidden" name="idProducto" value="<%= guarnicion.getId() %>">
-                        <button type="submit">Añadir al carrito</button>
+                        <button type="submit">Añadir al carrito - $<%= guarnicion.getPrecio() %></button>
                     </form>
                 </li>
             <% } %>

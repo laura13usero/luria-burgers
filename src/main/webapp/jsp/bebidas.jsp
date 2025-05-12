@@ -42,7 +42,7 @@
                     <form action="<%= request.getContextPath() %>/control" method="post" style="margin-top: 10px;">
                         <input type="hidden" name="action" value="addToCart">
                         <input type="hidden" name="idProducto" value="<%= bebida.getId() %>">
-                        <button type="submit">Añadir al carrito</button>
+                        <button type="submit">Añadir al carrito - $<%= bebida.getPrecio() %></button>
                     </form>
                 </li>
             <% } %>
@@ -55,7 +55,7 @@
         <button type="submit">Volver a la página principal</button>
     </form>
 
-    <!-- Botón de ver carrito (delegado al backend) -->
+    <!-- Botón de ver carrito -->
     <form action="<%= request.getContextPath() %>/control" method="get" style="margin-top: 10px;">
         <input type="hidden" name="action" value="verCarrito">
         <button type="submit">Ver mi carrito</button>
