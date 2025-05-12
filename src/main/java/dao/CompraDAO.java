@@ -181,15 +181,10 @@ public class CompraDAO {
 
 
     public boolean eliminarLineaCompra(Usuario usuario, int idProducto) {
-        // Obtenemos la compra activa del usuario
         Compra compra = getCompraActivaPorUsuario(usuario);
-        if (compra == null) return false;  // Si no hay compra activa, no se puede eliminar ninguna línea
+        if (compra == null) return false;
 
-        // Modificamos la consulta para hacer un JOIN con la tabla 'compra'
-        String selectQuery = "SELECT lc.cantidad, lc.subtotal, c.estado FROM lineacompra lc " +
-                "JOIN compra c ON lc.id_compra = c.id_compra " +
-                "WHERE lc.id_compra = ? AND lc.id_producto = ? AND c.estado = 'pendiente'";
-
+        String selectQuery = "SELECT cantidad, subtotal FROM lineacompra WHERE id_compra = ? AND id_producto = ?";
         try (Connection conn = MotorSQL.getConnection();
              PreparedStatement stmtSelect = conn.prepareStatement(selectQuery)) {
 
@@ -202,8 +197,8 @@ public class CompraDAO {
                 BigDecimal subtotalActual = rs.getBigDecimal("subtotal");
                 BigDecimal precioUnitario = subtotalActual.divide(BigDecimal.valueOf(cantidadActual), 2, RoundingMode.HALF_UP);
 
+                // Si hay más de una unidad, se reduce la cantidad
                 if (cantidadActual > 1) {
-                    // Si hay más de una unidad, solo reducimos la cantidad
                     int nuevaCantidad = cantidadActual - 1;
                     BigDecimal nuevoSubtotal = subtotalActual.subtract(precioUnitario);
 
@@ -216,7 +211,7 @@ public class CompraDAO {
                         stmtUpdate.executeUpdate();
                     }
                 } else {
-                    // Si solo hay una unidad, eliminamos la línea de compra
+                    // Si solo hay una unidad, eliminamos la línea
                     String deleteQuery = "DELETE FROM lineacompra WHERE id_compra = ? AND id_producto = ?";
                     try (PreparedStatement stmtDelete = conn.prepareStatement(deleteQuery)) {
                         stmtDelete.setInt(1, compra.getIdCompra());
@@ -225,8 +220,10 @@ public class CompraDAO {
                     }
                 }
 
-                // Actualizamos el total de la compra tras la eliminación
-                actualizarTotalCompra(compra.getIdCompra(), calcularTotalCompra(compra.getIdCompra()));
+                // Actualizamos el total de la compra
+                BigDecimal totalActualizado = recalcularTotalCompra(compra.getIdCompra(), subtotalActual);
+                actualizarTotalCompra(compra.getIdCompra(), totalActualizado);
+
                 return true;
             }
         } catch (SQLException e) {
@@ -235,6 +232,28 @@ public class CompraDAO {
 
         return false;
     }
+
+    // Método para recalcular el total de la compra después de la eliminación
+    private BigDecimal recalcularTotalCompra(int idCompra, BigDecimal subtotalEliminado) {
+        String selectTotalQuery = "SELECT SUM(subtotal) FROM lineacompra WHERE id_compra = ?";
+        try (Connection conn = MotorSQL.getConnection();
+             PreparedStatement stmtSelectTotal = conn.prepareStatement(selectTotalQuery)) {
+
+            stmtSelectTotal.setInt(1, idCompra);
+            ResultSet rs = stmtSelectTotal.executeQuery();
+
+            if (rs.next()) {
+                BigDecimal totalActual = rs.getBigDecimal(1);
+                // Restamos el subtotal del producto eliminado del total actual
+                return totalActual.subtract(subtotalEliminado);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return BigDecimal.ZERO; // Si algo falla, retornamos cero como valor por defecto.
+    }
+
 
 
 
