@@ -15,7 +15,6 @@ import java.util.List;
 
 public class EliminarProductoCarritoAction implements Action {
     @Override
-    @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
