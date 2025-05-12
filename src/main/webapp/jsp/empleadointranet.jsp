@@ -18,46 +18,13 @@
 <% } %>
 
 <h1>Bienvenido, ${usuario.nombre}!</h1>
-<h2>Panel de Empleado</h2>
+<h2>Zona de Empleado</h2>
 
-<form action="<%= request.getContextPath() %>/jsp/emplecalendario.jsp" method="get">
-    <button type="submit">Calendario</button>
+<form action="<%= request.getContextPath() %>/jsp/zonaPersonal.jsp" method="get">
+    <button type="submit">🧍 Zona Personal</button>
 </form>
-<form action="<%= request.getContextPath() %>/jsp/buzonempleado.jsp" method="get">
-    <button type="submit">Buzón del Empleado</button>
-</form>
-<form action="<%= request.getContextPath() %>/jsp/emplecertificados.jsp" method="get">
-    <button type="submit">Certificados</button>
-</form>
-<form action="<%= request.getContextPath() %>/jsp/empleciberseguridad.jsp" method="get">
-    <button type="submit">Ciberseguridad</button>
-</form>
-<form action="<%= request.getContextPath() %>/jsp/emplecomite.jsp" method="get">
-    <button type="submit">Comité</button>
-</form>
-<form action="<%= request.getContextPath() %>/jsp/emplecultura.jsp" method="get">
-    <button type="submit">Cultura</button>
-</form>
-<form action="<%= request.getContextPath() %>/jsp/emplledenuncias.jsp" method="get">
-    <button type="submit">Denuncias</button>
-</form>
-<form action="<%= request.getContextPath() %>/jsp/emplenomina.jsp" method="get">
-    <button type="submit">Nómina</button>
-</form>
-<form action="<%= request.getContextPath() %>/jsp/emplenormativa.jsp" method="get">
-    <button type="submit">Normativa</button>
-</form>
-<form action="<%= request.getContextPath() %>/jsp/emplenoticias.jsp" method="get">
-    <button type="submit">Noticias</button>
-</form>
-<form action="<%= request.getContextPath() %>/jsp/emplsalud.jsp" method="get">
-    <button type="submit">Salud</button>
-</form>
-<form action="<%= request.getContextPath() %>/jsp/emplsostenibilidad.jsp" method="get">
-    <button type="submit">Sostenibilidad</button>
-</form>
-<form action="<%= request.getContextPath() %>/jsp/emplevacaciones.jsp" method="get">
-    <button type="submit">Vacaciones</button>
+<form action="<%= request.getContextPath() %>/jsp/zonaCorporativa.jsp" method="get">
+    <button type="submit">🏢 Zona Corporativa</button>
 </form>
 
 <form action="<%= request.getContextPath() %>/control" method="post">

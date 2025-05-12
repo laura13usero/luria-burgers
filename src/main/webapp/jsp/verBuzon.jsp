@@ -45,6 +45,8 @@
     </table>
 
     <br>
-    <a href="<%= request.getContextPath() %>/jsp/adminintranet.jsp">Volver al Panel de Administrador</a>
+    <form action="<%= request.getContextPath() %>/jsp/adminintranet.jsp" method="get" style="margin-top: 20px;">
+            <button type="submit">Volver al panel de administración</button>
+    </form>
 </body>
 </html>
