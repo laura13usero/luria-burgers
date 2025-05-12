@@ -23,9 +23,9 @@
     <h1>Lista de Bebidas</h1>
 
     <% if (usuario != null) { %>
-        <p>Hola, <strong><%= usuario.getNombre() %></strong>. Estás logueado.</p>
+        <p>こんにちは, <strong><%= usuario.getNombre() %></strong>. You are logged in.</p>
     <% } else { %>
-        <p>Bienvenido, por favor inicia sesión para acceder a más funcionalidades.</p>
+        <p>Welcome! Please log in to access more features</p>
     <% } %>
 
     <% if (bebidas != null && !bebidas.isEmpty()) { %>
