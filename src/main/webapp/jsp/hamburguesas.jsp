@@ -36,9 +36,8 @@
                     <% if (hamburguesa.getDescripcion() != null && !hamburguesa.getDescripcion().isEmpty()) { %>
                         - <%= hamburguesa.getDescripcion() %>
                     <% } %>
-                    - $<%= hamburguesa.getPrecio() %>
 
-                    <!-- Añadir al carrito -->
+                    <!-- El precio se muestra solo en el botón, no aquí -->
                     <form action="<%= request.getContextPath() %>/control" method="post" style="margin-top: 10px;">
                         <input type="hidden" name="action" value="addToCart">
                         <input type="hidden" name="idProducto" value="<%= hamburguesa.getId() %>">
@@ -51,6 +50,7 @@
     <% } else { %>
         <p>No hay hamburguesas disponibles.</p>
     <% } %>
+
 
     <form action="<%= request.getContextPath() %>/jsp/index.jsp" method="get" style="margin-top: 20px;">
         <button type="submit">Volver a la página principal</button>

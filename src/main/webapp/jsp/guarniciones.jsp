@@ -36,9 +36,8 @@
                     <% if (guarnicion.getDescripcion() != null && !guarnicion.getDescripcion().isEmpty()) { %>
                         - <%= guarnicion.getDescripcion() %>
                     <% } %>
-                    - $<%= guarnicion.getPrecio() %>
 
-                    <!-- Añadir al carrito -->
+                    <!-- El precio se muestra solo en el botón, no aquí -->
                     <form action="<%= request.getContextPath() %>/control" method="post" style="margin-top: 10px;">
                         <input type="hidden" name="action" value="addToCart">
                         <input type="hidden" name="idProducto" value="<%= guarnicion.getId() %>">
@@ -50,6 +49,7 @@
     <% } else { %>
         <p>No hay guarniciones disponibles.</p>
     <% } %>
+
 
     <form action="<%= request.getContextPath() %>/jsp/index.jsp" method="get" style="margin-top: 20px;">
         <button type="submit">Volver a la página principal</button>

@@ -36,9 +36,8 @@
                     <% if (bebida.getDescripcion() != null && !bebida.getDescripcion().isEmpty()) { %>
                         - <%= bebida.getDescripcion() %>
                     <% } %>
-                    - $<%= bebida.getPrecio() %>
 
-                    <!-- Añadir al carrito -->
+                    <!-- Aquí solo debe mostrar el nombre y descripción, no el precio -->
                     <form action="<%= request.getContextPath() %>/control" method="post" style="margin-top: 10px;">
                         <input type="hidden" name="action" value="addToCart">
                         <input type="hidden" name="idProducto" value="<%= bebida.getId() %>">
@@ -50,6 +49,7 @@
     <% } else { %>
         <p>No hay bebidas disponibles.</p>
     <% } %>
+
 
     <form action="<%= request.getContextPath() %>/jsp/index.jsp" method="get" style="margin-top: 20px;">
         <button type="submit">Volver a la página principal</button>
