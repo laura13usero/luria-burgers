@@ -15,8 +15,11 @@
 <form action="emplecertificados.jsp"><button type="submit">Certificados y Trámites</button></form>
 <form action="emplevacaciones.jsp"><button type="submit">Vacaciones y Permisos</button></form>
 <form action="emplsalud.jsp"><button type="submit">Beneficios y Salud</button></form>
-<form action="emplledenuncias.jsp"><button type="submit">Canal de Denuncias</button></form>
+<form action="empledenuncias.jsp"><button type="submit">Canal de Denuncias</button></form>
+<form action="empleriesgos.jsp"><button type="submit">Prevención de Riesgos Laborales</button></form>
 
-<a href="empleadointranet.jsp">🔙 Volver</a>
+<form action="<%= request.getContextPath() %>/jsp/adminintranet.jsp" method="get" style="margin-top: 20px;">
+        <button type="submit">Volver</button>
+    </form>
 </body>
 </html>
