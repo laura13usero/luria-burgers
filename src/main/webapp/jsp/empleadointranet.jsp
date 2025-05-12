@@ -20,10 +20,10 @@
 <h1>Bienvenido, ${usuario.nombre}!</h1>
 <h2>Zona de Empleado</h2>
 
-<form action="<%= request.getContextPath() %>/jsp/zonaPersonal.jsp" method="get">
+<form action="<%= request.getContextPath() %>/jsp/ZonaPersonal.jsp" method="get">
     <button type="submit">🧍 Zona Personal</button>
 </form>
-<form action="<%= request.getContextPath() %>/jsp/zonaCorporativa.jsp" method="get">
+<form action="<%= request.getContextPath() %>/jsp/ZonaCorporativa.jsp" method="get">
     <button type="submit">🏢 Zona Corporativa</button>
 </form>
 
