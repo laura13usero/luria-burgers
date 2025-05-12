@@ -7,8 +7,8 @@
 <body>
     <h2>Login</h2>
     <form action="/webapp-1.0-SNAPSHOT/control?action=login" method="post">
-        Email: <input type="email" name="email" required><br>
-        Contraseña: <input type="password" name="contrasena" required><br>
+        E-mail: <input type="email" name="email" required><br>
+        Password: <input type="password" name="contrasena" required><br>
         <input type="submit" value="Login">
     </form>
 

@@ -20,7 +20,7 @@
 </head>
 <body>
 
-    <h1>Lista de Guarniciones</h1>
+    <h1>Side Dishes</h1>
 
     <% if (usuario != null) { %>
         <p>こんにちは, <strong><%= usuario.getNombre() %></strong>. Estás logueado.</p>

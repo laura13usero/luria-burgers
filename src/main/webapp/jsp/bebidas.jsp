@@ -20,7 +20,7 @@
 </head>
 <body>
 
-    <h1>Lista de Bebidas</h1>
+    <h1>Drinks</h1>
 
     <% if (usuario != null) { %>
         <p>こんにちは, <strong><%= usuario.getNombre() %></strong>. You are logged in.</p>
