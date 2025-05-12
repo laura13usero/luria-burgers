@@ -88,7 +88,8 @@ public class UsuarioDAO {
 
         String query = "SELECT u.* FROM usuario u " +
                 "JOIN usuariorol ur ON u.id_usuario = ur.id_usuario " +
-                "WHERE ur.id_rol = ?";
+                "WHERE ur.id_rol = ? AND u.activo = TRUE";
+
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, rolId);
@@ -107,6 +108,14 @@ public class UsuarioDAO {
         }
 
         return empleados;
+    }
+
+    public void darDeBajaEmpleado(int idUsuario) throws SQLException {
+        String query = "UPDATE usuario SET activo = FALSE WHERE id_usuario = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, idUsuario);
+            stmt.executeUpdate();
+        }
     }
 
 

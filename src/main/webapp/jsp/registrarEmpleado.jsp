@@ -11,6 +11,10 @@
 
 <% if ("ok".equals(request.getAttribute("status"))) { %>
     <p style="color: green;">✅ Registro de empleado completado</p>
+<% } else if ("baja-ok".equals(request.getAttribute("status"))) { %>
+    <p style="color: green;">✅ Empleado dado de baja correctamente</p>
+<% } else if ("baja-error".equals(request.getAttribute("status"))) { %>
+    <p style="color: red;">❌ Error al dar de baja al empleado</p>
 <% } %>
 
 <form action="${pageContext.request.contextPath}/control" method="post">
@@ -30,7 +34,7 @@
     <h3>Empleados actuales</h3>
     <table border="1">
         <tr>
-            <th>ID</th><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Dirección</th><th>Fecha Registro</th>
+            <th>ID</th><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Dirección</th><th>Fecha Registro</th><th>Acciones</th>
         </tr>
         <% for (Usuario u : empleados) { %>
         <tr>
@@ -40,6 +44,9 @@
             <td><%= u.getTelefono() %></td>
             <td><%= u.getDireccion() %></td>
             <td><%= u.getFechaRegistro() %></td>
+            <td>
+                <a href="${pageContext.request.contextPath}/control?action=empleado-baja&id=<%= u.getIdUsuario() %>">Dar de baja</a>
+            </td>
         </tr>
         <% } %>
     </table>
@@ -51,6 +58,6 @@
     <button type="submit">Volver al panel de administración</button>
 </form>
 
-
 </body>
 </html>
+

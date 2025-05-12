@@ -2,6 +2,8 @@ package model;
 
 import java.time.LocalDateTime;
 
+
+
 public class Usuario {
     private int idUsuario;
     private String nombre;
@@ -89,6 +91,11 @@ public class Usuario {
     public void setFechaRegistro(LocalDateTime fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
+
+    private boolean activo;
+
+    public boolean isActivo() { return activo; }
+    public void setActivo(boolean activo) { this.activo = activo; }
 
     @Override
     public String toString() {
