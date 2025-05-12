@@ -1,3 +1,4 @@
+// src/action/HamburguesasAction.java
 package action;
 
 import dao.HamburguesaDAO;
@@ -12,7 +13,7 @@ public class HamburguesasAction implements Action {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
-        String filtro = request.getParameter("filtro"); // puede ser null
+        String filtro = request.getParameter("filtro");
 
         HamburguesaDAO hamburguesaDAO = new HamburguesaDAO();
         List<Producto> hamburguesas;

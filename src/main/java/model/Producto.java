@@ -1,4 +1,7 @@
+// src/model/Producto.java
 package model;
+
+import java.util.List;
 
 public class Producto {
     private int id;
@@ -6,9 +9,9 @@ public class Producto {
     private String descripcion;
     private double precio;
     private String categoria;
-    private String filtros; // <-- Nuevo atributo
+    private String filtros;
+    private List<String> ranking;  // <-- nuevo campo
 
-    // Getters y Setters
     public int getId() {
         return id;
     }
@@ -55,5 +58,13 @@ public class Producto {
 
     public void setFiltros(String filtros) {
         this.filtros = filtros;
+    }
+
+    public List<String> getRanking() {
+        return ranking;
+    }
+
+    public void setRanking(List<String> ranking) {
+        this.ranking = ranking;
     }
 }
