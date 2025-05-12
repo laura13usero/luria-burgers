@@ -15,17 +15,20 @@ public class EmpleadoBajaAction implements Action {
         try {
             UsuarioDAO dao = new UsuarioDAO();
             dao.darDeBajaEmpleado(idEmpleado);
-            request.setAttribute("status", "baja-ok");  // Indica que la baja fue exitosa
+            request.setAttribute("status", "baja-ok");
+
+            // 🔥 Este era el que faltaba para actualizar la tabla
+            request.setAttribute("empleados", dao.obtenerEmpleadosActivos());
+
         } catch (SQLException e) {
             e.printStackTrace();
-            request.setAttribute("status", "baja-error");  // Si hay un error en la BD
-            throw e;  // Relanzamos la excepción para que se maneje adecuadamente en un filtro o controlador
+            request.setAttribute("status", "baja-error");
+            throw e;
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("status", "baja-error");  // Si ocurre un error general
+            request.setAttribute("status", "baja-error");
         }
 
-        // Redirigimos a la página donde se muestra el estado
         request.getRequestDispatcher("jsp/registrarEmpleado.jsp").forward(request, response);
     }
 }
