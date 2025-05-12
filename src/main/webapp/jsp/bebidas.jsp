@@ -16,7 +16,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Bebidas</title>
+    <title>Drinks</title>
 </head>
 <body>
 
@@ -41,7 +41,7 @@
                     <form action="<%= request.getContextPath() %>/control" method="post" style="margin-top: 10px;">
                         <input type="hidden" name="action" value="addToCart">
                         <input type="hidden" name="idProducto" value="<%= bebida.getId() %>">
-                        <button type="submit">Añadir al carrito - $<%= bebida.getPrecio() %></button>
+                        <button type="submit">Add to cart for: $<%= bebida.getPrecio() %></button>
                     </form>
                 </li>
             <% } %>
@@ -52,19 +52,19 @@
 
 
     <form action="<%= request.getContextPath() %>/jsp/index.jsp" method="get" style="margin-top: 20px;">
-        <button type="submit">Volver a la página principal</button>
+        <button type="submit">Return to Home Page</button>
     </form>
 
     <!-- Botón de ver carrito -->
     <form action="<%= request.getContextPath() %>/control" method="get" style="margin-top: 10px;">
         <input type="hidden" name="action" value="verCarrito">
-        <button type="submit">Ver mi carrito</button>
+        <button type="submit">Cart</button>
     </form>
 
     <% if (usuario != null) { %>
         <form action="<%= request.getContextPath() %>/control" method="post" style="margin-top: 20px;">
             <input type="hidden" name="action" value="logout">
-            <button type="submit">Cerrar sesión</button>
+            <button type="submit">Log Out</button>
         </form>
     <% } %>
 

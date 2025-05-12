@@ -9,7 +9,7 @@
     <form action="/webapp-1.0-SNAPSHOT/control?action=login" method="post">
         Email: <input type="email" name="email" required><br>
         Contraseña: <input type="password" name="contrasena" required><br>
-        <input type="submit" value="Iniciar sesión">
+        <input type="submit" value="Login">
     </form>
 
     <c:if test="${not empty error}">

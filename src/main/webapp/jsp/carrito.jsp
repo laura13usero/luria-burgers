@@ -33,7 +33,7 @@
                 <form action="<%= request.getContextPath() %>/control" method="get" style="display:inline;">
                     <input type="hidden" name="action" value="eliminarProductoCarrito">
                     <input type="hidden" name="index" value="<%= i %>">
-                    <button type="submit">Eliminar</button>
+                    <button type="submit">Quit</button>
                 </form>
             </li>
         <% } %>
@@ -42,7 +42,7 @@
 <% } %>
 
 <form action="<%= request.getContextPath() %>/jsp/index.jsp" method="get">
-    <button type="submit">Seguir comprando</button>
+    <button type="submit">Continue shopping</button>
 </form>
 
 </body>

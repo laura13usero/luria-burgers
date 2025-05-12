@@ -20,7 +20,7 @@
 </head>
 <body>
 
-    <h1>Lista de Hamburguesas</h1>
+    <h1>Burgers</h1>
 
     <% if (usuario != null) { %>
         <p>Hola, <strong><%= usuario.getNombre() %></strong>. Estás logueado.</p>
@@ -42,30 +42,30 @@
                         <input type="hidden" name="action" value="addToCart">
                         <input type="hidden" name="idProducto" value="<%= hamburguesa.getId() %>">
                         <input type="hidden" name="tipoProducto" value="hamburguesa">
-                        <button type="submit">Añadir al carrito - $<%= hamburguesa.getPrecio() %></button>
+                        <button type="submit">Add to cart for: $<%= hamburguesa.getPrecio() %></button>
                     </form>
                 </li>
             <% } %>
         </ul>
     <% } else { %>
-        <p>No hay hamburguesas disponibles.</p>
+        <p>No burgers available.</p>
     <% } %>
 
 
     <form action="<%= request.getContextPath() %>/jsp/index.jsp" method="get" style="margin-top: 20px;">
-        <button type="submit">Volver a la página principal</button>
+        <button type="submit">Return to Home Page</button>
     </form>
 
     <!-- Botón de ver carrito -->
     <form action="<%= request.getContextPath() %>/control" method="get" style="margin-top: 10px;">
         <input type="hidden" name="action" value="verCarrito">
-        <button type="submit">Ver mi carrito</button>
+        <button type="submit">Cart</button>
     </form>
 
     <% if (usuario != null) { %>
         <form action="<%= request.getContextPath() %>/control" method="post" style="margin-top: 20px;">
             <input type="hidden" name="action" value="logout">
-            <button type="submit">Cerrar sesión</button>
+            <button type="submit">Log Out</button>
         </form>
     <% } %>
 

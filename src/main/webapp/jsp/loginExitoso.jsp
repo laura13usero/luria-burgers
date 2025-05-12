@@ -16,26 +16,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Exitoso</title>
+    <title>Successful Login</title>
 </head>
 <body>
-    <h1>¡Login Exitoso!</h1>
+    <h1>Successful Login!</h1>
 
     <% if (usuario != null) { %>
-        <p>Bienvenido, <strong><%= usuario.getNombre() %></strong></p>
+        <p>Welcome! ようこそ! <strong><%= usuario.getNombre() %></strong></p>
     <% } else { %>
-        <p>Ha ocurrido un error al obtener los datos del usuario. Por favor, vuelve a iniciar sesión.</p>
+        <p>An error occurred while retrieving user data. Please log in again.</p>
     <% } %>
 
      <form action="<%= request.getContextPath() %>/jsp/index.jsp" method="get" style="margin-top: 20px;">
-            <button type="submit">Volver a la página principal</button>
+            <button type="submit">Go back to the homepage</button>
      </form>
 
     <!-- Botón de logout -->
     <% if (usuario != null) { %>
         <form action="<%= request.getContextPath() %>/control" method="post" style="margin-top: 20px;">
             <input type="hidden" name="action" value="logout">
-            <button type="submit">Cerrar sesión</button>
+            <button type="submit">Log out</button>
         </form>
     <% } %>
 </body>

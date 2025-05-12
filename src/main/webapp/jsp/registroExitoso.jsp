@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <h1>¡Registro Exitoso!</h1>
-    <p>Gracias por registrarte en nuestro sitio. Ahora puedes iniciar sesión con tu cuenta.</p>
+    <h1>Registration Successful!</h1>
+    <p>Thank you for registering on our site. You can now log in with your account. ありがとうございます! </p>
     <a href="login.jsp">Ir al Login</a>
 </body>
 </html>
