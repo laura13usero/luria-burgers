@@ -10,6 +10,17 @@
 <html>
 <head>
     <title>Intranet - Empleado</title>
+    <!-- Estilos del Footer -->
+    <style>
+        /* Ajuste del footer */
+        .footer {
+            margin-top: 2rem;
+            padding: 1rem 0;
+            text-align: center;
+            background-color: transparent;
+            color: white;
+        }
+    </style>
 </head>
 <body>
 
@@ -31,6 +42,11 @@
     <input type="hidden" name="action" value="logout">
     <button type="submit">Cerrar sesión</button>
 </form>
+
+<!-- Aquí va el footer -->
+<div class="footer">
+    <p>&copy; 2025 Luría's Burger - Todos los derechos reservados</p>
+</div>
 
 </body>
 </html>
