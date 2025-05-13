@@ -20,7 +20,7 @@ public class BebidasAction implements Action {
 
         try {
             // Redirigimos a la JSP de bebidas
-            request.getRequestDispatcher("/jsp/bebidas.jsp").forward(request, response);
+            request.getRequestDispatcher("/bebidas.html").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }

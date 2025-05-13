@@ -18,7 +18,7 @@ public class GuarnicionesAction implements Action {
         request.setAttribute("guarniciones", guarniciones);
 
         try {
-            request.getRequestDispatcher("/jsp/guarniciones.jsp").forward(request, response);
+            request.getRequestDispatcher("/guarniciones.html").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }
