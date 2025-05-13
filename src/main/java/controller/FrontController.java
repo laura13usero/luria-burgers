@@ -3,7 +3,6 @@ package controller;
 import action.Action;
 import actionfactory.ActionFactory;
 import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -11,7 +10,6 @@ import action.AddToCartAction;
 import model.Usuario;
 import dao.UsuarioDAO;
 
-@WebServlet("/control")
 public class FrontController extends HttpServlet {
 
     private UsuarioDAO usuarioDAO;
