@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tu Carrito</title>
+</head>
+<body>
+
+<h1>Tu carrito</h1>
+<ul id="listaCarrito"></ul>
+<p><strong>Total:</strong> <span id="total">0.00</span> €</p>
+
+<button onclick="window.location.href='index.html'">Seguir comprando</button>
+<button onclick="window.location.href='resumenCompra.html'">Finalizar compra</button>
+
+<script>
+    async function cargarCarrito() {
+        try {
+            const res = await fetch('/webapp-1.0-SNAPSHOT/control?action=verCarrito');
+            if (!res.ok) throw new Error('No logueado');
+
+            const data = await res.json();
+            const lista = document.getElementById('listaCarrito');
+            lista.innerHTML = '';
+
+            if (!data.carrito || data.carrito.length === 0) {
+                lista.innerHTML = '<li>El carrito está vacío.</li>';
+                document.getElementById('total').textContent = '0.00';
+                return;
+            }
+
+            data.carrito.forEach((producto, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <strong>${producto.nombre}</strong> - ${producto.precio.toFixed(2)} €
+                    <button onclick="eliminarProducto(${index})">Eliminar</button>
+                `;
+                lista.appendChild(li);
+            });
+
+            document.getElementById('total').textContent = data.total.toFixed(2);
+        } catch (err) {
+            window.location.href = 'necesitalogin.html';
+        }
+    }
+
+    async function eliminarProducto(index) {
+        const res = await fetch(`/webapp-1.0-SNAPSHOT/control?action=eliminarProductoCarrito&index=${index}`);
+        if (res.ok) {
+            cargarCarrito(); // refrescar vista
+        } else {
+            alert('No se pudo eliminar el producto.');
+        }
+    }
+
+    cargarCarrito();
+</script>
+
+</body>
+</html>

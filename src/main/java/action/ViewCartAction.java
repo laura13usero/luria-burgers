@@ -1,63 +1,57 @@
 package action;
 
 import dao.CompraDAO;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.ServletException;
 import model.Compra;
-import model.Hamburguesa;
 import model.Producto;
 import model.Usuario;
-
+import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ViewCartAction implements Action {
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
+        response.setContentType("application/json");
+
+        Map<String, Object> result = new HashMap<>();
 
         if (session == null || session.getAttribute("usuarioLogueado") == null) {
-            response.sendRedirect("/webapp-1.0-SNAPSHOT/jsp/necesitalogin.jsp");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            result.put("error", "Usuario no logueado");
         } else {
-            // Obtener el carrito desde la sesión
-            List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
-
-
-            CompraDAO compraDAO = new CompraDAO();
             Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+            CompraDAO compraDAO = new CompraDAO();
             Compra compraActiva = compraDAO.getCompraActivaPorUsuario(usuario);
 
-            if (compraActiva != null) {
-                // 2. Obtener los productos de esa compra
-                carrito = compraDAO.obtenerProductosDeCompra(compraActiva.getIdCompra());
-
-                // 3. Guardar el carrito en la sesión
-                session.setAttribute("carrito", carrito);
-            } else {
-                // Si no hay compra activa, podemos crear una nueva compra o manejarlo de otra manera
-                System.out.println("No se encontró compra activa para este usuario.");
-            }
-
-
+            List<Producto> carrito = null;
             double total = 0.0;
 
-            if (carrito != null) {
-                for (Producto p : carrito) {
-                    if (p != null) {
-                        total += p.getPrecio(); // Evita null y suma bien
+            if (compraActiva != null) {
+                carrito = compraDAO.obtenerProductosDeCompra(compraActiva.getIdCompra());
+
+                if (carrito != null) {
+                    for (Producto p : carrito) {
+                        if (p != null) total += p.getPrecio();
                     }
                 }
+
+                session.setAttribute("carrito", carrito);
+                result.put("carrito", carrito);
+                result.put("total", total);
+            } else {
+                result.put("carrito", List.of());
+                result.put("total", 0.0);
+                result.put("mensaje", "No hay compra activa");
             }
-
-            // Solo pasamos el total como atributo temporal
-            request.setAttribute("total", total);
-
-            // El carrito ya lo tiene la sesión, no es necesario volverlo a setear
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/carrito.jsp");
-            dispatcher.forward(request, response);
         }
+
+        String json = new Gson().toJson(result);
+        response.getWriter().write(json);
     }
 }
