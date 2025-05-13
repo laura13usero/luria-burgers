@@ -3,18 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Postres</title>
+    <title>Desserts</title>
     <script>
         async function obtenerPostres() {
             try {
-                const response = await fetch("/webapp-1.0-SNAPSHOT/control?action=getPostresJSON");
+                const response = await fetch("/webapp-1.0-SNAPSHOT/control?action=getPostres");
+
+                if (!response.ok) {
+                    throw new Error("Error en la respuesta del servidor");
+                }
+
                 const data = await response.json();
-                const contenedor = document.getElementById('postres-list');
-                contenedor.innerHTML = '';
+
+                const contenedor = document.getElementById("postres-list");
+                contenedor.innerHTML = "";
 
                 if (data.length > 0) {
                     data.forEach(postre => {
-                        const li = document.createElement('li');
+                        const li = document.createElement("li");
                         li.innerHTML = `
                             <strong>${postre.nombre}</strong>
                             ${postre.descripcion ? ' - ' + postre.descripcion : ''}
@@ -28,19 +34,19 @@
                         contenedor.appendChild(li);
                     });
                 } else {
-                    contenedor.innerHTML = '<p>No postres disponibles.</p>';
+                    contenedor.innerHTML = "<p>No desserts available.</p>";
                 }
             } catch (error) {
                 console.error("Error al obtener postres:", error);
             }
         }
 
-        document.addEventListener('DOMContentLoaded', obtenerPostres);
+        document.addEventListener("DOMContentLoaded", obtenerPostres);
     </script>
 </head>
 <body>
 
-<h1>Postres</h1>
+<h1>Desserts</h1>
 
 <ul id="postres-list"></ul>
 

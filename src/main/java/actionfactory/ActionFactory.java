@@ -28,6 +28,8 @@ public class ActionFactory {
             case "getHamburguesasJSON" -> new GetHamburguesasJSONAction();
             case "getGuarniciones" -> new GetGuarnicionesJSONAction();
             case "getBebidas" -> new GetBebidasJSONAction();
+            case "getPostres" -> new GetPostresJSONAction();
+
 
             default -> new UnknownAction();
         };
