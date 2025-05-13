@@ -60,6 +60,8 @@ public class ProductosDAO {
                 productos.add(p);
             }
 
+            // Printer
+            // out.print()
         } catch (Exception e) {
             e.printStackTrace();
         }

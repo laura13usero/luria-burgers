@@ -12,10 +12,11 @@ public class UserLogoutAction implements Action {
 
         HttpSession session = request.getSession(false);
         if (session != null) {
-            session.invalidate(); // Cerramos sesión
+            session.invalidate();
         }
 
-        // Redirigimos al login
-        response.sendRedirect(request.getContextPath() + "/jsp/index.jsp");
+        response.setContentType("application/json");
+        response.getWriter().write("{\"status\":\"ok\"}");
     }
+
 }
