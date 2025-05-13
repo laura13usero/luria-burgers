@@ -15,9 +15,11 @@ public class BebidasAction implements Action {
         BebidaDAO bebidaDAO = new BebidaDAO();
         List<Producto> bebidas = bebidaDAO.obtenerBebidas();
 
+        // Añadimos las bebidas a la solicitud
         request.setAttribute("bebidas", bebidas);
 
         try {
+            // Redirigimos a la JSP de bebidas
             request.getRequestDispatcher("/jsp/bebidas.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
