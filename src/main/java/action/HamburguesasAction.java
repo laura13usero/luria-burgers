@@ -4,14 +4,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class HamburguesasAction implements Action {
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-        // Redirigir al HTML que usará fetch para pedir los datos
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Solo redirige a la vista de hamburguesas (HTML)
         response.sendRedirect(request.getContextPath() + "/hamburguesas.html");
     }
 }
-

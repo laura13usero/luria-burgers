@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Hamburguesas</title>
     <script>
+        // Función para obtener hamburguesas con AJAX
         async function obtenerHamburguesas(filtro = '') {
             try {
-                const response = await fetch(`${window.location.origin}/control?action=getHamburguesasJSON&filtro=${filtro}`);
+                const response = await fetch(`/control?action=getHamburguesasJSON&filtro=${filtro}`);
                 const data = await response.json();
                 const hamburguesasContainer = document.getElementById('hamburguesas-list');
-                hamburguesasContainer.innerHTML = '';
+                hamburguesasContainer.innerHTML = ''; // Limpiar la lista de hamburguesas
 
                 if (data.length > 0) {
                     data.forEach(hamburguesa => {
@@ -34,8 +35,10 @@
             }
         }
 
+        // Cargar hamburguesas al iniciar la página
         document.addEventListener('DOMContentLoaded', () => obtenerHamburguesas());
 
+        // Función para filtrar hamburguesas
         function filtrarHamburguesas(filtro) {
             obtenerHamburguesas(filtro);
         }

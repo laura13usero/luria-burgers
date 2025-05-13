@@ -25,11 +25,8 @@ public class GetHamburguesasJSONAction implements Action {
             hamburguesas = hamburguesaDAO.obtenerHamburguesas();
         }
 
-        Gson gson = new Gson();
-        String hamburguesasJson = gson.toJson(hamburguesas);
-
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(hamburguesasJson);
+        response.getWriter().write(new Gson().toJson(hamburguesas));
     }
 }
