@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Hamburguesas</title>
     <script>
-        // Función para obtener hamburguesas con AJAX
         async function obtenerHamburguesas(filtro = '') {
             try {
                 const response = await fetch(`/control?action=getHamburguesasJSON&filtro=${filtro}`);
                 const data = await response.json();
                 const hamburguesasContainer = document.getElementById('hamburguesas-list');
-                hamburguesasContainer.innerHTML = ''; // Limpiar la lista de hamburguesas
+                hamburguesasContainer.innerHTML = '';
 
                 if (data.length > 0) {
                     data.forEach(hamburguesa => {
@@ -35,10 +34,8 @@
             }
         }
 
-        // Cargar hamburguesas al iniciar la página
         document.addEventListener('DOMContentLoaded', () => obtenerHamburguesas());
 
-        // Función para filtrar hamburguesas
         function filtrarHamburguesas(filtro) {
             obtenerHamburguesas(filtro);
         }
@@ -55,13 +52,9 @@
 <button onclick="filtrarHamburguesas('chicken')">Chicken</button>
 <button onclick="filtrarHamburguesas('')">All Burgers</button>
 
-<form action="/index.html" method="get" style="margin-top: 20px;">
-    <button type="submit">Return to Home Page</button>
-</form>
 
-<form action="/control" method="get" style="margin-top: 10px;">
-    <input type="hidden" name="action" value="verCarrito">
-    <button type="submit">Cart</button>
-</form>
+<button onclick="window.location.href = 'index.html'" style="margin-top: 10px;">Return to Home Page</button>
+
+<button onclick="window.location.href = 'carrito.html'" style="margin-top: 10px;">Cart</button>
 </body>
 </html>
