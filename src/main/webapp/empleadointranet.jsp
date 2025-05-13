@@ -40,10 +40,10 @@
 
     <div class="tabs-container">
       <div class="zone-tabs" role="tablist">
-        <a href="#" class="zone-tab active" role="tab" aria-selected="true" tabindex="0" onclick="mostrarZona('personal')">
+        <a href="#" class="zone-tab active" role="tab" aria-selected="true" tabindex="0" data-zona="personal" onclick="mostrarZona('personal')">
           Zona Personal
         </a>
-        <a href="#" class="zone-tab" role="tab" aria-selected="false" tabindex="0" onclick="mostrarZona('corporativa')">
+        <a href="#" class="zone-tab" role="tab" aria-selected="false" tabindex="0" data-zona="corporativa" onclick="mostrarZona('corporativa')">
           Zona Corporativa
         </a>
       </div>
@@ -143,31 +143,34 @@
     </div>
   </footer>
 
-  <script>
-    function mostrarZona(zona) {
-      const zonas = ['personal', 'corporativa'];
-      zonas.forEach(z => {
-        const contenido = document.getElementById(z);
-        const tab = document.querySelector(`.zone-tab[onclick*="${z}"]`);
-        if (z === zona) {
-          contenido.classList.add('active');
-          contenido.setAttribute('aria-hidden', 'false');
-          tab.classList.add('active');
-          tab.setAttribute('aria-selected', 'true');
-        } else {
-          contenido.classList.remove('active');
-          contenido.setAttribute('aria-hidden', 'true');
-          tab.classList.remove('active');
-          tab.setAttribute('aria-selected', 'false');
-        }
-      });
-    }
+<script>
+  function mostrarZona(zona) {
+    const zonas = ['personal', 'corporativa'];
 
-    // Mostrar la zona personal por defecto si no hay navegación previa
-    document.addEventListener('DOMContentLoaded', function () {
-      mostrarZona('personal');
+    zonas.forEach(z => {
+      const contenido = document.getElementById(z);
+      const tab = document.querySelector(`.zone-tab[data-zona="${z}"]`);
+
+      if (z === zona) {
+        contenido.classList.add('active');
+        contenido.setAttribute('aria-hidden', 'false');
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+      } else {
+        contenido.classList.remove('active');
+        contenido.setAttribute('aria-hidden', 'true');
+        tab.classList.remove('active');
+        tab.setAttribute('aria-selected', 'false');
+      }
     });
-  </script>
+  }
+
+  // Mostrar la zona personal por defecto
+  document.addEventListener('DOMContentLoaded', function () {
+    mostrarZona('personal');
+  });
+</script>
+
 
 </body>
 </html>
