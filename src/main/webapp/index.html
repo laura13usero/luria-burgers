@@ -36,9 +36,9 @@
       const authButtons = document.getElementById('authButtons');
       const logoutContainer = document.getElementById('logoutContainer');
 
-      if (data.usuario) {
-        userStatus.innerHTML = `<p>Hello, <strong>${data.usuario.nombre}</strong>. You are logged in.</p>`;
-        authButtons.innerHTML = ''; // Oculta botones de login/registro
+      if (data.status === "ok") {
+        userStatus.innerHTML = `<p>Hello, <strong>${data.nombre}</strong>. You are logged in.</p>`;
+        authButtons.innerHTML = '';
         logoutContainer.innerHTML = `
           <button onclick="logout()">Log out</button>
         `;
@@ -48,8 +48,9 @@
           <button onclick="window.location.href = 'registro.html'">Sign Up!</button>
           <button onclick="window.location.href = 'login.html'">Log In</button>
         `;
-        logoutContainer.innerHTML = ''; // Oculta logout
+        logoutContainer.innerHTML = '';
       }
+
     } catch (e) {
       console.error('Error fetching session data', e);
     }
