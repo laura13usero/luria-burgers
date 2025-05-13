@@ -6,7 +6,12 @@ import jakarta.servlet.ServletException;
 import model.Usuario;
 import util.CryptoUtils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.google.gson.Gson;
 
 public class UserLoginAction implements Action {
 
@@ -14,12 +19,20 @@ public class UserLoginAction implements Action {
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String email = request.getParameter("email");
-        String contrasena = request.getParameter("contrasena");
-        String origen = request.getParameter("origen");
+        BufferedReader reader = request.getReader();
+        Gson gson = new Gson();
+        Map<String, String> datos = gson.fromJson(reader, Map.class);
+
+        String email = datos.get("email");
+        String contrasena = datos.get("contrasena");
 
         UsuarioDAO dao = new UsuarioDAO();
         Usuario usuario = dao.buscarPorEmail(email);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        Map<String, String> resultado = new HashMap<>();
 
         if (usuario != null) {
             if (CryptoUtils.compararContrasena(contrasena, usuario.getContrasena())) {
@@ -29,26 +42,20 @@ public class UserLoginAction implements Action {
                 session.setAttribute("rol", usuario.getRol());
                 session.setMaxInactiveInterval(30 * 60);
 
-                if ("intranet".equals(origen)) {
-                    String rol = usuario.getRol();
-                    if ("admin".equals(rol)) { //rol 2 es admin
-                        response.sendRedirect(request.getContextPath() + "/jsp/adminintranet.jsp?login=ok");
-                    } else if ("empleado".equals(rol)) { //rol 3 es empleado
-                        response.sendRedirect(request.getContextPath() + "/jsp/empleadointranet.jsp?login=ok");
-                    } else {
-                        response.sendRedirect(request.getContextPath() + "/jsp/accesoDenegado.jsp");
-                    }
-                } else {
-                    response.sendRedirect(request.getContextPath() + "/jsp/loginExitoso.jsp");
-                }
+                resultado.put("status", "ok");
+                resultado.put("rol", usuario.getRol());
 
             } else {
-                request.setAttribute("error", "Contraseña incorrecta");
-                request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
+                resultado.put("status", "error");
+                resultado.put("message", "Contraseña incorrecta");
             }
         } else {
-            request.setAttribute("error", "Email no registrado");
-            request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
+            resultado.put("status", "error");
+            resultado.put("message", "Email no registrado");
         }
+
+        String json = gson.toJson(resultado);
+        response.getWriter().write(json);
     }
 }
+
