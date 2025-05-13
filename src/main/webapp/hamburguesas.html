@@ -5,65 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Hamburguesas</title>
     <script>
-        // Función para obtener hamburguesas con AJAX
-        function obtenerHamburguesas(filtro = '') {
-            fetch(`/control?action=hamburguesas&filtro=${filtro}`)
-                .then(response => response.json())
-                .then(data => {
-                    const hamburguesasContainer = document.getElementById('hamburguesas-list');
-                    hamburguesasContainer.innerHTML = '';
+        async function obtenerHamburguesas(filtro = '') {
+            try {
+                const response = await fetch(`/control?action=getHamburguesasJSON&filtro=${filtro}`);
+                const data = await response.json();
+                const hamburguesasContainer = document.getElementById('hamburguesas-list');
+                hamburguesasContainer.innerHTML = '';
 
-                    if (data.length > 0) {
-                        data.forEach(hamburguesa => {
-                            const listItem = document.createElement('li');
-                            listItem.innerHTML = `
-                                <strong>${hamburguesa.nombre}</strong> - ${hamburguesa.descripcion ? hamburguesa.descripcion : ''}
-                                <form action="/control" method="post" style="margin-top: 10px;">
-                                    <input type="hidden" name="action" value="addToCart">
-                                    <input type="hidden" name="idProducto" value="${hamburguesa.id}">
-                                    <input type="hidden" name="tipoProducto" value="hamburguesa">
-                                    <button type="submit">Add to cart for: $${hamburguesa.precio}</button>
-                                </form>
-                            `;
-                            hamburguesasContainer.appendChild(listItem);
-                        });
-                    } else {
-                        hamburguesasContainer.innerHTML = '<p>No hamburgers available.</p>';
-                    }
-                })
-                .catch(error => console.error('Error fetching hamburgers:', error));
+                if (data.length > 0) {
+                    data.forEach(hamburguesa => {
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `
+                            <strong>${hamburguesa.nombre}</strong> - ${hamburguesa.descripcion || ''}
+                            <form action="/control" method="post" style="margin-top: 10px;">
+                                <input type="hidden" name="action" value="addToCart">
+                                <input type="hidden" name="idProducto" value="${hamburguesa.id}">
+                                <input type="hidden" name="tipoProducto" value="hamburguesa">
+                                <button type="submit">Add to cart for: $${hamburguesa.precio}</button>
+                            </form>
+                        `;
+                        hamburguesasContainer.appendChild(listItem);
+                    });
+                } else {
+                    hamburguesasContainer.innerHTML = '<p>No hamburgers available.</p>';
+                }
+            } catch (error) {
+                console.error('Error fetching hamburgers:', error);
+            }
         }
 
-        // Cargar hamburguesas al iniciar la página
-        document.addEventListener('DOMContentLoaded', function() {
-            obtenerHamburguesas(); // Obtener todas las hamburguesas
-        });
+        document.addEventListener('DOMContentLoaded', () => obtenerHamburguesas());
 
-        // Función para filtrar hamburguesas
         function filtrarHamburguesas(filtro) {
             obtenerHamburguesas(filtro);
         }
     </script>
 </head>
 <body>
-    <h1>Burgers</h1>
+<h1>Burgers</h1>
 
-    <div id="hamburguesas-list"></div>
+<div id="hamburguesas-list"></div>
 
-    <h2>Filter burgers by type:</h2>
-    <button onclick="filtrarHamburguesas('premium')">Premium</button>
-    <button onclick="filtrarHamburguesas('spicy')">Spicy</button>
-    <button onclick="filtrarHamburguesas('chicken')">Chicken</button>
-    <button onclick="filtrarHamburguesas('')">All Burgers</button>
+<h2>Filter burgers by type:</h2>
+<button onclick="filtrarHamburguesas('premium')">Premium</button>
+<button onclick="filtrarHamburguesas('spicy')">Spicy</button>
+<button onclick="filtrarHamburguesas('chicken')">Chicken</button>
+<button onclick="filtrarHamburguesas('')">All Burgers</button>
 
-    <form action="/index.html" method="get" style="margin-top: 20px;">
-        <button type="submit">Return to Home Page</button>
-    </form>
+<form action="/index.html" method="get" style="margin-top: 20px;">
+    <button type="submit">Return to Home Page</button>
+</form>
 
-    <!-- Botón de ver carrito -->
-    <form action="/control" method="get" style="margin-top: 10px;">
-        <input type="hidden" name="action" value="verCarrito">
-        <button type="submit">Cart</button>
-    </form>
+<form action="/control" method="get" style="margin-top: 10px;">
+    <input type="hidden" name="action" value="verCarrito">
+    <button type="submit">Cart</button>
+</form>
 </body>
 </html>
