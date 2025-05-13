@@ -1,7 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page session="true" %>
+<%@ page import="model.Usuario" %>
+
 <%
     String rol = (String) session.getAttribute("rol");
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
+
     if (!"empleado".equals(rol)) {
         response.sendRedirect(request.getContextPath() + "/jsp/accesoDenegado.jsp");
         return;
@@ -23,7 +27,7 @@
 
 <div class="container">
     <div class="welcome-message">
-        <h2>Bienvenido a tu intranet, <%= session.getAttribute("usuarioNombre") %>.</h2>
+        <h2>Bienvenido a tu intranet, <%= usuario.getNombre() %>.</h2>
         <p>Accede a todas las herramientas y recursos que necesitas como miembro del equipo Luría's Burger.</p>
     </div>
 
