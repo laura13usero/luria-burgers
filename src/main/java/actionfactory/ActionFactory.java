@@ -27,7 +27,7 @@ public class ActionFactory {
             case "getUsuarioLogueado" -> new GetUsuarioLogueadoAction();
             case "getHamburguesasJSON" -> new GetHamburguesasJSONAction();
             case "getGuarniciones" -> new GetGuarnicionesJSONAction();
-            case "getGuarniciones" -> new GetBebidasJSONAction();
+            case "getBebidas" -> new GetBebidasJSONAction();
 
             default -> new UnknownAction();
         };
