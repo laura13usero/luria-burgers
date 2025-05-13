@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Side Dishes</title>
+    <script>
+        async function obtenerGuarniciones() {
+            try {
+                const response = await fetch("/webapp-1.0-SNAPSHOT/control?action=getGuarnicionesJSON");
+                const data = await response.json();
+                const contenedor = document.getElementById('guarniciones-list');
+                contenedor.innerHTML = '';
+
+                if (data.length > 0) {
+                    data.forEach(guarnicion => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `
+                            <strong>${guarnicion.nombre}</strong>
+                            ${guarnicion.descripcion ? ' - ' + guarnicion.descripcion : ''}
+                            <form action="/webapp-1.0-SNAPSHOT/control" method="post" style="margin-top: 10px;">
+                                <input type="hidden" name="action" value="addToCart">
+                                <input type="hidden" name="idProducto" value="${guarnicion.id}">
+                                <input type="hidden" name="tipoProducto" value="guarnicion">
+                                <button type="submit">Add to cart for: $${guarnicion.precio}</button>
+                            </form>
+                        `;
+                        contenedor.appendChild(li);
+                    });
+                } else {
+                    contenedor.innerHTML = '<p>No side dishes available.</p>';
+                }
+            } catch (error) {
+                console.error("Error al obtener guarniciones:", error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', obtenerGuarniciones);
+    </script>
+</head>
+<body>
+
+<h1>Side Dishes</h1>
+
+<ul id="guarniciones-list"></ul>
+
+<!-- Botones inferiores -->
+<button onclick="window.location.href = 'index.html'" style="margin-top: 20px;">Return to Home Page</button>
+<button onclick="window.location.href = 'carrito.html'" style="margin-top: 10px;">Cart</button>
+
+</body>
+</html>

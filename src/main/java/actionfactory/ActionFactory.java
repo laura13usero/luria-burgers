@@ -26,6 +26,8 @@ public class ActionFactory {
             case "filtrarHamburguesas" -> new FiltrarHamburguesasAction();
             case "getUsuarioLogueado" -> new GetUsuarioLogueadoAction();
             case "getHamburguesasJSON" -> new GetHamburguesasJSONAction();
+            case "getGuarniciones" -> new GetGuarnicionesJSONAction();
+
             default -> new UnknownAction();
         };
     }
