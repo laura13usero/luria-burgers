@@ -10,29 +10,10 @@
 <html>
 <head>
     <title>Intranet - Empleado</title>
-    <!-- Estilos del Footer -->
-    <style>
-        /* Ajuste del footer */
-        .footer {
-            margin-top: 2rem;
-            padding: 1rem 0;
-            text-align: center;
-            background-color: transparent;
-            color: white;
-        }
-        .footer .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        .footer a {
-            color: white;
-            text-decoration: none;
-        }
-        .footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
+
+        <meta charset="UTF-8">
+        <title>Intranet - Empleado</title>
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/css/intranet.css">
 </head>
 <body>
 
@@ -54,14 +35,6 @@
     <input type="hidden" name="action" value="logout">
     <button type="submit">Cerrar sesión</button>
 </form>
-
-<!-- Footer -->
-<footer class="footer">
-    <div class="container">
-        <p>© 2025 Luría's Burger – Intranet</p>
-        <p><a href="#">Política de privacidad</a> | <a href="#">Soporte técnico</a></p>
-    </div>
-</footer>
 
 </body>
 </html>

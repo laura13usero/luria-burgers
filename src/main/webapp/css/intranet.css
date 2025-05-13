@@ -1,0 +1,923 @@
+    /* Variables de colores y estilos base */
+    :root {
+      --color-primary: #f7934c;
+      --color-background: #F8F3E6;
+      --color-text: #333333;
+      --color-highlight: #F9DC5C;
+      --color-secondary-bg: #E5E5E5;
+      --color-green: #4CAF50;
+      --color-blue: #2196F3;
+      --color-red: #F44336;
+    }
+
+    /* Reseteo básico */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { font-size:16px; scroll-behavior:smooth; }
+
+    /* Estilos generales */
+    body {
+      font-family:'Poppins',sans-serif;
+      background-image: url("/hamburgueseria_luria/assets/fondos_recursos/fondo_intranet.png");
+      background-repeat: no-repeat;
+      background-position: absolute;
+      background-size: cover;
+      color:var(--color-text);
+      line-height:1.6;
+      overflow-x:hidden;
+    }
+    .container { background-color:rgba(209, 221, 165, 0.911); padding:1rem; margin:0 auto; }
+
+    /* Encabezado */
+    header {
+      background-color:var(--color-primary);
+      color:#fff;
+      padding:1.5rem 0;
+      text-align:center;
+      margin-bottom:1.5rem;
+      position:relative;
+    }
+    .header-user { position:absolute; top:1rem; right:1rem; font-size:0.9rem; }
+    .header-user span { font-weight:600; }
+
+    /* Tipografía */
+    h1 { font-size:1.75rem; margin-bottom:0.5rem; }
+    h2 {
+      font-size:1.5rem; margin:1.5rem 0 1rem;
+      color:var(--color-primary);
+      border-bottom:2px solid var(--color-primary);
+      padding-bottom:0.5rem;
+    }
+    h3 { font-size:1.25rem; margin:1.25rem 0 0.75rem; color:var(--color-primary); }
+    p { margin-bottom:1rem; font-size:0.95rem; }
+
+    /* Grid de módulos */
+    .module-grid {
+      display:grid; gap:1rem; margin-top:1.5rem;
+      grid-template-columns:1fr;
+    }
+    .module-card {
+      background-color:  #fee46f;
+      border-radius:8px; padding:1.25rem;
+      box-shadow:0px 0px 10px rgba(0, 0, 0, 0.6);
+      display:flex; flex-direction:column; align-items:center;
+      cursor:pointer; transition:transform .3s,box-shadow .3s;
+    }
+    .module-card:hover { transform:translateY(-5px); box-shadow:0 8px 15px rgba(0,0,0,0.15); }
+    .module-icon img { width:60px; height:60px; margin-bottom:0.8rem; }
+    .module-title { font-weight:600; font-size:1rem; margin-bottom:0.5rem; text-align:center; }
+    .module-desc { font-size:0.8rem; text-align:center; color:#666; }
+
+    /* Pestañas */
+    .tabs-container { margin-bottom:1.5rem; }
+    .zone-tabs { display:flex; border-bottom:3px solid var(--color-primary); }
+    .zone-tab {
+      flex:1; text-align:center; padding:.8rem 0;
+      background-color:#ffe77b;
+      cursor:pointer; font-weight:600;
+      transition:background .3s,color .3s;
+    }
+    .zone-tab.active { background:var(--color-primary); color:#fff; }
+    .zone-content { display:none; }
+    .zone-content.active { display:block; }
+
+    /* Popup - MÁRGENES MEJORADOS */
+    .module-popup {
+      position:fixed; top:0; left:0; width:100%; height:100%;
+      background:rgba(0,0,0,0.7); display:none; align-items:center;
+      justify-content:center; overflow-y:auto; padding:1rem; z-index:1000;
+    }
+    .module-popup-content {
+      background:#ffe77b; border-radius:12px;
+      padding:1.75rem 1.5rem 2rem; /* Padding aumentado */
+      width:100%; max-width:600px; max-height:90vh; overflow-y:auto; position:relative;
+      margin:0.75rem; /* Margen exterior añadido */
+    }
+    .popup-header {
+      margin-bottom: 1.5rem; /* Más espacio después del encabezado */
+    }
+    .popup-body {
+      padding: 0 0.5rem; /* Padding lateral en el contenido */
+    }
+    .popup-close {
+      position:absolute; top:1.25rem; right:1.25rem; /* Posición ajustada */
+      background:none; border:none; font-size:1.75rem;
+      cursor:pointer; color:var(--color-text);
+      width: 40px; height: 40px; /* Área de toque más grande */
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* Tablas */
+    .table-container {
+      overflow-x:auto;
+      margin:1.5rem 0; /* Margen vertical aumentado */
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    table { width:100%; border-collapse:collapse; font-size:0.9rem; }
+    th, td { padding:0.85rem 0.75rem; text-align:left; } /* Padding vertical aumentado */
+    th { background:var(--color-primary); color:#fff; }
+    tr:nth-child(even) { background:var(--color-secondary-bg); }
+
+    /* Cajas destacadas */
+    .highlight-box {
+      background:var(--color-highlight); border-radius:10px;
+      padding:1.5rem; /* Padding aumentado */
+      margin:1.5rem 0; /* Margen vertical aumentado */
+      box-shadow:0 3px 5px rgba(0,0,0,0.1);
+    }
+
+    /* Botones */
+    .btn {
+      display:inline-block; padding:.65rem 1.2rem; /* Botones más grandes */
+      background:var(--color-primary);
+      color:#fff; border:none; border-radius:6px;
+      cursor:pointer; font-size:.9rem;
+      transition:background .3s;
+    }
+    .btn:hover { background:#b84a28; }
+    .btn-secondary {
+      background:var(--color-secondary-bg); color:var(--color-text);
+    }
+    .btn-secondary:hover { background:#d5d5d5; }
+
+    /* Notificaciones */
+    .notification-badge {
+      position:absolute; top:-5px; right:-5px; background:var(--color-red);
+      color:#fff; border-radius:50%; width:20px; height:20px;
+      display:flex; align-items:center; justify-content:center; font-size:.7rem;
+    }
+
+    /* Formularios */
+    form label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    input[type="text"], input[type="date"], input[type="email"],
+    select, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      margin-bottom: 1.25rem;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* Estilos para las gráficas de beneficios */
+    .chart-container {
+      margin: 2rem 0;
+      padding: 1rem;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+
+    .chart-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--color-primary);
+    }
+
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      height: 200px;
+      padding: 0 10px;
+    }
+
+    .bar {
+      position: relative;
+      width: 20%;
+      background: linear-gradient(to top, var(--color-primary), #ffb980);
+      border-radius: 6px 6px 0 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      margin: 0 5px;
+    }
+
+    .bar:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 7px 10px rgba(0,0,0,0.15);
+    }
+
+    .bar-value {
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--color-primary);
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .bar-label {
+      position: absolute;
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.85rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    /* Mejora de legibilidad en popups */
+    .module-popup-content h3 {
+      font-size: 1.5rem; /* Más grande que el resto de h3 */
+      margin-top: 1.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .module-popup-content ul > li > strong {
+      font-size: 1.15rem;
+      display: block;
+      margin-top: 1.25rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .module-popup-content p {
+      margin-bottom: 0.85rem;
+      font-size: 0.95rem;
+    }
+
+    .module-popup-content ul ul {
+      margin-bottom: 0.85rem;
+      padding-left: 1.5rem;
+    }
+
+    .module-popup-content ul ul li {
+      margin-bottom: 0.5rem;
+      list-style-type: disc;
+    }
+
+    /* Mejoras para el calendario */
+    .calendar-widget {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      margin: 1.75rem 0;
+      padding: 1rem;
+      overflow: hidden;
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .calendar-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--color-primary);
+    }
+
+    .calendar-nav-btn {
+      background-color: var(--color-primary);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.2s;
+    }
+
+    .calendar-nav-btn:hover {
+      background-color: #e57826;
+    }
+
+    .weekdays-header {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-bottom: 0.5rem;
+    }
+
+    .weekday {
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #555;
+      padding: 0.4rem 0;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+    }
+
+    .calendar-day {
+      text-align: center;
+      padding: 0.75rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      background-color: #f8f8f8;
+    }
+
+    .calendar-day:hover:not(.inactive) {
+      transform: translateY(-2px);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .calendar-day.today {
+      background-color: var(--color-primary);
+      color: #fff;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    }
+
+    .calendar-day.holiday {
+      background-color: var(--color-red);
+      color: #fff;
+    }
+
+    .calendar-day.vacation-pending {
+      background-color: #8BC34A;
+      color: #fff;
+    }
+
+    .calendar-day.vacation-approved {
+      background-color: #4CAF50;
+      color: #fff;
+    }
+
+    .calendar-day.inactive {
+      background-color: #f0f0f0;
+      color: #ccc;
+      cursor: default;
+    }
+
+    /* Leyenda de colores mejorada */
+    .calendar-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 1rem 0;
+      padding: 0.75rem;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin-right: 1rem;
+      font-size: 0.85rem;
+      flex-basis: calc(50% - 1rem);
+    }
+
+    .color-box {
+      width: 15px;
+      height: 15px;
+      border-radius: 3px;
+      margin-right: 6px;
+      display: inline-block;
+    }
+
+    .color-box.holiday {
+      background-color: var(--color-red);
+    }
+
+    .color-box.vacation-pending {
+      background-color: #8BC34A;
+    }
+
+    .color-box.vacation-approved {
+      background-color: #4CAF50;
+    }
+
+    .color-box.today {
+      background-color: var(--color-primary);
+    }
+
+    /* Estilos específicos para el pop-up de Beneficios */
+    #beneficios-popup .intro-text {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    #beneficios-popup h3 {
+      margin-top: 1.8rem;
+      color: var(--color-primary);
+      border-bottom: 1px solid #f0f0f0;
+      padding-bottom: 0.5rem;
+    }
+
+    #beneficios-popup .benefits-list {
+      margin: 0.5rem 0 1rem 1.2rem;
+    }
+
+    #beneficios-popup .benefits-list li {
+      margin-bottom: 0.4rem;
+      position: relative;
+    }
+
+    #beneficios-popup .info-links {
+      background-color: #f8f8f8;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      margin: 0.8rem 0 1.2rem;
+    }
+
+    #beneficios-popup .info-links ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    #beneficios-popup .info-links li {
+      margin-bottom: 0.4rem;
+    }
+
+    #beneficios-popup .highlight-text {
+      font-weight: 500;
+      padding: 0.5rem 0.8rem;
+      background-color: #fff3cd;
+      border-left: 3px solid #ffc107;
+      margin: 1rem 0;
+      border-radius: 4px;
+    }
+
+    #beneficios-popup .benefits-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.7rem;
+      margin: 1rem 0;
+    }
+
+    #beneficios-popup .benefit-item {
+      display: flex;
+      align-items: baseline;
+    }
+
+    #beneficios-popup .benefit-label {
+      font-weight: 600;
+      min-width: 140px;
+      display: inline-block;
+    }
+
+    #beneficios-popup .info-note {
+      font-size: 0.9rem;
+      font-style: italic;
+      margin: 1rem 0;
+      line-height: 1.5;
+    }
+
+    #beneficios-popup .testimonial {
+      position: relative;
+      padding-left: 0.5rem;
+      margin-bottom: 0.8rem;
+    }
+
+    #beneficios-popup .testimonial em {
+      font-style: italic;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    #beneficios-popup .author {
+      font-size: 0.85rem;
+      text-align: right;
+      display: block;
+    }
+
+    /* Estilos específicos para el pop-up de Denuncias */
+    #denuncias-popup .intro-section {
+      margin-bottom: 1.5rem;
+    }
+
+    #denuncias-popup .key-points {
+      margin: 0.8rem 0;
+      padding-left: 1.5rem;
+    }
+
+    #denuncias-popup .key-points li {
+      margin-bottom: 0.4rem;
+      font-weight: 500;
+    }
+
+    #denuncias-popup .legal-note {
+      background-color: #f8f9fa;
+      padding: 0.8rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+    }
+
+    #denuncias-popup .process-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin: 1rem 0 1.5rem;
+    }
+
+    #denuncias-popup .process-item {
+      background-color: #f8f9fa;
+      padding: 0.8rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--color-primary);
+    }
+
+    #denuncias-popup .process-title {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.4rem;
+      color: var(--color-primary);
+    }
+
+    #denuncias-popup .process-item p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    #denuncias-popup .workflow {
+      margin: 1.5rem 0;
+    }
+
+    #denuncias-popup .workflow-step {
+      display: flex;
+      margin-bottom: 1rem;
+      align-items: flex-start;
+    }
+
+    #denuncias-popup .step-number {
+      background-color: var(--color-primary);
+      color: white;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 1rem;
+      flex-shrink: 0;
+    }
+
+    #denuncias-popup .step-content {
+      flex: 1;
+    }
+
+    #denuncias-popup .step-content strong {
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    #denuncias-popup .step-content p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    #denuncias-popup .external-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin: 1rem 0 1.5rem;
+    }
+
+    #denuncias-popup .external-link {
+      background-color: #f8f9fa;
+      padding: 0.8rem;
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--color-primary);
+      font-weight: 500;
+      transition: background-color 0.2s;
+    }
+
+    #denuncias-popup .external-link:hover {
+      background-color: #e9ecef;
+    }
+
+    #denuncias-popup .documents-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.8rem;
+      margin: 1rem 0 1.5rem;
+    }
+
+    #denuncias-popup .document-item {
+      display: flex;
+      align-items: center;
+      background-color: #f8f9fa;
+      padding: 0.8rem;
+      border-radius: 6px;
+      text-decoration: none;
+      color: inherit;
+      transition: background-color 0.2s;
+    }
+
+    #denuncias-popup .document-item:hover {
+      background-color: #e9ecef;
+    }
+
+    #denuncias-popup .document-icon {
+      font-size: 1.2rem;
+      margin-right: 0.8rem;
+    }
+
+    #denuncias-popup .document-title {
+      font-size: 0.9rem;
+    }
+
+    #denuncias-popup .complaint-form {
+      margin-top: 1.5rem;
+    }
+
+    #denuncias-popup .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    #denuncias-popup .checkbox-group {
+      display: flex;
+      align-items: center;
+    }
+
+    #denuncias-popup .checkbox-group input {
+      margin-right: 0.5rem;
+    }
+
+    #denuncias-popup .submit-btn {
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    /* Media queries */
+    @media(max-width: 480px) {
+      .module-popup-content {
+        padding: 1.5rem 1rem 1.75rem;
+      }
+
+      .bar-chart {
+        height: 150px;
+      }
+
+      .bar-label {
+        font-size: 0.7rem;
+      }
+
+      .bar-value {
+        font-size: 0.7rem;
+        padding: 2px 5px;
+      }
+
+      .calendar-day {
+        padding: 0.6rem 0.4rem;
+        font-size: 0.8rem;
+      }
+
+      .legend-item {
+        flex-basis: 100%;
+      }
+
+      .weekday {
+        font-size: 0.75rem;
+      }
+
+      #beneficios-popup .benefit-item {
+        flex-direction: column;
+      }
+
+      #beneficios-popup .benefit-label {
+        margin-bottom: 0.3rem;
+      }
+
+      #denuncias-popup .step-number {
+        width: 24px;
+        height: 24px;
+        font-size: 0.8rem;
+      }
+    }
+
+    @media(min-width: 576px) {
+      .module-grid { grid-template-columns:repeat(2,1fr); }
+
+      #beneficios-popup .benefits-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      #denuncias-popup .process-grid,
+      #denuncias-popup .documents-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media(min-width: 768px) {
+      .container { max-width:720px; }
+      .module-grid { grid-template-columns:repeat(3,1fr); }
+
+      .module-popup-content {
+        padding: 2rem 2.5rem 2.5rem;
+      }
+
+      .bar-chart {
+        height: 250px;
+      }
+
+      .calendar-legend {
+        justify-content: center;
+      }
+
+      .legend-item {
+        flex-basis: auto;
+      }
+    }
+
+    @media(min-width: 992px) {
+      .container { max-width:960px; }
+      .module-grid { grid-template-columns:repeat(4,1fr); }
+    }
+    /* Estilos para mejoras del Comité de Empresa */
+.improvements-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.improvement-card {
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.improvement-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.improvement-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+
+.improvement-icon {
+  font-size: 1.5rem;
+  margin-right: 0.75rem;
+}
+
+.improvement-header h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.improvement-card p {
+  font-size: 0.9rem;
+  margin: 0;
+  color: #555;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 12px;
+  color: white;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.status-approved {
+  background-color: #4CAF50;
+}
+
+.status-in-process {
+  background-color: #FF9800;
+}
+
+.status-under-study {
+  background-color: #2196F3;
+}
+
+.status-rejected {
+  background-color: #F44336;
+}
+
+/* Responsividad para la cuadrícula de mejoras */
+@media (min-width: 576px) {
+  .improvements-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 992px) {
+  .improvements-grid {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
+/* Mejoras de responsividad para pantallas grandes */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1320px;
+  }
+}
+
+/* Mejoras generales para todos los tamaños */
+.module-popup-content {
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mejora de visualización de grid en tamaños intermedios */
+@media (min-width: 768px) and (max-width: 991px) {
+  .module-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Mejoras para popups en pantallas grandes */
+@media (min-width: 992px) {
+  .module-popup-content {
+    max-width: 800px;
+    padding: 2.5rem;
+  }
+
+  .calendar-widget,
+  .chart-container {
+    margin: 2rem auto;
+    max-width: 95%;
+  }
+
+  .improvements-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Correcciones para el responsive del body */
+body {
+  min-height: 100vh;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+/* Mejora de visualización de tablas en todos los dispositivos */
+table {
+  width: 100%;
+  table-layout: auto;
+}
+
+/* Mejora de contraste para mejorar legibilidad */
+.module-card {
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Asegurar que el contenido de los popups sea legible */
+.popup-body h3 {
+  margin-top: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+/* Evitar que el contenido se desborde horizontalmente */
+.zone-content {
+  overflow-x: hidden;
+}
+
+/* Mejorar la visualización del calendario */
+.calendar-grid {
+  gap: 4px;
+}
+
+/* Ajuste del footer */
+.footer {
+  margin-top: 2rem;
+  padding: 1rem 0;
+  text-align: center;
+  background-color: transparent;
+  color: white;
+}
