@@ -7,11 +7,20 @@
     <script>
         async function obtenerGuarniciones() {
             try {
-                const response = await fetch("/webapp-1.0-SNAPSHOT/control?action=getGuarnicionesJSON");
-                const data = await response.json();
-                const contenedor = document.getElementById('guarniciones-list');
-                contenedor.innerHTML = '';
+                const response = await fetch("/webapp-1.0-SNAPSHOT/control?action=getGuarniciones");
 
+                // Verificamos si la respuesta es correcta
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta');
+                }
+
+                const data = await response.json();
+
+                // Obtenemos el contenedor donde se mostrarán las guarniciones
+                const contenedor = document.getElementById('guarniciones-list');
+                contenedor.innerHTML = ''; // Limpiamos el contenedor
+
+                // Si hay guarniciones, las mostramos
                 if (data.length > 0) {
                     data.forEach(guarnicion => {
                         const li = document.createElement('li');
@@ -30,11 +39,13 @@
                 } else {
                     contenedor.innerHTML = '<p>No side dishes available.</p>';
                 }
+
             } catch (error) {
                 console.error("Error al obtener guarniciones:", error);
             }
         }
 
+        // Llamar a la función cuando la página esté lista
         document.addEventListener('DOMContentLoaded', obtenerGuarniciones);
     </script>
 </head>
