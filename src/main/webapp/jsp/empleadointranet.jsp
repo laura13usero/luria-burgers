@@ -81,38 +81,54 @@
         </div>
     </div>
 
-    <!-- Zona Corporativa -->
+    <!-- ZONA CORPORATIVA -->
     <div id="corporativa" class="zone-content" role="tabpanel" aria-hidden="true">
-        <p>La Zona Corporativa ofrece información y servicios de carácter colectivo y organizativo.</p>
-        <div class="module-grid">
-            <div class="module-card" onclick="openModule('comite')">
-                <div class="module-icon"><img src="<%= request.getContextPath() %>/assets/iconos_intranet/COMITE.png" alt="Comité"></div>
-                <div class="module-title">Comité de Empresa</div>
-                <div class="module-desc">Conoce a tus representantes</div>
-            </div>
-            <div class="module-card" onclick="openModule('sugerencias')">
-                <div class="module-icon"><img src="<%= request.getContextPath() %>/assets/iconos_intranet/Captura de pantalla 2025-05-09 145940.png" alt="Sugerencias"></div>
-                <div class="module-title">Buzón de Sugerencias & FAQ</div>
-                <div class="module-desc">Envía ideas y consulta dudas</div>
-            </div>
-            <div class="module-card" onclick="openModule('calendario')">
-                <div class="module-icon"><img src="<%= request.getContextPath() %>/assets/iconos_intranet/CALENDARIO.png" alt="Calendario"></div>
-                <div class="module-title">Calendario Laboral</div>
-                <div class="module-desc">Festivos, eventos y jornadas especiales</div>
-            </div>
-            <div class="module-card" onclick="openModule('normativa')">
-                <div class="module-icon"><img src="<%= request.getContextPath() %>/assets/iconos_intranet/NORMATIVA.png" alt="Normativa"></div>
-                <div class="module-title">Normativa & Convenio</div>
-                <div class="module-desc">Leyes y convenios aplicables</div>
-            </div>
-            <div class="module-card" onclick="openModule('noticias')">
-                <div class="module-icon"><img src="<%= request.getContextPath() %>/assets/iconos_intranet/NOTICIAS.png" alt="Noticias"></div>
-                <div class="module-title">Noticias & Comunicados</div>
-                <div class="module-desc">Mantente informado</div>
-                <div class="notification-badge">3</div>
-            </div>
+      <p>La Zona Corporativa ofrece información y servicios de carácter colectivo y organizativo.</p>
+      <div class="module-grid">
+        <div class="module-card" onclick="openModule('comite')">
+          <div class="module-icon"><img src="<%= request.getContextPath() %>/assets/iconos_intranet/COMITE.png" alt="Comité"></div>
+          <div class="module-title">Comité de Empresa</div>
+          <div class="module-desc">Conoce a tus representantes</div>
         </div>
+        <div class="module-card" onclick="openModule('sugerencias')">
+          <div class="module-icon"><img src="<%= request.getContextPath() %>/assets/iconos_intranet/Captura de pantalla 2025-05-09 145940.png" alt="Sugerencias"></div>
+          <div class="module-title">Buzón de Sugerencias & FAQ</div>
+          <div class="module-desc">Envía ideas y consulta dudas</div>
+        </div>
+        <div class="module-card" onclick="openModule('calendario')">
+          <div class="module-icon"><img src="<%= request.getContextPath() %>/assets/iconos_intranet/CALENDARIO.png" alt="Calendario"></div>
+          <div class="module-title">Calendario Laboral</div>
+          <div class="module-desc">Festivos, eventos y jornadas especiales</div>
+        </div>
+        <div class="module-card" onclick="openModule('normativa')">
+          <div class="module-icon"><img src="<%= request.getContextPath() %>/assets/iconos_intranet/NORMATIVA.png" alt="Normativa"></div>
+          <div class="module-title">Normativa & Convenio</div>
+          <div class="module-desc">Leyes y convenios aplicables</div>
+        </div>
+        <div class="module-card" onclick="openModule('noticias')">
+          <div class="module-icon"><img src="<%= request.getContextPath() %>/assets/iconos_intranet/NOTICIAS.png" alt="Noticias"></div>
+          <div class="module-title">Noticias & Comunicados</div>
+          <div class="module-desc">Mantente informado</div>
+          <div class="notification-badge">3</div>
+        </div>
+        <div class="module-card" onclick="openModule('it')">
+          <div class="module-icon"><img src="<%= request.getContextPath() %>/assets/iconos_intranet/CIBERSEGURIDAD.png" alt="IT"></div>
+          <div class="module-title">IT & Ciberseguridad</div>
+          <div class="module-desc">Soporte y buenas prácticas</div>
+        </div>
+        <div class="module-card" onclick="openModule('bienestar')">
+          <div class="module-icon"><img src="<%= request.getContextPath() %>/assets/iconos_intranet/CULTURA.png" alt="Bienestar"></div>
+          <div class="module-title">Bienestar & Cultura</div>
+          <div class="module-desc">Actividades y reconocimientos</div>
+        </div>
+        <div class="module-card" onclick="openModule('sostenibilidad')">
+          <div class="module-icon"><img src="<%= request.getContextPath() %>/assets/iconos_intranet/SOSTENIBILIDAD.png" alt="Sostenibilidad"></div>
+          <div class="module-title">Sostenibilidad</div>
+          <div class="module-desc">Iniciativas ecológicas</div>
+        </div>
+      </div>
     </div>
+
 
     <form action="<%= request.getContextPath() %>/control" method="post">
         <input type="hidden" name="action" value="logout">
