@@ -1,18 +1,19 @@
-// src/action/HamburguesasAction.java
 package action;
 
 import dao.HamburguesaDAO;
 import model.Producto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 public class HamburguesasAction implements Action {
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         String filtro = request.getParameter("filtro");
 
         HamburguesaDAO hamburguesaDAO = new HamburguesaDAO();
@@ -24,12 +25,12 @@ public class HamburguesasAction implements Action {
             hamburguesas = hamburguesaDAO.obtenerHamburguesas();
         }
 
-        request.setAttribute("hamburguesas", hamburguesas);
+        // Convertir la lista de hamburguesas a JSON
+        Gson gson = new Gson();
+        String hamburguesasJson = gson.toJson(hamburguesas);
 
-        try {
-            request.getRequestDispatcher("/jsp/hamburguesas.jsp").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // Establecer el tipo de contenido y enviar la respuesta en JSON
+        response.setContentType("application/json");
+        response.getWriter().write(hamburguesasJson);
     }
 }
