@@ -17,7 +17,7 @@ public class FinalizarCompraAction implements Action {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
         if (usuario == null) {
-            response.sendRedirect("loginIntranet.jsp");
+            response.sendRedirect("login.html");
             return;
         }
 

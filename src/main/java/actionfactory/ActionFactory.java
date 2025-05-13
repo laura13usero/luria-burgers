@@ -29,6 +29,7 @@ public class ActionFactory {
             case "getGuarniciones" -> new GetGuarnicionesJSONAction();
             case "getBebidas" -> new GetBebidasJSONAction();
             case "getPostres" -> new GetPostresJSONAction();
+            case "getResumenCompra" -> new GetResumenCompraAction();
 
 
             default -> new UnknownAction();
