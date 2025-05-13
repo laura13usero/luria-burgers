@@ -7,7 +7,7 @@
     <script>
         async function obtenerHamburguesas() {
           try {
-            const response = await fetch("control?action=getHamburguesasJSON"); // 👈 NO barra inicial
+            const response = await fetch("control?action=getHamburguesasJSON");
             const data = await response.json();
             const hamburguesasContainer = document.getElementById('hamburguesas-list');
             hamburguesasContainer.innerHTML = '';
@@ -17,12 +17,10 @@
                 const listItem = document.createElement('li');
                 listItem.innerHTML = `
                   <strong>${hamburguesa.nombre}</strong> - ${hamburguesa.descripcion || ''}
-                  <form action="control" method="post" style="margin-top: 10px;">
-                    <input type="hidden" name="action" value="addToCart">
-                    <input type="hidden" name="idProducto" value="${hamburguesa.id}">
-                    <input type="hidden" name="tipoProducto" value="hamburguesa">
-                    <button type="submit">Add to cart for: $${hamburguesa.precio}</button>
-                  </form>
+                  <br>
+                  <button onclick="agregarAlCarrito(${hamburguesa.id}, 'hamburguesa')">
+                    Añadir al carrito por: $${hamburguesa.precio}
+                  </button>
                 `;
                 hamburguesasContainer.appendChild(listItem);
               });
@@ -31,6 +29,27 @@
             }
           } catch (error) {
             console.error('Error al obtener hamburguesas:', error);
+          }
+        }
+
+        async function agregarAlCarrito(idProducto, tipoProducto) {
+          try {
+            const response = await fetch(`control?action=addToCart&idProducto=${idProducto}`, {
+              method: "POST"
+            });
+
+            const result = await response.json();
+
+            if (result.status === "ok") {
+              window.location.href = result.redirect;
+            } else if (result.status === "login_required") {
+              window.location.href = result.redirect;
+            } else {
+              alert("❌ Error al añadir al carrito: " + result.message);
+            }
+          } catch (error) {
+            console.error("❌ Error de red al añadir al carrito:", error);
+            alert("❌ Error inesperado.");
           }
         }
 

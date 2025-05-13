@@ -1,18 +1,18 @@
 package action;
 
+import com.google.gson.JsonObject;
 import dao.ProductosDAO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import dao.CompraDAO;
-import dao.HamburguesaDAO;
 import model.Compra;
-import model.Hamburguesa;
 import model.Producto;
 import model.Usuario;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,70 +21,77 @@ public class AddToCartAction implements Action {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+
+        JsonObject json = new JsonObject();
         HttpSession session = request.getSession();
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        System.out.println("🟡 ID producto recibido: " + request.getParameter("idProducto"));
 
         if (usuario != null) {
-            int idProducto = Integer.parseInt(request.getParameter("idProducto"));
-            int cantidad = 1;  // Puedes adaptarlo si hay input del usuario
+            try {
+                int idProducto = Integer.parseInt(request.getParameter("idProducto"));
+                int cantidad = 1;
 
-            ProductosDAO productosDAO = new ProductosDAO();
-            CompraDAO compraDAO = new CompraDAO();
+                ProductosDAO productosDAO = new ProductosDAO();
+                CompraDAO compraDAO = new CompraDAO();
 
-            Producto producto = null;
+                Producto producto = productosDAO.obtenerTodosLosProductos()
+                        .stream()
+                        .filter(p -> p.getId() == idProducto)
+                        .findFirst()
+                        .orElse(null);
 
-            for (Producto p : productosDAO.obtenerTodosLosProductos()) {
-                if (p.getId() == idProducto) {
-                    producto = p;
-                    break;
-                }
-            }
+                if (producto != null) {
+                    BigDecimal subtotal = new BigDecimal(producto.getPrecio());
+                    Compra compra = compraDAO.getCompraActivaPorUsuario(usuario);
 
-            if (producto != null) {
-                // Insertar en la base de datos (tabla lineacompra)
-                BigDecimal subtotal = new BigDecimal(producto.getPrecio());
-
-                // 1. Intentamos obtener la compra activa del usuario
-                Compra compra = compraDAO.getCompraActivaPorUsuario(usuario);
-
-                // 2. Si no existe una compra activa (pendiente), creamos una nueva
-                if (compra == null) {
-                    compra = compraDAO.crearCompra(usuario);  // Crear nueva compra pendiente
                     if (compra == null) {
-                        System.out.println("🔴 No se pudo crear la compra.");
+                        compra = compraDAO.crearCompra(usuario);
+                        if (compra == null) {
+                            json.addProperty("status", "error");
+                            json.addProperty("message", "Error creating cart.");
+                            out.print(json);
+                            return;
+                        }
                     }
+
+                    boolean insertado = compraDAO.agregarLineaCompra(usuario, producto.getId(), producto.getCategoria(), cantidad, subtotal);
+                    if (!insertado) {
+                        json.addProperty("status", "error");
+                        json.addProperty("message", "Error inserting product into cart.");
+                        out.print(json);
+                        return;
+                    }
+
+                    BigDecimal nuevoTotal = compra.getTotal().add(subtotal);
+                    compraDAO.actualizarTotalCompra(compra.getIdCompra(), nuevoTotal);
+
+                    List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
+                    if (carrito == null) {
+                        carrito = new ArrayList<>();
+                        session.setAttribute("carrito", carrito);
+                    }
+                    carrito.add(producto);
+
+                    json.addProperty("status", "ok");
+                    json.addProperty("redirect", request.getContextPath() + "/carrito.html");  // Nueva vista
+                } else {
+                    json.addProperty("status", "error");
+                    json.addProperty("message", "Product not found.");
                 }
 
-                boolean insertado = compraDAO.agregarLineaCompra(usuario, producto.getId(), producto.getCategoria(), cantidad, subtotal);
-
-
-
-                if (!insertado) {
-                    // Aquí puedes añadir un log o mensaje de error si falla el insert
-                    System.err.println("⚠️ No se pudo insertar la línea de compra.");
-                }
-
-                // 4. Actualizamos el total de la compra (en caso de que ya exista una compra pendiente)
-                BigDecimal nuevoTotal = compra.getTotal().add(subtotal);
-                boolean totalActualizado = compraDAO.actualizarTotalCompra(compra.getIdCompra(), nuevoTotal);
-
-                // Actualizar carrito en sesión (opcional, solo visual)
-                List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
-                if (carrito == null) {
-                    carrito = new ArrayList<>();
-                    session.setAttribute("carrito", carrito);
-                }
-
-                carrito.add(producto);
-
-                response.sendRedirect(request.getContextPath() + "/control?action=verCarrito");
-
-            } else {
-                response.sendRedirect(request.getContextPath() + "/jsp/hamburguesas.jsp?error=productoNoEncontrado");
+            } catch (Exception e) {
+                e.printStackTrace();
+                json.addProperty("status", "error");
+                json.addProperty("message", "Unexpected error.");
             }
+
         } else {
-            response.sendRedirect(request.getContextPath() + "/jsp/necesitalogin.jsp");
+            json.addProperty("status", "login_required");
+            json.addProperty("redirect", request.getContextPath() + "/necesitaLogin.html");
         }
+
+        out.print(json);
     }
 }
