@@ -20,6 +20,18 @@
             background-color: transparent;
             color: white;
         }
+        .footer .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        .footer a {
+            color: white;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -43,10 +55,13 @@
     <button type="submit">Cerrar sesión</button>
 </form>
 
-<!-- Aquí va el footer -->
-<div class="footer">
-    <p>&copy; 2025 Luría's Burger - Todos los derechos reservados</p>
-</div>
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <p>© 2025 Luría's Burger – Intranet</p>
+        <p><a href="#">Política de privacidad</a> | <a href="#">Soporte técnico</a></p>
+    </div>
+</footer>
 
 </body>
 </html>
