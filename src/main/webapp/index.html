@@ -7,58 +7,64 @@
   <title>Home Page</title>
 </head>
 <body>
-  <h1>Welcome to the Home Page</h1>
+<h1>Welcome to the Home Page</h1>
 
-  <div id="userStatus"></div>
-  <div id="authButtons"></div>
+<div id="userStatus"></div>
+<div id="authButtons"></div>
 
-  <button onclick="window.location.href = 'loginintranet.html'" style="background-color: #333; color: #fff;">
-    Login Intranet
-  </button>
+<button onclick="window.location.href = 'loginintranet.html'" style="background-color: #333; color: #fff;">
+  Login Intranet
+</button>
 
-  <button onclick="window.location.href = 'hamburguesas.html'">Burgers</button>
-  <button onclick="window.location.href = 'bebidas.html'">Drinks</button>
-  <button onclick="window.location.href = 'postres.html'" style="background-color: #f8b400; color: #fff; padding: 8px 16px; border: none; border-radius: 5px;">
-    Desserts 🍰
-  </button>
-  <button onclick="window.location.href = 'guarniciones.html'">Side Dishes</button>
-  <button onclick="window.location.href = 'carrito.html'" style="margin-top: 10px;">Cart</button>
+<button onclick="window.location.href = 'hamburguesas.html'">Burgers</button>
+<button onclick="window.location.href = 'bebidas.html'">Drinks</button>
+<button onclick="window.location.href = 'postres.html'" style="background-color: #f8b400; color: #fff; padding: 8px 16px; border: none; border-radius: 5px;">
+  Desserts 🍰
+</button>
+<button onclick="window.location.href = 'guarniciones.html'">Side Dishes</button>
+<button onclick="window.location.href = 'carrito.html'" style="margin-top: 10px;">Cart</button>
 
-  <div id="logoutContainer" style="margin-top: 20px;"></div>
+<div id="logoutContainer" style="margin-top: 20px;"></div>
 
-  <script>
-    async function comprobarSesion() {
-      try {
-        const res = await fetch('/webapp-1.0-SNAPSHOT/control?action=getUsuarioLogueado');
-        const data = await res.json();
+<script>
+  async function comprobarSesion() {
+    try {
+      const res = await fetch('/webapp-1.0-SNAPSHOT/control?action=getUsuarioLogueado');
+      const data = await res.json();
 
-        if (data.usuario) {
-          document.getElementById('userStatus').innerHTML = `<p>Hello, <strong>${data.usuario.nombre}</strong>. You are logged in.</p>`;
-          document.getElementById('logoutContainer').innerHTML = `
-            <button onclick="logout()">Log out</button>
-          `;
-        } else {
-          document.getElementById('userStatus').innerHTML = `<p>Welcome, Please log in to access more features.</p>`;
-          document.getElementById('authButtons').innerHTML = `
-            <button onclick="window.location.href = 'registro.html'">Sign Up!</button>
-            <button onclick="window.location.href = 'login.html'">Log In</button>
-          `;
-        }
-      } catch (e) {
-        console.error('Error fetching session data', e);
+      const userStatus = document.getElementById('userStatus');
+      const authButtons = document.getElementById('authButtons');
+      const logoutContainer = document.getElementById('logoutContainer');
+
+      if (data.usuario) {
+        userStatus.innerHTML = `<p>Hello, <strong>${data.usuario.nombre}</strong>. You are logged in.</p>`;
+        authButtons.innerHTML = ''; // Oculta botones de login/registro
+        logoutContainer.innerHTML = `
+          <button onclick="logout()">Log out</button>
+        `;
+      } else {
+        userStatus.innerHTML = `<p>Welcome, Please log in to access more features.</p>`;
+        authButtons.innerHTML = `
+          <button onclick="window.location.href = 'registro.html'">Sign Up!</button>
+          <button onclick="window.location.href = 'login.html'">Log In</button>
+        `;
+        logoutContainer.innerHTML = ''; // Oculta logout
       }
+    } catch (e) {
+      console.error('Error fetching session data', e);
     }
+  }
 
-    async function logout() {
-      await fetch('/webapp-1.0-SNAPSHOT/control', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'action=logout'
-      });
-      window.location.href = 'index.html';
-    }
+  async function logout() {
+    await fetch('/webapp-1.0-SNAPSHOT/control', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'action=logout'
+    });
+    window.location.href = 'index.html';
+  }
 
-    comprobarSesion();
-  </script>
+  comprobarSesion();
+</script>
 </body>
 </html>
