@@ -7,7 +7,7 @@
     <script>
         async function obtenerHamburguesas(filtro = '') {
             try {
-                const response = await fetch(`/control?action=getHamburguesasJSON&filtro=${filtro}`);
+                const response = await fetch(`${window.location.origin}/control?action=getHamburguesasJSON&filtro=${filtro}`);
                 const data = await response.json();
                 const hamburguesasContainer = document.getElementById('hamburguesas-list');
                 hamburguesasContainer.innerHTML = '';

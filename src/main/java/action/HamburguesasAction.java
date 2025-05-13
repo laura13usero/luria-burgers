@@ -11,7 +11,7 @@ public class HamburguesasAction implements Action {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         // Redirigir al HTML que usará fetch para pedir los datos
-        response.sendRedirect(request.getContextPath() + "/hamburguesas.html");
+        response.sendRedirect("/hamburguesas.html");
     }
 }
 
