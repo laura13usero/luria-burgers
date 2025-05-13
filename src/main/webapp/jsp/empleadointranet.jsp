@@ -34,15 +34,18 @@
     </div>
 
     <div class="tabs-container">
-        <div class="zone-tabs" role="tablist">
-            <form action="<%= request.getContextPath() %>/jsp/ZonaPersonal.jsp" method="get">
-                <button type="submit" class="zone-tab active" role="tab" aria-selected="true">🧍 Zona Personal</button>
-            </form>
-            <form action="<%= request.getContextPath() %>/jsp/ZonaCorporativa.jsp" method="get">
-                <button type="submit" class="zone-tab" role="tab" aria-selected="false">🏢 Zona Corporativa</button>
-            </form>
-        </div>
+      <div class="zone-tabs" role="tablist">
+        <a href="<%= request.getContextPath() %>/jsp/ZonaPersonal.jsp"
+           class="zone-tab active" role="tab" aria-selected="true" tabindex="0">
+          Zona Personal
+        </a>
+        <a href="<%= request.getContextPath() %>/jsp/ZonaCorporativa.jsp"
+           class="zone-tab" role="tab" aria-selected="false" tabindex="0">
+          Zona Corporativa
+        </a>
+      </div>
     </div>
+
 
     <form action="<%= request.getContextPath() %>/control" method="post">
         <input type="hidden" name="action" value="logout">
