@@ -21,6 +21,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="<%= request.getContextPath() %>/css/intranet.css">
   <link rel="icon" href="<%= request.getContextPath() %>/assets/fondos_recursos/flor.png" type="image/png">
+  <style>
+    .zone-content { display: none; }
+    .zone-content.active { display: block; }
+  </style>
 </head>
 <body>
 
@@ -36,12 +40,10 @@
 
     <div class="tabs-container">
       <div class="zone-tabs" role="tablist">
-        <a href="<%= request.getContextPath() %>/jsp/ZonaPersonal.jsp"
-           class="zone-tab active" role="tab" aria-selected="true" tabindex="0">
+        <a href="#" class="zone-tab active" role="tab" aria-selected="true" tabindex="0" onclick="mostrarZona('personal')">
           Zona Personal
         </a>
-        <a href="<%= request.getContextPath() %>/jsp/ZonaCorporativa.jsp"
-           class="zone-tab" role="tab" aria-selected="false" tabindex="0">
+        <a href="#" class="zone-tab" role="tab" aria-selected="false" tabindex="0" onclick="mostrarZona('corporativa')">
           Zona Corporativa
         </a>
       </div>
@@ -125,6 +127,27 @@
         <p><a href="#">Política de privacidad</a> | <a href="#">Soporte técnico</a></p>
     </div>
   </footer>
+
+  <script>
+    function mostrarZona(zona) {
+      const zonas = ['personal', 'corporativa'];
+      zonas.forEach(z => {
+        const contenido = document.getElementById(z);
+        const tab = document.querySelector(`.zone-tab[onclick*="${z}"]`);
+        if (z === zona) {
+          contenido.classList.add('active');
+          contenido.setAttribute('aria-hidden', 'false');
+          tab.classList.add('active');
+          tab.setAttribute('aria-selected', 'true');
+        } else {
+          contenido.classList.remove('active');
+          contenido.setAttribute('aria-hidden', 'true');
+          tab.classList.remove('active');
+          tab.setAttribute('aria-selected', 'false');
+        }
+      });
+    }
+  </script>
 
 </body>
 </html>
