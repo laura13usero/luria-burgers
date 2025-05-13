@@ -25,6 +25,7 @@ public class ActionFactory {
             case "pagarConPaypal" -> new PagarConPaypalAction();
             case "filtrarHamburguesas" -> new FiltrarHamburguesasAction();
             case "getUsuarioLogueado" -> new GetUsuarioLogueadoAction();
+            case "getHamburguesasJSON" -> new GetHamburguesasJSONAction();
             default -> new UnknownAction();
         };
     }
