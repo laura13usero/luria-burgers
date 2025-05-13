@@ -6,39 +6,61 @@
     <title>Desserts</title>
     <script>
         async function obtenerPostres() {
-            try {
-                const response = await fetch("/webapp-1.0-SNAPSHOT/control?action=getPostres");
+          try {
+            const response = await fetch("control?action=getPostres");
 
-                if (!response.ok) {
-                    throw new Error("Error en la respuesta del servidor");
-                }
-
-                const data = await response.json();
-
-                const contenedor = document.getElementById("postres-list");
-                contenedor.innerHTML = "";
-
-                if (data.length > 0) {
-                    data.forEach(postre => {
-                        const li = document.createElement("li");
-                        li.innerHTML = `
-                            <strong>${postre.nombre}</strong>
-                            ${postre.descripcion ? ' - ' + postre.descripcion : ''}
-                            <form action="/webapp-1.0-SNAPSHOT/control" method="post" style="margin-top: 10px;">
-                                <input type="hidden" name="action" value="addToCart">
-                                <input type="hidden" name="idProducto" value="${postre.id}">
-                                <input type="hidden" name="tipoProducto" value="postre">
-                                <button type="submit">Add to cart for: $${postre.precio}</button>
-                            </form>
-                        `;
-                        contenedor.appendChild(li);
-                    });
-                } else {
-                    contenedor.innerHTML = "<p>No desserts available.</p>";
-                }
-            } catch (error) {
-                console.error("Error al obtener postres:", error);
+            if (!response.ok) {
+              throw new Error("Error en la respuesta del servidor");
             }
+
+            const data = await response.json();
+            const contenedor = document.getElementById("postres-list");
+            contenedor.innerHTML = "";
+
+            if (data.length > 0) {
+              data.forEach(postre => {
+                const li = document.createElement("li");
+
+                li.innerHTML = `
+                  <strong>${postre.nombre}</strong>
+                  ${postre.descripcion ? ' - ' + postre.descripcion : ''}
+                  <button onclick="añadirAlCarrito(${postre.id})" style="margin-top: 10px;">
+                    Add to cart for: $${postre.precio}
+                  </button>
+                `;
+
+                contenedor.appendChild(li);
+              });
+            } else {
+              contenedor.innerHTML = "<p>No desserts available.</p>";
+            }
+          } catch (error) {
+            console.error("Error al obtener postres:", error);
+          }
+        }
+
+        async function añadirAlCarrito(idProducto) {
+          try {
+            const response = await fetch("control", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: `action=addToCart&idProducto=${idProducto}&tipoProducto=postre`
+            });
+
+            const result = await response.json();
+
+            if (result.status === "ok") {
+              window.location.href = result.redirect;
+            } else if (result.status === "login_required") {
+              window.location.href = result.redirect;
+            } else {
+              alert("❌ Error al añadir al carrito: " + (result.message || "desconocido"));
+            }
+
+          } catch (error) {
+            console.error("Error al añadir al carrito:", error);
+            alert("Error inesperado al añadir al carrito.");
+          }
         }
 
         document.addEventListener("DOMContentLoaded", obtenerPostres);

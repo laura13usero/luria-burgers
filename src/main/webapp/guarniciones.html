@@ -6,46 +6,62 @@
     <title>Side Dishes</title>
     <script>
         async function obtenerGuarniciones() {
-            try {
-                const response = await fetch("/webapp-1.0-SNAPSHOT/control?action=getGuarniciones");
+          try {
+            const response = await fetch("control?action=getGuarniciones");
 
-                // Verificamos si la respuesta es correcta
-                if (!response.ok) {
-                    throw new Error('Error en la respuesta');
-                }
-
-                const data = await response.json();
-
-                // Obtenemos el contenedor donde se mostrarán las guarniciones
-                const contenedor = document.getElementById('guarniciones-list');
-                contenedor.innerHTML = ''; // Limpiamos el contenedor
-
-                // Si hay guarniciones, las mostramos
-                if (data.length > 0) {
-                    data.forEach(guarnicion => {
-                        const li = document.createElement('li');
-                        li.innerHTML = `
-                            <strong>${guarnicion.nombre}</strong>
-                            ${guarnicion.descripcion ? ' - ' + guarnicion.descripcion : ''}
-                            <form action="/webapp-1.0-SNAPSHOT/control" method="post" style="margin-top: 10px;">
-                                <input type="hidden" name="action" value="addToCart">
-                                <input type="hidden" name="idProducto" value="${guarnicion.id}">
-                                <input type="hidden" name="tipoProducto" value="guarnicion">
-                                <button type="submit">Add to cart for: $${guarnicion.precio}</button>
-                            </form>
-                        `;
-                        contenedor.appendChild(li);
-                    });
-                } else {
-                    contenedor.innerHTML = '<p>No side dishes available.</p>';
-                }
-
-            } catch (error) {
-                console.error("Error al obtener guarniciones:", error);
+            if (!response.ok) {
+              throw new Error('Error en la respuesta');
             }
+
+            const data = await response.json();
+            const contenedor = document.getElementById('guarniciones-list');
+            contenedor.innerHTML = ''; // Limpiamos el contenedor
+
+            if (data.length > 0) {
+              data.forEach(guarnicion => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                  <strong>${guarnicion.nombre}</strong>
+                  ${guarnicion.descripcion ? ' - ' + guarnicion.descripcion : ''}
+                  <button onclick="añadirAlCarrito(${guarnicion.id})" style="margin-top: 10px;">
+                    Add to cart for: $${guarnicion.precio}
+                  </button>
+                `;
+                contenedor.appendChild(li);
+              });
+            } else {
+              contenedor.innerHTML = '<p>No side dishes available.</p>';
+            }
+
+          } catch (error) {
+            console.error("Error al obtener guarniciones:", error);
+          }
         }
 
-        // Llamar a la función cuando la página esté lista
+        async function añadirAlCarrito(idProducto) {
+          try {
+            const response = await fetch("control", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: `action=addToCart&idProducto=${idProducto}&tipoProducto=guarnicion`
+            });
+
+            const result = await response.json();
+
+            if (result.status === "ok") {
+              window.location.href = result.redirect;
+            } else if (result.status === "login_required") {
+              window.location.href = result.redirect;
+            } else {
+              alert("❌ Error al añadir al carrito: " + (result.message || "desconocido"));
+            }
+
+          } catch (error) {
+            console.error("Error al añadir al carrito:", error);
+            alert("Error inesperado al añadir al carrito.");
+          }
+        }
+
         document.addEventListener('DOMContentLoaded', obtenerGuarniciones);
     </script>
 </head>
