@@ -1,46 +1,61 @@
 package action;
 
+import com.google.gson.Gson;
 import dao.UsuarioDAO;
 import jakarta.servlet.http.*;
 import jakarta.servlet.ServletException;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import model.Usuario;
 import util.CryptoUtils;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserRegisterAction implements Action {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-        // Obtener los datos del formulario
-        String nombre = request.getParameter("nombre");
-        String email = request.getParameter("email");
-        String contrasena = request.getParameter("contrasena");  // La contraseña que nos pasa el usuario
-        String telefono = request.getParameter("telefono");
-        String direccion = request.getParameter("direccion");
+        Map<String, Object> result = new HashMap<>();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
 
-        // Encriptar la contraseña antes de guardarla
-        String contrasenaEncriptada = CryptoUtils.encriptarContrasena(contrasena);
+        try {
+            // Leer JSON del body
+            BufferedReader reader = request.getReader();
+            Gson gson = new Gson();
+            Map<String, String> data = gson.fromJson(reader, Map.class);
 
-        // Crear un objeto Usuario con los datos y la contraseña encriptada
-        Usuario usuario = new Usuario();
-        usuario.setNombre(nombre);
-        usuario.setEmail(email);
-        usuario.setContrasena(contrasenaEncriptada);  // Usamos la contraseña encriptada
-        usuario.setTelefono(telefono);
-        usuario.setDireccion(direccion);
-        usuario.setFechaRegistro(LocalDateTime.now());
+            String nombre = data.get("nombre");
+            String email = data.get("email");
+            String contrasena = data.get("contrasena");
+            String telefono = data.get("telefono");
+            String direccion = data.get("direccion");
 
-        // Asignar el rol predeterminado (por ejemplo, 1 para "cliente")
-        usuario.setRol("cliente"); // Si el rol es un String, si es un número, usa `setRol(1)`
+            String contrasenaEncriptada = CryptoUtils.encriptarContrasena(contrasena);
 
-        // Usar el UsuarioDAO para insertar el usuario
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        usuarioDAO.agregarUsuario(usuario);
+            Usuario usuario = new Usuario();
+            usuario.setNombre(nombre);
+            usuario.setEmail(email);
+            usuario.setContrasena(contrasenaEncriptada);
+            usuario.setTelefono(telefono);
+            usuario.setDireccion(direccion);
+            usuario.setFechaRegistro(LocalDateTime.now());
+            usuario.setRol("cliente");
 
-        // Redirigir a otra página (por ejemplo, una página de éxito)
-        response.sendRedirect(request.getContextPath() + "/jsp/registroExitoso.jsp");
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            usuarioDAO.agregarUsuario(usuario);
+
+            result.put("status", "ok");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("status", "error");
+            result.put("message", e.getMessage());
+        }
+
+        String json = new Gson().toJson(result);
+        response.getWriter().write(json);
     }
 }

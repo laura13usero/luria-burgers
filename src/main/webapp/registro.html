@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up!</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h2>User Registration</h2>
+    <form id="registroForm">
+        Name: <input type="text" name="nombre" required><br>
+        E-mail: <input type="email" name="email" required><br>
+        Password: <input type="password" name="contrasena" required><br>
+        Phone Number: <input type="text" name="telefono" required><br>
+        Address: <input type="text" name="direccion" required><br>
+        <button type="submit">Sign Up!</button>
+    </form>
+
+    <div id="mensaje"></div>
+
+    <script>
+        document.getElementById("registroForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+
+            try {
+                const response = await fetch("/webapp-1.0-SNAPSHOT/control?action=registro", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                const mensaje = document.getElementById("mensaje");
+                if (result.status === "ok") {
+                    mensaje.innerHTML = "✅ Registro exitoso. ¡Bienvenido!";
+                    form.reset();
+                } else {
+                    mensaje.innerHTML = "❌ Error en el registro: " + result.message;
+                }
+            } catch (error) {
+                console.error("Error en el fetch:", error);
+                document.getElementById("mensaje").innerText = "❌ Error inesperado";
+            }
+        });
+    </script>
+</body>
+</html>
