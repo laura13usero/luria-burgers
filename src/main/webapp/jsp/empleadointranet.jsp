@@ -81,7 +81,7 @@
         </div>
     </div>
 
-    <!-- ZONA CORPORATIVA -->
+    <!-- Zona Corporativa -->
     <div id="corporativa" class="zone-content" role="tabpanel" aria-hidden="true">
       <p>La Zona Corporativa ofrece información y servicios de carácter colectivo y organizativo.</p>
       <div class="module-grid">
@@ -129,7 +129,6 @@
       </div>
     </div>
 
-
     <form action="<%= request.getContextPath() %>/control" method="post">
         <input type="hidden" name="action" value="logout">
         <button type="submit" class="logout-button">Cerrar sesión</button>
@@ -163,6 +162,11 @@
         }
       });
     }
+
+    // Mostrar la zona personal por defecto si no hay navegación previa
+    document.addEventListener('DOMContentLoaded', function () {
+      mostrarZona('personal');
+    });
   </script>
 
 </body>
