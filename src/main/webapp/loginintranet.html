@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Intranet</title>
+</head>
+<body>
+<h2>Iniciar sesión en la Intranet</h2>
+
+<label>Email: <input type="email" id="email" required></label><br>
+<label>Contraseña: <input type="password" id="contrasena" required></label><br>
+<button onclick="loginIntranet()">Entrar</button>
+
+<p id="error" style="color: red;"></p>
+
+<script>
+    async function loginIntranet() {
+        const email = document.getElementById("email").value;
+        const contrasena = document.getElementById("contrasena").value;
+        const errorElem = document.getElementById("error");
+        errorElem.textContent = "";
+
+        const response = await fetch("/webapp-1.0-SNAPSHOT/control?action=login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email, contrasena, origen: "intranet" })
+        });
+
+        const result = await response.json();
+
+        if (result.status === "ok") {
+            if (result.rol === "admin") {
+                window.location.href = "/webapp-1.0-SNAPSHOT/jsp/adminintranet.jsp";
+            } else if (result.rol === "empleado") {
+                window.location.href = "/webapp-1.0-SNAPSHOT/jsp/empleadointranet.jsp";
+            } else {
+                document.getElementById("error").textContent = "No tienes permiso para acceder a la intranet.";
+            }
+        } else {
+            errorElem.textContent = result.message;
+        }
+    }
+</script>
+</body>
+</html>
