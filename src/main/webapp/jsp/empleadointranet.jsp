@@ -1,35 +1,29 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page session="true" %>
-<%@ page import="modelo.Usuario" %>
-
 <%
     String rol = (String) session.getAttribute("rol");
-    Usuario usuario = (Usuario) session.getAttribute("usuario");
-
     if (!"empleado".equals(rol)) {
         response.sendRedirect(request.getContextPath() + "/jsp/accesoDenegado.jsp");
         return;
     }
 %>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Intranet - Empleado</title>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/intranet.css">
-    <script src="<%= request.getContextPath() %>/js/tabs.js" defer></script> <!-- si tienes JS -->
+    <script src="<%= request.getContextPath() %>/js/intranet.js" defer></script>
 </head>
 <body>
 
-<%-- Mensaje de login correcto --%>
 <% if ("ok".equals(request.getParameter("login"))) { %>
     <p style="color: green;">✅ Has iniciado sesión con éxito.</p>
 <% } %>
 
 <div class="container">
     <div class="welcome-message">
-        <h2>Bienvenido a tu intranet, <%= usuario.getNombre() %>.</h2>
+        <h2>Bienvenido a tu intranet, <%= session.getAttribute("usuarioNombre") %>.</h2>
         <p>Accede a todas las herramientas y recursos que necesitas como miembro del equipo Luría's Burger.</p>
     </div>
 
@@ -44,23 +38,29 @@
                 Zona Corporativa
             </div>
         </div>
+    </div>
+</div>
 
-        <div class="zone-content">
-            <%-- Aquí podrías usar <jsp:include> para incluir contenido de ZonaPersonal.jsp o ZonaCorporativa.jsp --%>
-            <form action="<%= request.getContextPath() %>/jsp/ZonaPersonal.jsp" method="get">
-                <button type="submit">🧍 Zona Personal</button>
-            </form>
-            <form action="<%= request.getContextPath() %>/jsp/ZonaCorporativa.jsp" method="get">
-                <button type="submit">🏢 Zona Corporativa</button>
-            </form>
-        </div>
+<!-- Enlaces a las zonas -->
+<div id="zones-content">
+    <div id="personal" class="zone-content" style="display: block;">
+        <form action="<%= request.getContextPath() %>/jsp/ZonaPersonal.jsp" method="get">
+            <button type="submit">🧍 Entrar en Zona Personal</button>
+        </form>
     </div>
 
-    <form action="<%= request.getContextPath() %>/control" method="post">
-        <input type="hidden" name="action" value="logout">
-        <button type="submit">Cerrar sesión</button>
-    </form>
+    <div id="corporativa" class="zone-content" style="display: none;">
+        <form action="<%= request.getContextPath() %>/jsp/ZonaCorporativa.jsp" method="get">
+            <button type="submit">🏢 Entrar en Zona Corporativa</button>
+        </form>
+    </div>
 </div>
+
+<!-- Logout -->
+<form action="<%= request.getContextPath() %>/control" method="post">
+    <input type="hidden" name="action" value="logout">
+    <button type="submit">Cerrar sesión</button>
+</form>
 
 </body>
 </html>
