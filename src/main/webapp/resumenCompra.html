@@ -4,95 +4,88 @@
   <meta charset="UTF-8">
   <title>Resumen de Compra</title>
   <script src="https://www.paypal.com/sdk/js?client-id=AaDAT1lIR-rPp2H1RFiSd9xPbD1me0OvaZQy3WzYN2Bh5P2xsp9MqAKd1hApRESxjdRM5zuvc-_zrkqA&currency=EUR"></script>
-  <script>
-    async function cargarResumenCompra() {
-      try {
-        const response = await fetch("control?action=getResumenCompra");
-
-        if (!response.ok) {
-          throw new Error("Error al obtener el resumen de compra");
-        }
-
-        const data = await response.json();
-        const { carrito, total } = data;
-
-        const tabla = document.getElementById("tabla-compra");
-        const cuerpo = document.getElementById("tbody-compra");
-        const paypal = document.getElementById("paypal-button-container");
-
-        if (!carrito || carrito.length === 0) {
-          tabla.style.display = "none";
-          paypal.style.display = "none";
-          document.getElementById("mensaje").innerText = "Tu carrito está vacío.";
-          return;
-        }
-
-        let totalFormateado = parseFloat(total).toFixed(2);
-
-        carrito.forEach(producto => {
-          const fila = document.createElement("tr");
-          fila.innerHTML = `
-            <td>${producto.nombre}</td>
-            <td>$${parseFloat(producto.precio).toFixed(2)}</td>
-          `;
-          cuerpo.appendChild(fila);
-        });
-
-        const filaTotal = document.createElement("tr");
-        filaTotal.innerHTML = `
-          <td><strong>Total a pagar</strong></td>
-          <td><strong>$${totalFormateado}</strong></td>
-        `;
-        cuerpo.appendChild(filaTotal);
-
-        paypal.Buttons({
-          createOrder: function(data, actions) {
-            return actions.order.create({
-              purchase_units: [{
-                amount: {
-                  value: totalFormateado
-                }
-              }]
-            });
-          },
-          onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
-              alert('✅ Pago completado por ' + details.payer.name.given_name);
-              window.location.href = "control?action=finalizarCompra";
-            });
-          }
-        }).render('#paypal-button-container');
-
-      } catch (error) {
-        console.error("Error:", error);
-        document.getElementById("mensaje").innerText = "⚠️ No se pudo cargar el resumen de compra.";
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", cargarResumenCompra);
-  </script>
 </head>
 <body>
 
 <h1>Resumen de tu compra</h1>
 
-<p id="mensaje"></p>
+<div id="contenido-resumen">
+  <p>Cargando resumen...</p>
+</div>
 
-<table id="tabla-compra" border="1" cellpadding="5">
-  <thead>
-    <tr>
-      <th>Producto</th>
-      <th>Precio</th>
-    </tr>
-  </thead>
-  <tbody id="tbody-compra"></tbody>
-</table>
-
-<!-- Botón de PayPal -->
+<!-- Contenedor para botón PayPal (lo generaremos con JS) -->
 <div id="paypal-button-container" style="margin-top: 20px;"></div>
 
-<!-- Volver al carrito -->
-<button onclick="window.location.href='carrito.html'" style="margin-top: 20px;">Volver al carrito</button>
+<!-- Botón para volver al carrito -->
+<button onclick="window.location.href = 'carrito.html'" style="margin-top: 20px;">Volver al carrito</button>
+
+<script>
+  async function cargarResumenCompra() {
+      try {
+          const response = await fetch('/webapp-1.0-SNAPSHOT/control?action=getResumenCompra');
+          if (!response.ok) throw new Error('Error al obtener el resumen.');
+
+          const data = await response.json();
+          const contenedor = document.getElementById('contenido-resumen');
+
+          if (!data.carrito || data.carrito.length === 0) {
+              contenedor.innerHTML = '<p>Tu carrito está vacío.</p>';
+              return;
+          }
+
+          // Crear tabla de productos
+          let tablaHTML = `
+              <table border="1" cellpadding="5">
+                  <tr><th>Producto</th><th>Precio</th></tr>
+          `;
+
+          data.carrito.forEach(producto => {
+              tablaHTML += `
+                  <tr>
+                      <td>${producto.nombre}</td>
+                      <td>$${producto.precio.toFixed(2)}</td>
+                  </tr>
+              `;
+          });
+
+          tablaHTML += `
+              <tr>
+                  <td><strong>Total a pagar</strong></td>
+                  <td><strong>$${data.total.toFixed(2)}</strong></td>
+              </tr>
+              </table>
+          `;
+
+          contenedor.innerHTML = tablaHTML;
+
+          // Generar botón PayPal dinámicamente con el total
+          paypal.Buttons({
+              createOrder: function (dataPaypal, actions) {
+                  return actions.order.create({
+                      purchase_units: [{
+                          amount: {
+                              value: data.total.toFixed(2)
+                          }
+                      }]
+                  });
+              },
+              onApprove: function (dataPaypal, actions) {
+                  return actions.order.capture().then(function (details) {
+                      alert('Pago completado por ' + details.payer.name.given_name);
+                      // Redirigir al backend para finalizar la compra
+                      window.location.href = '/webapp-1.0-SNAPSHOT/control?action=finalizarCompra';
+                  });
+              }
+          }).render('#paypal-button-container');
+
+      } catch (error) {
+          console.error('Error al cargar el resumen de compra:', error);
+          document.getElementById('contenido-resumen').innerHTML = '<p>Error al cargar el resumen.</p>';
+      }
+  }
+
+  document.addEventListener('DOMContentLoaded', cargarResumenCompra);
+</script>
 
 </body>
 </html>
