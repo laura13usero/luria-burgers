@@ -1,4 +1,3 @@
-// src/model/Producto.java
 package model;
 
 import java.util.List;
@@ -10,7 +9,9 @@ public class Producto {
     private double precio;
     private String categoria;
     private String filtros;
-    private List<String> ranking;  // <-- nuevo campo
+    private List<String> ranking;  // <-- ya estaba
+    private String enlace_html;    // <-- nuevo campo
+    private String imagen_png;     // <-- nuevo campo
 
     public int getId() {
         return id;
@@ -67,7 +68,20 @@ public class Producto {
     public void setRanking(List<String> ranking) {
         this.ranking = ranking;
     }
+
+    public String getEnlace_html() {
+        return enlace_html;
+    }
+
+    public void setEnlace_html(String enlace_html) {
+        this.enlace_html = enlace_html;
+    }
+
+    public String getImagen_png() {
+        return imagen_png;
+    }
+
+    public void setImagen_png(String imagen_png) {
+        this.imagen_png = imagen_png;
+    }
 }
-
-
-//lallalallalall

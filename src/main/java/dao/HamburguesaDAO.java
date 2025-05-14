@@ -15,7 +15,7 @@ public class HamburguesaDAO {
 
     public List<Producto> obtenerHamburguesas() {
         List<Producto> hamburguesas = new ArrayList<>();
-        String sql = "SELECT id_producto, nombre, descripcion, precio, filtros FROM Productos WHERE categoria ILIKE 'Burger'";
+        String sql = "SELECT id_producto, nombre, descripcion, precio, filtros, imagen_png, enlace_html FROM Productos WHERE categoria ILIKE 'Burger'";
 
         try (Connection conn = MotorSQL.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -27,7 +27,10 @@ public class HamburguesaDAO {
                 p.setNombre(rs.getString("nombre"));
                 p.setDescripcion(rs.getString("descripcion"));
                 p.setPrecio(rs.getDouble("precio"));
-                p.setFiltros(rs.getString("filtros"));  // Aquí asignamos el filtro
+                p.setFiltros(rs.getString("filtros"));
+                p.setImagen_png(rs.getString("imagen_png"));
+                p.setEnlace_html(rs.getString("enlace_html"));
+// Aquí asignamos el filtro
                 hamburguesas.add(p);
             }
 
@@ -41,7 +44,7 @@ public class HamburguesaDAO {
 
     public List<Producto> obtenerHamburguesasPorFiltro(String filtro) {
         List<Producto> hamburguesasFiltradas = new ArrayList<>();
-        String sql = "SELECT id_producto, nombre, descripcion, precio, filtros " +
+        String sql = "SELECT id_producto, nombre, descripcion, precio, filtros, imagen_png, enlace_html  " +
                 "FROM Productos " +
                 "WHERE categoria ILIKE 'Burger' AND filtros ILIKE ?";
 
@@ -58,6 +61,9 @@ public class HamburguesaDAO {
                     p.setDescripcion(rs.getString("descripcion"));
                     p.setPrecio(rs.getDouble("precio"));
                     p.setFiltros(rs.getString("filtros"));
+                    p.setImagen_png(rs.getString("imagen_png"));
+                    p.setEnlace_html(rs.getString("enlace_html"));
+
                     hamburguesasFiltradas.add(p);
                 }
             }

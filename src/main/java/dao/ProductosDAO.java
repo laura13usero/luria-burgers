@@ -14,12 +14,12 @@ public class ProductosDAO {
     // Método para obtener productos de una categoría específica
     public List<Producto> obtenerProductosPorCategoria(String categoria) {
         List<Producto> productos = new ArrayList<>();
-        String sql = "SELECT id_producto, nombre, descripcion, precio, categoria FROM Productos";
+        String sql = "SELECT id_producto, nombre, descripcion, precio, categoria, enlace_html, imagen_png FROM Productos WHERE categoria = ?";
 
         try (Connection conn = MotorSQL.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, categoria); // Se asigna la categoría al parámetro de la consulta
+            stmt.setString(1, categoria);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -28,7 +28,9 @@ public class ProductosDAO {
                     p.setNombre(rs.getString("nombre"));
                     p.setDescripcion(rs.getString("descripcion"));
                     p.setPrecio(rs.getDouble("precio"));
-                    p.setCategoria(rs.getString("categoria")); // Añadido campo categoría
+                    p.setCategoria(rs.getString("categoria"));
+                    p.setEnlace_html(rs.getString("enlace_html"));
+                    p.setImagen_png(rs.getString("imagen_png"));
                     productos.add(p);
                 }
             }
@@ -41,10 +43,9 @@ public class ProductosDAO {
     }
 
     // Método para obtener todos los productos
-    // Método para obtener todos los productos
     public List<Producto> obtenerTodosLosProductos() {
         List<Producto> productos = new ArrayList<>();
-        String sql = "SELECT id_producto, nombre, descripcion, precio, categoria FROM Productos";
+        String sql = "SELECT id_producto, nombre, descripcion, precio, categoria, enlace_html, imagen_png FROM Productos";
 
         try (Connection conn = MotorSQL.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -57,11 +58,11 @@ public class ProductosDAO {
                 p.setDescripcion(rs.getString("descripcion"));
                 p.setPrecio(rs.getDouble("precio"));
                 p.setCategoria(rs.getString("categoria"));
+                p.setEnlace_html(rs.getString("enlace_html"));
+                p.setImagen_png(rs.getString("imagen_png"));
                 productos.add(p);
             }
 
-            // Printer
-            // out.print()
         } catch (Exception e) {
             e.printStackTrace();
         }

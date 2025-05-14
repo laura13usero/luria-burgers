@@ -3,29 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Hamburguesas</title>
+    <title>Luría | Nuestras Especialidades</title>
+
+    <!-- Fuentes y estilos -->
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/luria_burgers/css/home.css">
+    <link rel="stylesheet" href="/luria_burgers/css/cards.css">
+    <link rel="icon" href="/luria_burgers/assets/fondos_recursos/flor.png" type="image/png">
+
     <script>
         async function obtenerHamburguesas() {
           try {
             const response = await fetch("control?action=getHamburguesasJSON");
             const data = await response.json();
-            const hamburguesasContainer = document.getElementById('hamburguesas-list');
-            hamburguesasContainer.innerHTML = '';
+            const container = document.querySelector('.cards-container');
+            container.innerHTML = '';
 
             if (data.length > 0) {
               data.forEach(hamburguesa => {
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `
-                  <strong>${hamburguesa.nombre}</strong> - ${hamburguesa.descripcion || ''}
-                  <br>
-                  <button onclick="agregarAlCarrito(${hamburguesa.id}, 'hamburguesa')">
-                    Añadir al carrito por: $${hamburguesa.precio}
-                  </button>
+                const card = document.createElement('div');
+                card.classList.add('card');
+
+                const nombreLimpio = hamburguesa.nombre.toLowerCase().replace(/ /g, "_").replace(/á/g, "a").replace(/é/g, "e").replace(/í/g, "i").replace(/ó/g, "o").replace(/ú/g, "u").replace(/[^\w\-]/g, "");
+                const imagenSrc = `/luria_burgers/assets/menu/cards_hamburguesas_animacion/${hamburguesa.imagen_png}`;
+
+
+                card.innerHTML = `
+                  <div class="card-img-container">
+                    <img src="${imagenSrc}" alt="${hamburguesa.nombre}" class="burger-image">
+                  </div>
+                  <div class="card-info">
+                    <h3>${hamburguesa.nombre}</h3>
+                    <p>${hamburguesa.descripcion || ''}</p>
+                    <button onclick="agregarAlCarrito(${hamburguesa.id}, 'hamburguesa')">
+                      Añadir al carrito - $${hamburguesa.precio}
+                    </button>
+                  </div>
                 `;
-                hamburguesasContainer.appendChild(listItem);
+                container.appendChild(card);
               });
             } else {
-              hamburguesasContainer.innerHTML = '<p>No hay hamburguesas disponibles.</p>';
+              container.innerHTML = '<p>No hay hamburguesas disponibles.</p>';
             }
           } catch (error) {
             console.error('Error al obtener hamburguesas:', error);
@@ -57,12 +75,52 @@
     </script>
 </head>
 <body>
-<h1>Hamburguesas disponibles</h1>
-<ul id="hamburguesas-list"></ul>
 
-<button onclick="window.location.href = 'index.html'" style="margin-top: 10px;">Volver a inicio</button>
-<button onclick="window.location.href = 'carrito.html'" style="margin-top: 10px;">Ver carrito</button>
+<!-- CAPA 3 · Tapa -->
+<div class="top-overlay"></div>
+
+<!-- CAPA 4 · Botones esquinas -->
+<div class="corner-links">
+    <a href="/luria_burgers/public/login.html" class="corner-link">
+        <img src="/luria_burgers/assets/fondos_recursos/login.png" alt="Login">
+    </a>
+    <a href="/luria_burgers/public/carrito.html" class="corner-link">
+        <img src="/luria_burgers/assets/fondos_recursos/carrito.png" alt="Carrito">
+    </a>
+</div>
+
+<!-- Navegación -->
+<div class="menu-container-wrapper">
+    <button class="menu-arrow menu-arrow-left" id="menuArrowLeft"></button>
+    <nav class="menu-container" id="menuContainer">
+        <a href="hamburguesas.html" class="menu-item">
+            <img src="/luria_burgers/assets/nav_icons/hamburguesas.png" alt="Burgers">
+            <div class="menu-background"></div>
+        </a>
+        <a href="complementos.html" class="menu-item">
+            <img src="/luria_burgers/assets/nav_icons/complementos.png" alt="Complementos">
+            <div class="menu-background"></div>
+        </a>
+        <a href="postres.html" class="menu-item">
+            <img src="/huria_burgers/assets/nav_icons/postres.png" alt="Postres">
+            <div class="menu-background"></div>
+        </a>
+        <a href="bebidas.html" class="menu-item">
+            <img src="/luria_burgers/assets/nav_icons/bebidas.png" alt="Bebidas">
+            <div class="menu-background"></div>
+        </a>
+    </nav>
+    <button class="menu-arrow menu-arrow-right" id="menuArrowRight"></button>
+</div>
+
+<!-- Cards de hamburguesas (rellenadas por JS) -->
+<div class="cards-wrapper">
+    <div class="cards-container">
+        <!-- Aquí se insertarán las hamburguesas dinámicamente -->
+    </div>
+</div>
+
+
+<script src="/luria_burgers/index.html"></script>
 </body>
 </html>
-
-
