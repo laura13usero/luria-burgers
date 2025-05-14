@@ -13,7 +13,7 @@ public class PostreDAO {
 
     public List<Producto> obtenerPostres() {
         List<Producto> postres = new ArrayList<>();
-        String sql = "SELECT id_producto, nombre, descripcion, precio FROM Productos WHERE categoria ILIKE 'Postres'";
+        String sql = "SELECT id_producto, nombre, descripcion, precio, imagen_png, enlace_html FROM Productos WHERE categoria ILIKE 'Postres'";
 
         try (Connection conn = MotorSQL.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -25,6 +25,8 @@ public class PostreDAO {
                 p.setNombre(rs.getString("nombre"));
                 p.setDescripcion(rs.getString("descripcion"));
                 p.setPrecio(rs.getDouble("precio"));
+                p.setImagen_png(rs.getString("imagen_png"));
+                p.setEnlace_html(rs.getString("enlace_html"));
                 postres.add(p);
             }
 
