@@ -21,7 +21,7 @@
    BASE (mobile-first) - Mantenemos el diseño original de imagen a pantalla completa
 ─────────────────────────────────── */
 body {
-    background-image: url('assets/fondos_recursos/dashboard.png');
+    background-image: url('../assets/fondos_recursos/dashboard.png');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;

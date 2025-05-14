@@ -1,6 +1,6 @@
 body {
     font-family: 'Poppins', sans-serif;
-    background-image: url(/hamburgueseria_luria/assets/fondos_recursos/fondo_login.png); 
+    background-image: url(../assets/fondos_recursos/fondo_login.png);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
