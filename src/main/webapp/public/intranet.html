@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="description" content="Intranet de Luría's Burger">
+  <meta name="theme-color" content="#D05A31">
+  <title>Intranet Luría's Burger</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="/hamburgueseria_luria/css/intranet.css" rel="stylesheet">
+  <link rel="icon" href="/hamburgueseria_luria/assets/fondos_recursos/flor.png" type="image/png">
+
+  <!--<header>
+    <div class="container">
+      <div class="header-user">Bienvenido/a, <span>Usuario</span></div>
+      <h1>Intranet Luría's Burger</h1>
+      <p>Tu portal de gestión y comunicación</p>
+    </div>
+  </header> !-->
+
+  <div class="container">
+    <div class="welcome-message">
+      <h2>Bienvenido a tu intranet, usuario. </h2>
+      <p>Accede a todas las herramientas y recursos que necesitas como miembro del equipo Luría's Burger.</p>
+    </div>
+
+    <div class="tabs-container">
+      <div class="zone-tabs" role="tablist">
+        <div class="zone-tab active" role="tab" aria-selected="true" tabindex="0"
+             onclick="openZone(event,'personal')" onkeydown="handleZoneKeyDown(event,'personal')">
+          Zona Personal
+        </div>
+        <div class="zone-tab" role="tab" aria-selected="false" tabindex="0"
+             onclick="openZone(event,'corporativa')" onkeydown="handleZoneKeyDown(event,'corporativa')">
+          Zona Corporativa
+        </div>
+      </div>
+
+      <!-- ZONA PERSONAL -->
+      <div id="personal" class="zone-content active" role="tabpanel" aria-hidden="false">
+        <p>La Zona Personal agrupa todas las herramientas y recursos para gestionar tu relación individual con la empresa.</p>
+        <div class="module-grid">
+          <div class="module-card" onclick="openModule('mi-nomina')">
+            <div class="module-icon"><img src="/hamburgueseria_luria/assets/iconos_intranet/NOMINA.png" alt="Nómina"></div>
+            <div class="module-title">Mi Nómina</div>
+            <div class="module-desc">Consulta nóminas, histórico y certificados</div>
+          </div>
+          <div class="module-card" onclick="openModule('certificados')">
+            <div class="module-icon"><img src="/hamburgueseria_luria/assets/iconos_intranet/CERTIFICADOS.png" alt="Certificados"></div>
+            <div class="module-title">Certificados y Trámites</div>
+            <div class="module-desc">Gestiona documentos y solicitudes</div>
+          </div>
+          <div class="module-card" onclick="openModule('vacaciones')">
+            <div class="module-icon"><img src="/hamburgueseria_luria/assets/iconos_intranet/VACACIONES.png" alt="Vacaciones"></div>
+            <div class="module-title">Vacaciones y Permisos</div>
+            <div class="module-desc">Planifica tus días libres y permisos</div>
+          </div>
+          <div class="module-card" onclick="openModule('beneficios')">
+            <div class="module-icon"><img src="/hamburgueseria_luria/assets/iconos_intranet/SALUD.png" alt="Beneficios"></div>
+            <div class="module-title">Beneficios y Salud</div>
+            <div class="module-desc">Programas de bienestar y ayudas</div>
+          </div>
+          <div class="module-card" onclick="openModule('denuncias')">
+            <div class="module-icon"><img src="/hamburgueseria_luria/assets/iconos_intranet/DENUNCIAS.png" alt="Denuncias"></div>
+            <div class="module-title">Canal de Denuncias</div>
+            <div class="module-desc">Reporta conductas irregulares</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ZONA CORPORATIVA -->
+      <div id="corporativa" class="zone-content" role="tabpanel" aria-hidden="true">
+        <p>La Zona Corporativa ofrece información y servicios de carácter colectivo y organizativo.</p>
+        <div class="module-grid">
+          <div class="module-card" onclick="openModule('comite')">
+            <div class="module-icon"><img src="/hamburgueseria_luria/assets/iconos_intranet/COMITE.png" alt="Comité"></div>
+            <div class="module-title">Comité de Empresa</div>
+            <div class="module-desc">Conoce a tus representantes</div>
+          </div>
+          <div class="module-card" onclick="openModule('sugerencias')">
+            <div class="module-icon"><img src="/hamburgueseria_luria/assets/iconos_intranet/Captura de pantalla 2025-05-09 145940.png" alt="Sugerencias"></div>
+            <div class="module-title">Buzón de Sugerencias & FAQ</div>
+            <div class="module-desc">Envía ideas y consulta dudas</div>
+          </div>
+          <div class="module-card" onclick="openModule('calendario')">
+            <div class="module-icon"><img src="/hamburgueseria_luria/assets/iconos_intranet/CALENDARIO.png" alt="Calendario"></div>
+            <div class="module-title">Calendario Laboral</div>
+            <div class="module-desc">Festivos, eventos y jornadas especiales</div>
+          </div>
+          <div class="module-card" onclick="openModule('normativa')">
+            <div class="module-icon"><img src="/hamburgueseria_luria/assets/iconos_intranet/NORMATIVA.png" alt="Normativa"></div>
+            <div class="module-title">Normativa & Convenio</div>
+            <div class="module-desc">Leyes y convenios aplicables</div>
+          </div>
+          <div class="module-card" onclick="openModule('noticias')">
+            <div class="module-icon"><img src="/hamburgueseria_luria/assets/iconos_intranet/NOTICIAS.png" alt="Noticias"></div>
+            <div class="module-title">Noticias & Comunicados</div>
+            <div class="module-desc">Mantente informado</div>
+            <div class="notification-badge">3</div>
+          </div>
+          <div class="module-card" onclick="openModule('it')">
+            <div class="module-icon"><img src="/hamburgueseria_luria/assets/iconos_intranet/CIBERSEGURIDAD.png" alt="IT"></div>
+            <div class="module-title">IT & Ciberseguridad</div>
+            <div class="module-desc">Soporte y buenas prácticas</div>
+          </div>
+          <div class="module-card" onclick="openModule('bienestar')">
+            <div class="module-icon"><img src="/hamburgueseria_luria/assets/iconos_intranet/CULTURA.png" alt="Bienestar"></div>
+            <div class="module-title">Bienestar & Cultura</div>
+            <div class="module-desc">Actividades y reconocimientos</div>
+          </div>
+          <div class="module-card" onclick="openModule('sostenibilidad')">
+            <div class="module-icon"><img src="/hamburgueseria_luria/assets/iconos_intranet/SOSTENIBILIDAD.png" alt="Sostenibilidad"></div>
+            <div class="module-title">Sostenibilidad & RSC</div>
+            <div class="module-desc">Compromiso medioambiental y social</div>
+          </div>
+          <div class="module-card" onclick="openModule('despidos')">
+          <div class="module-icon">
+            <img src="/hamburgueseria_luria/assets/iconos_intranet/DESPIDOS.png" alt="Despidos">
+          </div>
+          <div class="module-title">Despidos</div>
+          <div class="module-desc">Tus derechos y obligaciones al finalizar la relación laboral</div>
+          </div>
+
+          <div class="module-card" onclick="openModule('prl')">
+            <div class="module-icon">
+              <img src="/hamburgueseria_luria/assets/iconos_intranet/icono_fuego.png" alt="Prevención de Riesgos">
+            </div>
+            <div class="module-title">Prevención de Riesgos Laborales</div>
+            <div class="module-desc">Normas y recursos para un entorno seguro</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUPS PERSONAL -->
+
+  <!-- Mi Nómina -->
+  <div id="mi-nomina-popup" class="module-popup">
+    <div class="module-popup-content">
+      <button class="popup-close" onclick="closeModule('mi-nomina')">&times;</button>
+      <div class="popup-header"><h2>Mi Nómina</h2></div>
+      <div class="popup-body">
+        <p>Accede a la información de tu salario de forma segura y confidencial.</p>
+        <h3>Nómina actual</h3>
+        <div class="table-container">
+          <table>
+            <tr><th>Período</th><th>Fecha</th><th>Acción</th></tr>
+            <tr><td>Mayo 2025</td><td>30/05/2025</td><td><a href="/hamburgueseria_luria/assets/descargables/nomina_mayo_2025.txt" class="btn btn-secondary">Ver más</a></td></tr>
+          </table>
+        </div>
+        <h3>Histórico</h3>
+        <div class="table-container">
+          <table>
+            <tr><th>Mes</th><th>Fecha pago</th><th>Acción</th></tr>
+            <tr><td>Abril 2025</td><td>30/04/2025</td><td><a href="#" class="btn btn-secondary">Ver más</a></td></tr>
+            <tr><td>Marzo 2025</td><td>30/03/2025</td><td><a href="#" class="btn btn-secondary">Ver más</a></td></tr>
+          </table>
+        </div>
+        <div class="highlight-box">
+          <h3>Datos laborales</h3>
+          <p><strong>Categoría:</strong> Auxiliar Administrativo</p>
+          <p><strong>Antigüedad:</strong> 01/03/2023</p>
+          <p><strong>Grupo cotización:</strong> 7</p>
+          <p><strong>Contrato:</strong> Indefinido</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Certificados -->
+  <div id="certificados-popup" class="module-popup">
+    <div class="module-popup-content">
+      <button class="popup-close" onclick="closeModule('certificados')">&times;</button>
+      <div class="popup-header"><h2>Certificados y Trámites</h2></div>
+      <div class="popup-body">
+    <h3>Emisión de certificados</h3>
+    <ul>
+        <li>
+            <strong>Certificado de Empresa</strong><br>
+            <p>
+                El <strong>Certificado de Empresa</strong> es un documento oficial que recoge la <strong>situación laboral</strong> del trabajador en la empresa, especialmente utilizado para trámites con la <strong>Seguridad Social</strong> y el <strong>SEPE</strong> (Servicio Público de Empleo Estatal).
+            </p>
+            <p><u>¿Cuándo se solicita?</u></p>
+            <ul>
+                <li>Finalización de contrato (baja voluntaria, despido, fin de obra, etc.).</li>
+                <li>Solicitud de prestación por desempleo.</li>
+                <li>Justificación de periodos trabajados ante organismos oficiales.</li>
+            </ul>
+            <p><u>Contenido del certificado:</u></p>
+            <ul>
+                <li>Identificación de la empresa y del trabajador.</li>
+                <li>Fecha de inicio y fin de la relación laboral.</li>
+                <li>Tipo de contrato y jornada.</li>
+                <li>Motivo de la baja en la empresa.</li>
+            </ul>
+        </li>
+
+        <li>
+            <strong>Certificado de Antigüedad</strong><br>
+            <p>
+                El <strong>Certificado de Antigüedad</strong> acredita la <strong>fecha de incorporación</strong> del trabajador a la empresa y el <strong>tiempo de servicio</strong> acumulado.
+            </p>
+            <p><u>Usos habituales:</u></p>
+            <ul>
+                <li>Solicitudes de hipotecas o préstamos.</li>
+                <li>Procesos de selección en otras empresas.</li>
+                <li>Trámites para concursos de méritos o licitaciones.</li>
+            </ul>
+            <p><u>Incluye:</u></p>
+            <ul>
+                <li>Fecha exacta de alta en la empresa.</li>
+                <li>Puesto de trabajo actual.</li>
+                <li>Tipo de contrato (indefinido, temporal, etc.).</li>
+            </ul>
+        </li>
+
+        <li>
+            <strong>Certificado de Ingresos</strong><br>
+            <p>
+                El <strong>Certificado de Ingresos</strong> detalla las <strong>retribuciones percibidas</strong> por el trabajador en un periodo determinado, normalmente el último ejercicio fiscal o los últimos 12 meses.
+            </p>
+            <p><u>Se solicita para:</u></p>
+            <ul>
+                <li>Trámites bancarios (préstamos, hipotecas, tarjetas).</li>
+                <li>Declaraciones de renta.</li>
+                <li>Justificación de solvencia económica.</li>
+            </ul>
+            <p><u>Datos que aparecen en el certificado:</u></p>
+            <ul>
+                <li>Desglose de los salarios brutos y netos percibidos.</li>
+                <li>Pagas extra, complementos y otros conceptos retributivos.</li>
+                <li>Retenciones de IRPF y Seguridad Social.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>Permisos y Excedencias</h3>
+    <p>
+        Solicita <strong>permisos retribuidos</strong> o <strong>excedencias</strong> con nuestro <em>formulario guiado</em>.
+    </p>
+
+    <h3>Solicitar Certificado</h3>
+<p>Rellena este formulario para pedir un certificado personalizado:</p>
+<form style="margin-top: 1rem;">
+  <label for="tipo-certificado">Tipo de certificado:</label>
+  <select id="tipo-certificado" style="width: 100%; padding: .5rem; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 1rem;">
+    <option value="">Selecciona...</option>
+    <option value="empresa">Certificado de Empresa</option>
+    <option value="antiguedad">Certificado de Antigüedad</option>
+    <option value="ingresos">Certificado de Ingresos</option>
+  </select>
+
+  <label for="motivo-solicitud">Motivo de la solicitud:</label>
+  <textarea id="motivo-solicitud" rows="3" placeholder="Explica brevemente el motivo" style="width: 100%; padding: .5rem; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 1rem;"></textarea>
+
+  <label style="display: flex; align-items: center; margin-bottom: 1rem;">
+    <input type="checkbox" style="margin-right: .5rem;"> Quiero recibir una copia en mi email corporativo
+  </label>
+
+  <button type="submit" class="btn" style="width: 100%;">Enviar solicitud</button>
+</form>
+
+</div>
+
+
+    </div>
+  </div>
+
+  <!-- Vacaciones -->
+<div id="vacaciones-popup" class="module-popup">
+  <div class="module-popup-content">
+    <button class="popup-close" onclick="closeModule('vacaciones')">&times;</button>
+    <div class="popup-header"><h2>Vacaciones y Permisos</h2></div>
+    <div class="popup-body">
+
+      <h3>Resumen</h3>
+      <div class="highlight-box">
+        <p><strong>Días disponibles:</strong> 18 laborales</p>
+        <p><strong>Consumidos:</strong> 4 laborales</p>
+        <p><strong>Arrastre año anterior:</strong> 2 días</p>
+      </div>
+
+      <h3>Calendario de Vacaciones</h3>
+      <p>Consulta tu disponibilidad y planifica tus días libres en un vistazo. El calendario muestra:</p>
+      <div class="calendar-legend">
+        <div class="legend-item">
+          <span class="color-box holiday"></span>
+          <span>Festivos oficiales</span>
+        </div>
+        <div class="legend-item">
+          <span class="color-box vacation-pending"></span>
+          <span>Vacaciones solicitadas</span>
+        </div>
+        <div class="legend-item">
+          <span class="color-box vacation-approved"></span>
+          <span>Vacaciones aprobadas</span>
+        </div>
+        <div class="legend-item">
+          <span class="color-box today"></span>
+          <span>Día actual</span>
+        </div>
+      </div>
+      
+      <div class="calendar-widget">
+        <div class="calendar-header">
+          <button class="calendar-nav-btn">&lt;</button>
+          <div class="calendar-title">Mayo 2025</div>
+          <button class="calendar-nav-btn">&gt;</button>
+        </div>
+        
+        <div class="weekdays-header">
+          <div class="weekday">Lun</div>
+          <div class="weekday">Mar</div>
+          <div class="weekday">Mié</div>
+          <div class="weekday">Jue</div>
+          <div class="weekday">Vie</div>
+          <div class="weekday">Sáb</div>
+          <div class="weekday">Dom</div>
+        </div>
+        
+        <div class="calendar-grid">
+          <!-- Días anteriores vacíos (Mayo 2025 empieza en jueves) -->
+          <div class="calendar-day inactive"></div>
+          <div class="calendar-day inactive"></div>
+          <div class="calendar-day inactive"></div>
+          <!-- Día 1 - Festivo (Día del Trabajador) -->
+          <div class="calendar-day holiday">1</div>
+          <div class="calendar-day">2</div>
+          <div class="calendar-day">3</div>
+          <div class="calendar-day">4</div>
+          
+          <div class="calendar-day">5</div>
+          <div class="calendar-day">6</div>
+          <div class="calendar-day">7</div>
+          <div class="calendar-day">8</div>
+          <div class="calendar-day">9</div>
+          <div class="calendar-day">10</div>
+          <div class="calendar-day">11</div>
+          
+          <div class="calendar-day today">12</div>
+          <div class="calendar-day vacation-pending">13</div>
+          <div class="calendar-day vacation-pending">14</div>
+          <div class="calendar-day vacation-pending">15</div>
+          <div class="calendar-day vacation-pending">16</div>
+          <div class="calendar-day">17</div>
+          <div class="calendar-day">18</div>
+          
+          <div class="calendar-day">19</div>
+          <div class="calendar-day">20</div>
+          <div class="calendar-day">21</div>
+          <div class="calendar-day">22</div>
+          <div class="calendar-day">23</div>
+          <div class="calendar-day">24</div>
+          <div class="calendar-day">25</div>
+          
+          <div class="calendar-day">26</div>
+          <div class="calendar-day">27</div>
+          <div class="calendar-day">28</div>
+          <div class="calendar-day">29</div>
+          <div class="calendar-day">30</div>
+          <div class="calendar-day">31</div>
+          <!-- Espacio para el primer día del mes siguiente -->
+          <div class="calendar-day inactive"></div>
+        </div>
+      </div>
+
+      <h3>Solicitar Vacaciones</h3>
+      <form>
+        <label>Inicio: <input type="date"></label>
+        <label>Fin: <input type="date"></label>
+        <label>Comentario:<textarea rows="2" placeholder="Motivo o aclaraciones"></textarea></label>
+        <button type="submit" class="btn" style="width:100%;">Enviar solicitud</button>
+      </form>
+
+      <h3>Permisos Retribuidos</h3>
+      <div class="table-container">
+        <table>
+          <tr><th>Motivo</th><th>Días legales</th><th>Días Luría</th></tr>
+          <tr><td>Matrimonio o pareja de hecho</td><td>15</td><td>16</td></tr>
+          <tr><td>Enfermedad grave/hospitalización familiar</td><td>5</td><td>6</td></tr>
+          <tr><td>Fallecimiento de familiar</td><td>2-4</td><td>3-5</td></tr>
+          <tr><td>Traslado de domicilio habitual</td><td>1</td><td>2</td></tr>
+          <tr><td>Deber inexcusable público</td><td>El necesario</td><td>El necesario</td></tr>
+          <tr><td>Exámenes prenatales/parto</td><td>El necesario</td><td>El necesario</td></tr>
+        </table>
+      </div>
+
+      <h3>Permisos Especiales & Excedencias</h3>
+      <p>Gestiona permisos no incluidos en vacaciones regulares:</p>
+      <ul>
+        <li><strong>Permisos no retribuidos:</strong> días por asuntos propios (sin salario).</li>
+        <li><strong>Excedencia por cuidado de hijos/familiares:</strong> con reserva de puesto.</li>
+        <li><strong>Excedencia voluntaria:</strong> sin reserva de puesto (Estatuto de los Trabajadores).</li>
+        <li><strong>Reducción de jornada:</strong> por guarda legal o cuidado de dependientes.</li>
+        <li><strong>Jornada flexible/adaptación horaria:</strong> conciliación sin reducción de horas.</li>
+      </ul>
+
+      <h3>Solicitar Permiso o Excedencia</h3>
+      <form>
+        <label for="tipo-permiso">Tipo:</label>
+        <select id="tipo-permiso" style="width:100%; margin-bottom:1rem;">
+          <option value="">Selecciona...</option>
+          <option value="permiso-retribuido">Permiso retribuido</option>
+          <option value="permiso-no-retribuido">Permiso no retribuido</option>
+          <option value="excedencia-cuidado">Excedencia cuidado familiar</option>
+          <option value="excedencia-voluntaria">Excedencia voluntaria</option>
+          <option value="reduccion-jornada">Reducción de jornada</option>
+          <option value="jornada-flexible">Jornada flexible</option>
+        </select>
+
+        <label>Inicio: <input type="date"></label>
+        <label>Fin: <input type="date"></label>
+        <label>Motivo:<textarea rows="2" placeholder="Describe la causa y adjunta documentación si aplica"></textarea></label>
+        <label>Adjuntar justificante: <input type="file" multiple></label>
+        <button type="submit" class="btn" style="width:100%;">Enviar solicitud</button>
+      </form>
+
+      <h3>Historial de Ausencias</h3>
+      <div class="table-container">
+        <table>
+          <tr><th>Tipo</th><th>Fechas</th><th>Estado</th></tr>
+          <tr><td>Vacaciones</td><td>10-14/04/2025</td><td>Aprobado</td></tr>
+          <tr><td>Permiso fallecimiento</td><td>15-16/03/2025</td><td>Aprobado</td></tr>
+          <tr><td>Vacaciones</td><td>5-9/02/2025</td><td>Aprobado</td></tr>
+        </table>
+      </div>
+
+      <h3>Normativa y Política Interna</h3>
+      <ul>
+        <li><a href="https://www.boe.es/legislacion/laboral/estatuto_trabajadores.pdf" target="_blank">Estatuto de los Trabajadores – BOE</a></li>
+        <li><a href="https://www.mites.gob.es/es/sec_trabajo/relaciones_laborales/vacaciones.htm" target="_blank">Guía sobre vacaciones – Ministerio de Trabajo</a></li>
+        <li><a href="https://www.mites.gob.es/itss/web/Atencion_al_Ciudadano/FAQs/Permisos.html" target="_blank">FAQ Permisos Laborales – ITSS</a></li>
+        <li><a href="/documentos/politica_vacaciones_luria.pdf" target="_blank">Política de Vacaciones Luría's Burger</a></li>
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+  <!-- Beneficios -->
+<div id="beneficios-popup" class="module-popup">
+  <div class="module-popup-content">
+    <button class="popup-close" onclick="closeModule('beneficios')">&times;</button>
+    <div class="popup-header"><h2>Beneficios & Salud</h2></div>
+    <div class="popup-body">
+      <p class="intro-text">
+        Luría's Burger se preocupa por el bienestar de su equipo. Aquí puedes conocer todos los 
+        programas y ayudas disponibles para mejorar tu calidad de vida.
+      </p>
+
+      <h3>Seguro Médico Privado</h3>
+      <p>
+        Contamos con un seguro médico privado a través de <strong>Sanitas</strong>, con <strong>cobertura al 100%</strong> 
+        para empleados. Incluye:
+      </p>
+      <ul class="benefits-list">
+        <li>Asistencia primaria</li>
+        <li>Especialistas</li>
+        <li>Hospitalización</li>
+        <li>Pruebas diagnósticas</li>
+        <li>Urgencias</li>
+      </ul>
+      <p>También puedes incluir a tus familiares con tarifa reducida.</p>
+      
+      <div class="info-links">
+        <ul>
+          <li><a href="/assets/seguros/poliza_sanitas.pdf" target="_blank">Consulta la póliza completa</a></li>
+          <li><a href="https://www.sanitas.es/cuadro-medico" target="_blank">Cuadro médico</a></li>
+          <li><strong>Teléfono de autorizaciones:</strong> 900 123 456</li>
+          <li><strong>Tarjeta digital:</strong> Disponible en la app Sanitas</li>
+        </ul>
+      </div>
+
+      <h3>Ayuda al Gimnasio y Actividad Física</h3>
+      <p>
+        Reembolsamos hasta <strong>60€/mes</strong> de tu cuota de gimnasio. Solo tienes que subir el recibo 
+        en la plataforma a final de mes.
+      </p>
+      <p>
+        <strong>Acuerdos especiales:</strong> Descuentos en <strong>BasicFit</strong> y <strong>McFit</strong>
+      </p>
+      <p>
+        <strong>Actividades grupales:</strong> Equipo de fútbol, running club y torneos inter-empresa.
+      </p>
+
+      <h3>Espacios de Coworking</h3>
+      <p>
+        Si trabajas en remoto o en formato híbrido, dispones de <strong>8 días al mes</strong> en 
+        espacios de coworking asociados:
+      </p>
+      <ul class="benefits-list">
+        <li>WeWork</li>
+        <li>Utopicus</li>
+      </ul>
+      <p>
+        Reserva tu puesto desde la intranet en <em>Mi Coworking</em> &nbsp;·&nbsp;
+        <a href="/assets/coworking/ubicaciones.pdf" target="_blank">Consulta ubicaciones disponibles</a>
+      </p>
+
+      <h3>Programa de Salud Mental</h3>
+      <p>Accede de forma gratuita y confidencial a:</p>
+      <ul class="benefits-list">
+        <li><strong>3 sesiones anuales</strong> con psicólogos (vía <strong>Employee Assistance Program</strong>)</li>
+        <li><strong>Línea de ayuda emocional 24/7:</strong> 900 987 654</li>
+        <li><strong>Talleres</strong> de gestión del estrés y mindfulness</li>
+      </ul>
+      <p class="highlight-text">
+        Recuerda: tu bienestar emocional es importante. Todo es totalmente confidencial.
+      </p>
+
+      <h3>Otros Beneficios y Retribución Flexible</h3>
+      <div class="benefits-grid">
+        <div class="benefit-item">
+          <span class="benefit-label">Ticket comida:</span>
+          <span class="benefit-value">11€/día</span>
+        </div>
+        <div class="benefit-item">
+          <span class="benefit-label">Ayuda transporte:</span>
+          <span class="benefit-value">Reembolso mensual del abono</span>
+        </div>
+        <div class="benefit-item">
+          <span class="benefit-label">Guardería:</span>
+          <span class="benefit-value">Tickets para menores de 3 años</span>
+        </div>
+        <div class="benefit-item">
+          <span class="benefit-label">Formación:</span>
+          <span class="benefit-value">100% financiada</span>
+        </div>
+        <div class="benefit-item">
+          <span class="benefit-label">Descuentos:</span>
+          <span class="benefit-value">20% en productos de la empresa</span>
+        </div>
+      </div>
+      
+      <p class="info-note">
+        La empresa ofrece retribución flexible: puedes destinar parte de tu salario a estos beneficios 
+        de forma exenta de IRPF. <a href="https://factorial.es/blog/retribucion-flexible/" target="_blank">Saber más</a>
+      </p>
+
+      <h3>Participación en Beneficios</h3>
+      <div class="chart-container">
+        <div class="chart-title">Participación en Beneficios</div>
+        <div class="bar-chart">
+          <div class="bar" style="height:90%">
+            <div class="bar-value">90%</div>
+            <div class="bar-label">Seguro</div>
+          </div>
+          <div class="bar" style="height:50%">
+            <div class="bar-value">50%</div>
+            <div class="bar-label">Gimnasio</div>
+          </div>
+          <div class="bar" style="height:30%">
+            <div class="bar-value">30%</div>
+            <div class="bar-label">Coworking</div>
+          </div>
+          <div class="bar" style="height:20%">
+            <div class="bar-value">20%</div>
+            <div class="bar-label">Salud Mental</div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Testimonios</h3>
+      <div class="highlight-box">
+        <p class="testimonial">
+          <em>"Gracias al convenio de gimnasios he retomado la actividad física después de años sin moverme."</em>
+          <span class="author">— Laura M., Departamento de Marketing</span>
+        </p>
+        <p class="testimonial">
+          <em>"El programa de apoyo psicológico me ayudó en un momento complicado, sin coste y con total privacidad."</em>
+          <span class="author">— Carlos R., Operaciones</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Canal de Denuncias -->
+<div id="denuncias-popup" class="module-popup">
+  <div class="module-popup-content">
+    <button class="popup-close" onclick="closeModule('denuncias')">&times;</button>
+    <div class="popup-header"><h2>Canal de Denuncias</h2></div>
+    <div class="popup-body">
+      <div class="intro-section">
+        <p>
+          El Canal de Denuncias de Luría's Burger es un medio <strong>confidencial y seguro</strong> para reportar:
+        </p>
+        <ul class="key-points">
+          <li>Infracciones legales</li>
+          <li>Conductas irregulares</li>
+          <li>Actos contrarios a la ética empresarial</li>
+        </ul>
+        <p class="legal-note">
+          Esta herramienta cumple con la <strong>Ley 2/2023, de protección al informante</strong> 
+          (transposición de la Directiva UE 2019/1937).
+        </p>
+      </div>
+
+      <h3>¿Cómo funciona?</h3>
+      <div class="process-grid">
+        <div class="process-item">
+          <span class="process-title">Acceso confidencial</span>
+          <p>Formulario dentro de la intranet, con opción de <strong>denuncia anónima</strong> y pasarela de protección de IP.</p>
+        </div>
+        
+        <div class="process-item">
+          <span class="process-title">Formulario guiado</span>
+          <p>Describe los hechos, fecha, lugar, personas implicadas (si las conoces) y adjunta evidencias. No es obligatorio identificarse.</p>
+        </div>
+        
+        <div class="process-item">
+          <span class="process-title">Confidencialidad garantizada</span>
+          <p>Solo personas autorizadas (Compliance, Ética) acceden, bajo <strong>deber de sigilo</strong>.</p>
+        </div>
+        
+        <div class="process-item">
+          <span class="process-title">Prohibición de represalias</span>
+          <p>Se protege al denunciante de cualquier perjuicio laboral por haber informado de buena fe.</p>
+        </div>
+        
+        <div class="process-item">
+          <span class="process-title">Derecho a respuesta</span>
+          <p>Confirmación de recepción en <strong>7 días</strong> y resolución en un máximo de <strong>3 meses</strong>.</p>
+        </div>
+        
+        <div class="process-item">
+          <span class="process-title">Trazabilidad y seguimiento</span>
+          <p>Cada denuncia tiene un <strong>código anónimo</strong> para consultar el estado ("Recibida", "En investigación", "Resuelta").</p>
+        </div>
+      </div>
+
+      <h3>¿Qué ocurre tras enviar una denuncia?</h3>
+      <div class="workflow">
+        <div class="workflow-step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <strong>Recepción</strong>
+            <p>Registro interno y acuse de recibo en 7 días.</p>
+          </div>
+        </div>
+        
+        <div class="workflow-step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <strong>Evaluación inicial</strong>
+            <p>Revisión de la denuncia para determinar competencia y seriedad.</p>
+          </div>
+        </div>
+        
+        <div class="workflow-step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <strong>Investigación</strong>
+            <p>Análisis de hechos, recopilación de pruebas y entrevistas si procede.</p>
+          </div>
+        </div>
+        
+        <div class="workflow-step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <strong>Conclusión</strong>
+            <p>Resolución en 3 meses (prorrogable en casos complejos) y medidas correctivas si se confirma la denuncia.</p>
+          </div>
+        </div>
+        
+        <div class="workflow-step">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <strong>Feedback al denunciante</strong>
+            <p>Comunicación del cierre y resultado (dentro de lo permitido por ley).</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>Canales externos alternativos</h3>
+      <p>Además del canal interno, puedes dirigirte a las siguientes autoridades independientes:</p>
+      <div class="external-links">
+        <a href="https://www.aai.gob.es/es/autoridad-independiente-proteccion-informante" target="_blank" class="external-link">
+          Autoridad Independiente de Protección al Informante
+        </a>
+        <a href="https://antifraucv.es/canal-de-denuncias/" target="_blank" class="external-link">
+          Agencia Valenciana Antifraude
+        </a>
+      </div>
+
+      <h3>Documentación y formación</h3>
+      <div class="documents-grid">
+        <a href="/documentos/politica_informacion_luria.pdf" target="_blank" class="document-item">
+          <span class="document-icon">📄</span>
+          <span class="document-title">Política Interna del Sistema de Información</span>
+        </a>
+        <a href="/documentos/como_denunciar_seguro.pdf" target="_blank" class="document-item">
+          <span class="document-icon">📄</span>
+          <span class="document-title">Guía: Cómo denunciar de forma segura</span>
+        </a>
+        <a href="/documentos/faq_denuncias.pdf" target="_blank" class="document-item">
+          <span class="document-icon">📄</span>
+          <span class="document-title">Preguntas frecuentes sobre el Canal de Denuncias</span>
+        </a>
+      </div>
+
+      <h3>Formulario de Denuncia</h3>
+      <form class="complaint-form" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="denuncia-fecha">Fecha de los hechos:</label>
+          <input type="date" id="denuncia-fecha" required>
+        </div>
+
+        <div class="form-group">
+          <label for="denuncia-titulo">Asunto:</label>
+          <input type="text" id="denuncia-titulo" placeholder="Breve descripción" required>
+        </div>
+
+        <div class="form-group">
+          <label for="denuncia-descripcion">Descripción detallada:</label>
+          <textarea id="denuncia-descripcion" rows="4" placeholder="Explica lo sucedido" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="denuncia-evidencias">Adjuntar evidencias:</label>
+          <input type="file" id="denuncia-evidencias" multiple>
+        </div>
+
+        <div class="form-group checkbox-group">
+          <label>
+            <input type="checkbox" id="denuncia-anonima">
+            <span>Enviar de forma anónima</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn submit-btn">Enviar denuncia</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+  <!-- POPUPS CORPORATIVOS -->
+ <!-- Comité de Empresa -->
+<div id="comite-popup" class="module-popup">
+  <div class="module-popup-content">
+    <button class="popup-close" onclick="closeModule('comite')">&times;</button>
+    <div class="popup-header"><h2>Comité de Empresa</h2></div>
+    <div class="popup-body">
+      <p class="intro-text">
+        El <strong>Comité de Empresa</strong> es el órgano de representación de los trabajadores, 
+        esencial en Luría's Burger para canalizar la participación y velar por los derechos laborales colectivos. 
+        Está compuesto por <strong>9 representantes</strong>, de acuerdo al artículo 66.1 del Estatuto de los Trabajadores.
+      </p>
+
+      <h3>Organigrama (9 representantes)</h3>
+      <div class="text-center">
+        <img src="/hamburgueseria_luria/assets/iconos_intranet/organigrama_comite.png" alt="Organigrama" style="width:100%;border-radius:8px;margin-bottom:1rem;">
+      </div>
+
+      <h3>Miembros y Roles</h3>
+      <div class="table-container">
+        <table class="committee-table">
+          <tr>
+            <th>Nombre</th>
+            <th>Cargo en el Comité</th>
+            <th>Departamento / Área</th>
+            <th>Contacto</th>
+          </tr>
+          <tr>
+            <td><strong>Alicia Pérez</strong></td>
+            <td>Presidenta</td>
+            <td>Cocina (Planta Central)</td>
+            <td><a href="mailto:alicia.perez@lurias.com" class="email-link">alicia.perez@lurias.com</a></td>
+          </tr>
+          <tr>
+            <td><strong>Juan García</strong></td>
+            <td>Vicepresidente</td>
+            <td>Ventas Nacionales</td>
+            <td><a href="mailto:juan.garcia@lurias.com" class="email-link">juan.garcia@lurias.com</a></td>
+          </tr>
+          <tr>
+            <td><strong>María López</strong></td>
+            <td>Secretaria</td>
+            <td>Recursos Humanos</td>
+            <td><a href="mailto:maria.lopez@lurias.com" class="email-link">maria.lopez@lurias.com</a></td>
+          </tr>
+          <tr>
+            <td><strong>Carlos Sánchez</strong></td>
+            <td>Vocal (CCOO)</td>
+            <td>Restaurante Zaragoza</td>
+            <td><a href="mailto:carlos.sanchez@lurias.com" class="email-link">carlos.sanchez@lurias.com</a></td>
+          </tr>
+          <tr>
+            <td><strong>Elena Rodríguez</strong></td>
+            <td>Vocal (UGT)</td>
+            <td>Restaurante Madrid</td>
+            <td><a href="mailto:elena.rodriguez@lurias.com" class="email-link">elena.rodriguez@lurias.com</a></td>
+          </tr>
+          <tr>
+            <td><strong>Sergio Morales</strong></td>
+            <td>Vocal (CCOO)</td>
+            <td>Operaciones Logísticas</td>
+            <td><a href="mailto:sergio.morales@lurias.com" class="email-link">sergio.morales@lurias.com</a></td>
+          </tr>
+          <tr>
+            <td><strong>Lucía Fernández</strong></td>
+            <td>Vocal (UGT)</td>
+            <td>Atención al Cliente</td>
+            <td><a href="mailto:lucia.fernandez@lurias.com" class="email-link">lucia.fernandez@lurias.com</a></td>
+          </tr>
+          <tr>
+            <td><strong>David Romero</strong></td>
+            <td>Vocal (CCOO)</td>
+            <td>Marketing</td>
+            <td><a href="mailto:david.romero@lurias.com" class="email-link">david.romero@lurias.com</a></td>
+          </tr>
+          <tr>
+            <td><strong>Laura Martín</strong></td>
+            <td>Vocal (UGT)</td>
+            <td>Finanzas</td>
+            <td><a href="mailto:laura.martin@lurias.com" class="email-link">laura.martin@lurias.com</a></td>
+          </tr>
+        </table>
+      </div>
+
+      <h3>Mejoras Propuestas y Estado</h3>
+      <div class="improvements-grid">
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Incremento salarial</h4>
+            <span class="status-badge status-approved">Aprobado</span>
+          </div>
+          <p>+150€ en salario base desde enero 2025</p>
+        </div>
+
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Seguro médico</h4>
+            <span class="status-badge status-approved">Aprobado</span>
+          </div>
+          <p>Cobertura 100% empleados desde marzo 2025</p>
+        </div>
+
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Transporte</h4>
+            <span class="status-badge status-approved">Aprobado</span>
+          </div>
+          <p>Reembolso abono transporte mensual</p>
+        </div>
+
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Teletrabajo</h4>
+            <span class="status-badge status-in-process">En proceso</span>
+          </div>
+          <p>3 días/semana para roles administrativos</p>
+        </div>
+
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Nuevos uniformes</h4>
+            <span class="status-badge status-in-process">En proceso</span>
+          </div>
+          <p>Materiales sostenibles y mayor comodidad</p>
+        </div>
+
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Plan formación</h4>
+            <span class="status-badge status-in-process">En proceso</span>
+          </div>
+          <p>Cursos 100% subvencionados y en horario laboral</p>
+        </div>
+
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Conciliación</h4>
+            <span class="status-badge status-under-study">En estudio</span>
+          </div>
+          <p>Flexibilidad horaria para padres y madres</p>
+        </div>
+
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Semana 4 días</h4>
+            <span class="status-badge status-under-study">En estudio</span>
+          </div>
+          <p>Piloto en departamentos seleccionados</p>
+        </div>
+      </div>
+
+      <h3>Funciones del Comité</h3>
+      <ul class="function-list">
+        <li><strong>Negociación:</strong> Convenio o acuerdos de empresa.</li>
+        <li><strong>Vigilancia:</strong> Cumplimiento de normas laborales y de prevención de riesgos.</li>
+        <li><strong>Propuestas:</strong> Presentación de mejoras a la dirección.</li>
+        <li><strong>Mediación:</strong> En conflictos laborales colectivos.</li>
+        <li><strong>Igualdad:</strong> Garantizar trato y oportunidades en el entorno laboral.</li>
+        <li><strong>Comunicación:</strong> Canalizar quejas y sugerencias colectivas de la plantilla.</li>
+      </ul>
+
+      <h3>Contacto y Horario de Atención</h3>
+      <div class="contact-container">
+        <div class="contact-item">
+          <div class="contact-details">
+            <span class="contact-label"><strong>E-mail:</strong></span>
+            <a href="mailto:comite@luriasburger.com" class="highlighted-email">comite@luriasburger.com</a>
+          </div>
+        </div>
+        
+        <div class="contact-item">
+          <div class="contact-details">
+            <span class="contact-label"><strong>Horario presencial:</strong></span>
+            <span class="contact-value">Lunes y miércoles de 10:00 a 12:00h</span>
+            <span class="contact-note">Sala de Reuniones 2, Planta Central</span>
+          </div>
+        </div>
+        
+        <div class="contact-item">
+          <div class="contact-details">
+            <span class="contact-label"><strong>Buzón físico:</strong></span>
+            <span class="contact-value">Hall principal del edificio central</span>
+          </div>
+        </div>
+      </div>
+
+      <h3>Actas y Acuerdos</h3>
+      <p>Consulta las actas de las reuniones del Comité de Empresa y los acuerdos alcanzados con la dirección:</p>
+      <div class="documents-grid">
+        <a href="/documentos/acta_reunion_03_2025.pdf" target="_blank" class="document-link">
+          <span class="document-title">Acta reunión ordinaria</span>
+          <span class="document-date">Marzo 2025</span>
+        </a>
+        
+        <a href="/documentos/acuerdo_subida_salarial_2025.pdf" target="_blank" class="document-link">
+          <span class="document-title">Acuerdo subida salarial</span>
+          <span class="document-date">2025</span>
+        </a>
+        
+        <a href="/documentos/plan_igualdad_2024.pdf" target="_blank" class="document-link">
+          <span class="document-title">Plan de Igualdad</span>
+          <span class="document-date">2024</span>
+        </a>
+      </div>
+
+      <h3>Documentos y Enlaces Útiles</h3>
+      <div class="useful-links">
+        <a href="/documentos/convenio_colectivo_vigente.pdf" target="_blank" class="useful-link">
+          <span class="useful-link-text">Convenio Colectivo Luría's Burger</span>
+        </a>
+        
+        <a href="https://www.mites.gob.es" target="_blank" class="useful-link">
+          <span class="useful-link-text">Ministerio de Trabajo y Economía Social</span>
+        </a>
+        
+        <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2015-11430" target="_blank" class="useful-link">
+          <span class="useful-link-text">Estatuto de los Trabajadores (BOE)</span>
+        </a>
+      </div>
+
+      <h3>Noticias del Comité</h3>
+      <div class="news-container">
+        <div class="news-item">
+          <div class="news-date">10 Mayo 2025</div>
+          <div class="news-content">
+            <strong>Elecciones Comité 2026</strong>
+            <p>Abierto el plazo para candidaturas a las elecciones del nuevo Comité de Empresa.</p>
+          </div>
+        </div>
+        
+        <div class="news-item">
+          <div class="news-date">02 Mayo 2025</div>
+          <div class="news-content">
+            <strong>Reunión trimestral con Dirección</strong>
+            <p>Se debatió la propuesta de flexibilización de horarios para madres y padres.</p>
+          </div>
+        </div>
+        
+        <div class="news-item">
+          <div class="news-date">15 Abril 2025</div>
+          <div class="news-content">
+            <strong>Nueva Delegada de Prevención</strong>
+            <p>Elena Rodríguez ha sido nombrada nueva Delegada de Prevención de Riesgos Laborales.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+ <!-- Buzón de Sugerencias & FAQ -->
+<div id="sugerencias-popup" class="module-popup">
+  <div class="module-popup-content">
+    <button class="popup-close" onclick="closeModule('sugerencias')">&times;</button>
+    <div class="popup-header">
+      <h2>Buzón de Sugerencias & FAQ</h2>
+    </div>
+    <div class="popup-body">
+      
+      <div class="section-container">
+        <h3 class="section-title">Buzón de Sugerencias</h3>
+        <p class="section-intro">
+          ¿Tienes ideas para mejorar Luría's Burger? <strong>¡Queremos escucharte!</strong> 
+          Usa este buzón para enviar sugerencias, propuestas o comentarios. 
+          Puedes hacerlo anónimamente o indicando tu nombre.
+        </p>
+        
+        <form class="suggestion-form">
+          <div class="form-group">
+            <label for="suggestion-category"><strong>Categoría:</strong></label>
+            <select id="suggestion-category" class="form-control">
+              <option>Operaciones</option>
+              <option>Producto</option>
+              <option>Recursos Humanos</option>
+              <option>Atención al Cliente</option>
+              <option>Sostenibilidad</option>
+              <option>Comunicación Interna</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="suggestion-description"><strong>Descripción:</strong></label>
+            <textarea id="suggestion-description" rows="4" class="form-control" 
+                      placeholder="Escribe aquí tu idea o sugerencia..."></textarea>
+          </div>
+          
+          <div class="form-group checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="suggestion-anonymous">
+              <span class="checkbox-text">Enviar de forma anónima</span>
+            </label>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-submit">Enviar Sugerencia</button>
+        </form>
+      </div>
+
+      <div class="section-container">
+        <h3 class="section-title">Seguimiento y Reconocimiento</h3>
+        <p>
+          Cada sugerencia es revisada en un plazo máximo de <strong>2 semanas</strong>. 
+          El estado de cada propuesta se actualizará como:
+        </p>
+        
+        <div class="status-grid">
+          <div class="status-item">
+            <div class="status-label status-study">En estudio</div>
+            <div class="status-description">valorando viabilidad</div>
+          </div>
+          
+          <div class="status-item">
+            <div class="status-label status-accepted">Aceptada</div>
+            <div class="status-description">se implementará</div>
+          </div>
+          
+          <div class="status-item">
+            <div class="status-label status-implementation">En implementación</div>
+            <div class="status-description">ya en marcha</div>
+          </div>
+          
+          <div class="status-item">
+            <div class="status-label status-not-viable">No viable por ahora</div>
+            <div class="status-description">explicando razones</div>
+          </div>
+        </div>
+        
+        <p class="recognition-text">
+          Las mejores ideas se reconocen con el título <strong>Empleado Innovador del Mes</strong> 
+          y premios simbólicos.
+        </p>
+      </div>
+
+      <div class="section-container">
+        <h3 class="section-title">Ejemplos de Sugerencias Recientes</h3>
+        <div class="table-container">
+          <table class="suggestions-table">
+            <thead>
+              <tr>
+                <th>Sugerencia</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Instalar puntos de reciclaje en locales</td>
+                <td><span class="status-tag status-accepted">Aceptada</span></td>
+                <td>Marzo 2025</td>
+              </tr>
+              <tr>
+                <td>Flexibilizar uniforme en verano</td>
+                <td><span class="status-tag status-study">En estudio</span></td>
+                <td>Abril 2025</td>
+              </tr>
+              <tr>
+                <td>Incluir menú vegetariano diario</td>
+                <td><span class="status-tag status-implementation">En implementación</span></td>
+                <td>Mayo 2025</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="section-container">
+        <h3 class="section-title">Preguntas Frecuentes (FAQ)</h3>
+        
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary class="faq-question">¿Cómo actualizo mis datos personales en nómina?</summary>
+            <div class="faq-answer">
+              <p>Ve a <strong>Zona Personal → Mi Nómina → Datos Personales</strong> y edítalos. Recuerda guardar los cambios.</p>
+            </div>
+          </details>
+          
+          <details class="faq-item">
+            <summary class="faq-question">¿Cuántos días de asuntos propios tengo al año?</summary>
+            <div class="faq-answer">
+              <p>Dispones de <strong>2 días</strong> de asuntos propios retribuidos. Puedes solicitarlos en <strong>Zona Personal → Vacaciones y Permisos</strong>.</p>
+            </div>
+          </details>
+          
+          <details class="faq-item">
+            <summary class="faq-question">¿Qué hago si olvido mi contraseña de la intranet?</summary>
+            <div class="faq-answer">
+              <p>Pulsa en <strong>"¿Olvidaste tu contraseña?"</strong> en la pantalla de inicio de sesión y sigue los pasos para restablecerla.</p>
+            </div>
+          </details>
+          
+          <details class="faq-item">
+            <summary class="faq-question">¿Cómo solicito material de oficina?</summary>
+            <div class="faq-answer">
+              <p>Accede a <strong>Zona Corporativa → Sugerencias & FAQ → Solicitud de Material</strong>, donde podrás pedir lo necesario.</p>
+            </div>
+          </details>
+          
+          <details class="faq-item">
+            <summary class="faq-question">¿Existe posibilidad de teletrabajo en mi puesto?</summary>
+            <div class="faq-answer">
+              <p>Consulta la política en <strong>Zona Corporativa → Normativa & Convenio</strong>. Actualmente, los puestos de oficina tienen opción de <strong>1 día/semana de teletrabajo</strong>.</p>
+            </div>
+          </details>
+          
+          <details class="faq-item">
+            <summary class="faq-question">¿Puedo enviar preguntas a las FAQ?</summary>
+            <div class="faq-answer">
+              <p>Sí, si tu consulta no está resuelta, envíanosla mediante el Buzón de Sugerencias. Si es de interés general, la añadiremos a este listado.</p>
+            </div>
+          </details>
+        </div>
+        
+        <div class="faq-update-info">
+          <p>
+            Este espacio se actualiza periódicamente con las preguntas más frecuentes 
+            recibidas en el buzón y las consultas al equipo de RRHH, IT y Operaciones. 
+            <br>
+            <strong>Última actualización:</strong> Mayo 2025
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+ 
+<div id="calendario-popup" class="module-popup">
+  <div class="module-popup-content">
+    <button class="popup-close" onclick="closeModule('calendario')">&times;</button>
+    <div class="popup-header"><h2>Calendario Laboral 2025</h2></div>
+    <div class="popup-body">
+      <p>Consulta todos los festivos nacionales, jornadas especiales y eventos corporativos de Luría's Burger.</p>
+      <div class="calendar-month"><h3>January 2025</h3><div class="weekdays-header"><div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mié</div><div class="weekday">Jue</div><div class="weekday">Vie</div><div class="weekday">Sáb</div><div class="weekday">Dom</div></div><div class="calendar-grid"><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day holiday">1</div><div class="calendar-day">2</div><div class="calendar-day">3</div><div class="calendar-day">4</div><div class="calendar-day">5</div><div class="calendar-day holiday">6</div><div class="calendar-day">7</div><div class="calendar-day">8</div><div class="calendar-day">9</div><div class="calendar-day">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day">15</div><div class="calendar-day">16</div><div class="calendar-day">17</div><div class="calendar-day">18</div><div class="calendar-day">19</div><div class="calendar-day">20</div><div class="calendar-day">21</div><div class="calendar-day">22</div><div class="calendar-day">23</div><div class="calendar-day">24</div><div class="calendar-day">25</div><div class="calendar-day">26</div><div class="calendar-day">27</div><div class="calendar-day">28</div><div class="calendar-day">29</div><div class="calendar-day">30</div><div class="calendar-day">31</div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div></div></div><div class="calendar-month"><h3>February 2025</h3><div class="weekdays-header"><div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mié</div><div class="weekday">Jue</div><div class="weekday">Vie</div><div class="weekday">Sáb</div><div class="weekday">Dom</div></div><div class="calendar-grid"><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day">1</div><div class="calendar-day">2</div><div class="calendar-day">3</div><div class="calendar-day">4</div><div class="calendar-day">5</div><div class="calendar-day">6</div><div class="calendar-day">7</div><div class="calendar-day">8</div><div class="calendar-day">9</div><div class="calendar-day">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day">15</div><div class="calendar-day">16</div><div class="calendar-day">17</div><div class="calendar-day">18</div><div class="calendar-day">19</div><div class="calendar-day">20</div><div class="calendar-day">21</div><div class="calendar-day">22</div><div class="calendar-day">23</div><div class="calendar-day">24</div><div class="calendar-day">25</div><div class="calendar-day">26</div><div class="calendar-day">27</div><div class="calendar-day">28</div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div></div></div><div class="calendar-month"><h3>March 2025</h3><div class="weekdays-header"><div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mié</div><div class="weekday">Jue</div><div class="weekday">Vie</div><div class="weekday">Sáb</div><div class="weekday">Dom</div></div><div class="calendar-grid"><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day">1</div><div class="calendar-day">2</div><div class="calendar-day">3</div><div class="calendar-day vacation-approved">4</div><div class="calendar-day">5</div><div class="calendar-day">6</div><div class="calendar-day">7</div><div class="calendar-day">8</div><div class="calendar-day">9</div><div class="calendar-day">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day">15</div><div class="calendar-day">16</div><div class="calendar-day">17</div><div class="calendar-day">18</div><div class="calendar-day holiday">19</div><div class="calendar-day">20</div><div class="calendar-day">21</div><div class="calendar-day">22</div><div class="calendar-day">23</div><div class="calendar-day">24</div><div class="calendar-day">25</div><div class="calendar-day">26</div><div class="calendar-day">27</div><div class="calendar-day">28</div><div class="calendar-day">29</div><div class="calendar-day">30</div><div class="calendar-day">31</div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div></div></div><div class="calendar-month"><h3>April 2025</h3><div class="weekdays-header"><div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mié</div><div class="weekday">Jue</div><div class="weekday">Vie</div><div class="weekday">Sáb</div><div class="weekday">Dom</div></div><div class="calendar-grid"><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day">1</div><div class="calendar-day">2</div><div class="calendar-day">3</div><div class="calendar-day">4</div><div class="calendar-day">5</div><div class="calendar-day">6</div><div class="calendar-day">7</div><div class="calendar-day">8</div><div class="calendar-day">9</div><div class="calendar-day">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day">15</div><div class="calendar-day">16</div><div class="calendar-day">17</div><div class="calendar-day holiday">18</div><div class="calendar-day">19</div><div class="calendar-day">20</div><div class="calendar-day">21</div><div class="calendar-day">22</div><div class="calendar-day">23</div><div class="calendar-day">24</div><div class="calendar-day">25</div><div class="calendar-day">26</div><div class="calendar-day">27</div><div class="calendar-day">28</div><div class="calendar-day">29</div><div class="calendar-day">30</div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div></div></div><div class="calendar-month"><h3>May 2025</h3><div class="weekdays-header"><div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mié</div><div class="weekday">Jue</div><div class="weekday">Vie</div><div class="weekday">Sáb</div><div class="weekday">Dom</div></div><div class="calendar-grid"><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day holiday">1</div><div class="calendar-day">2</div><div class="calendar-day">3</div><div class="calendar-day">4</div><div class="calendar-day">5</div><div class="calendar-day">6</div><div class="calendar-day">7</div><div class="calendar-day">8</div><div class="calendar-day">9</div><div class="calendar-day">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day">15</div><div class="calendar-day">16</div><div class="calendar-day">17</div><div class="calendar-day">18</div><div class="calendar-day">19</div><div class="calendar-day">20</div><div class="calendar-day">21</div><div class="calendar-day">22</div><div class="calendar-day">23</div><div class="calendar-day">24</div><div class="calendar-day">25</div><div class="calendar-day">26</div><div class="calendar-day">27</div><div class="calendar-day">28</div><div class="calendar-day">29</div><div class="calendar-day">30</div><div class="calendar-day">31</div><div class="calendar-day inactive"></div></div></div><div class="calendar-month"><h3>June 2025</h3><div class="weekdays-header"><div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mié</div><div class="weekday">Jue</div><div class="weekday">Vie</div><div class="weekday">Sáb</div><div class="weekday">Dom</div></div><div class="calendar-grid"><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day">1</div><div class="calendar-day">2</div><div class="calendar-day">3</div><div class="calendar-day">4</div><div class="calendar-day">5</div><div class="calendar-day">6</div><div class="calendar-day">7</div><div class="calendar-day">8</div><div class="calendar-day">9</div><div class="calendar-day">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day vacation-approved">14</div><div class="calendar-day">15</div><div class="calendar-day">16</div><div class="calendar-day">17</div><div class="calendar-day">18</div><div class="calendar-day">19</div><div class="calendar-day">20</div><div class="calendar-day">21</div><div class="calendar-day">22</div><div class="calendar-day">23</div><div class="calendar-day">24</div><div class="calendar-day">25</div><div class="calendar-day">26</div><div class="calendar-day">27</div><div class="calendar-day">28</div><div class="calendar-day">29</div><div class="calendar-day">30</div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div></div></div><div class="calendar-month"><h3>July 2025</h3><div class="weekdays-header"><div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mié</div><div class="weekday">Jue</div><div class="weekday">Vie</div><div class="weekday">Sáb</div><div class="weekday">Dom</div></div><div class="calendar-grid"><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day">1</div><div class="calendar-day">2</div><div class="calendar-day">3</div><div class="calendar-day">4</div><div class="calendar-day">5</div><div class="calendar-day">6</div><div class="calendar-day">7</div><div class="calendar-day">8</div><div class="calendar-day">9</div><div class="calendar-day">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day">15</div><div class="calendar-day">16</div><div class="calendar-day">17</div><div class="calendar-day">18</div><div class="calendar-day">19</div><div class="calendar-day">20</div><div class="calendar-day">21</div><div class="calendar-day">22</div><div class="calendar-day">23</div><div class="calendar-day">24</div><div class="calendar-day">25</div><div class="calendar-day">26</div><div class="calendar-day">27</div><div class="calendar-day">28</div><div class="calendar-day">29</div><div class="calendar-day">30</div><div class="calendar-day">31</div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div></div></div><div class="calendar-month"><h3>August 2025</h3><div class="weekdays-header"><div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mié</div><div class="weekday">Jue</div><div class="weekday">Vie</div><div class="weekday">Sáb</div><div class="weekday">Dom</div></div><div class="calendar-grid"><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day">1</div><div class="calendar-day">2</div><div class="calendar-day">3</div><div class="calendar-day">4</div><div class="calendar-day">5</div><div class="calendar-day">6</div><div class="calendar-day">7</div><div class="calendar-day">8</div><div class="calendar-day">9</div><div class="calendar-day">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day holiday">15</div><div class="calendar-day">16</div><div class="calendar-day">17</div><div class="calendar-day">18</div><div class="calendar-day">19</div><div class="calendar-day">20</div><div class="calendar-day">21</div><div class="calendar-day">22</div><div class="calendar-day">23</div><div class="calendar-day">24</div><div class="calendar-day">25</div><div class="calendar-day">26</div><div class="calendar-day">27</div><div class="calendar-day">28</div><div class="calendar-day">29</div><div class="calendar-day">30</div><div class="calendar-day">31</div></div></div><div class="calendar-month"><h3>September 2025</h3><div class="weekdays-header"><div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mié</div><div class="weekday">Jue</div><div class="weekday">Vie</div><div class="weekday">Sáb</div><div class="weekday">Dom</div></div><div class="calendar-grid"><div class="calendar-day">1</div><div class="calendar-day">2</div><div class="calendar-day">3</div><div class="calendar-day">4</div><div class="calendar-day">5</div><div class="calendar-day">6</div><div class="calendar-day">7</div><div class="calendar-day">8</div><div class="calendar-day">9</div><div class="calendar-day">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day">15</div><div class="calendar-day">16</div><div class="calendar-day">17</div><div class="calendar-day">18</div><div class="calendar-day">19</div><div class="calendar-day">20</div><div class="calendar-day">21</div><div class="calendar-day">22</div><div class="calendar-day vacation-approved">23</div><div class="calendar-day">24</div><div class="calendar-day">25</div><div class="calendar-day">26</div><div class="calendar-day">27</div><div class="calendar-day">28</div><div class="calendar-day">29</div><div class="calendar-day">30</div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div></div></div><div class="calendar-month"><h3>October 2025</h3><div class="weekdays-header"><div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mié</div><div class="weekday">Jue</div><div class="weekday">Vie</div><div class="weekday">Sáb</div><div class="weekday">Dom</div></div><div class="calendar-grid"><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day">1</div><div class="calendar-day">2</div><div class="calendar-day">3</div><div class="calendar-day">4</div><div class="calendar-day">5</div><div class="calendar-day">6</div><div class="calendar-day">7</div><div class="calendar-day">8</div><div class="calendar-day">9</div><div class="calendar-day">10</div><div class="calendar-day">11</div><div class="calendar-day holiday">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day">15</div><div class="calendar-day">16</div><div class="calendar-day">17</div><div class="calendar-day">18</div><div class="calendar-day">19</div><div class="calendar-day">20</div><div class="calendar-day">21</div><div class="calendar-day">22</div><div class="calendar-day">23</div><div class="calendar-day">24</div><div class="calendar-day">25</div><div class="calendar-day">26</div><div class="calendar-day">27</div><div class="calendar-day">28</div><div class="calendar-day">29</div><div class="calendar-day">30</div><div class="calendar-day">31</div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div></div></div><div class="calendar-month"><h3>November 2025</h3><div class="weekdays-header"><div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mié</div><div class="weekday">Jue</div><div class="weekday">Vie</div><div class="weekday">Sáb</div><div class="weekday">Dom</div></div><div class="calendar-grid"><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day holiday">1</div><div class="calendar-day">2</div><div class="calendar-day">3</div><div class="calendar-day">4</div><div class="calendar-day">5</div><div class="calendar-day">6</div><div class="calendar-day">7</div><div class="calendar-day">8</div><div class="calendar-day">9</div><div class="calendar-day">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day">15</div><div class="calendar-day">16</div><div class="calendar-day">17</div><div class="calendar-day">18</div><div class="calendar-day">19</div><div class="calendar-day">20</div><div class="calendar-day">21</div><div class="calendar-day">22</div><div class="calendar-day">23</div><div class="calendar-day">24</div><div class="calendar-day">25</div><div class="calendar-day">26</div><div class="calendar-day">27</div><div class="calendar-day">28</div><div class="calendar-day">29</div><div class="calendar-day">30</div></div></div><div class="calendar-month"><h3>December 2025</h3><div class="weekdays-header"><div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mié</div><div class="weekday">Jue</div><div class="weekday">Vie</div><div class="weekday">Sáb</div><div class="weekday">Dom</div></div><div class="calendar-grid"><div class="calendar-day">1</div><div class="calendar-day">2</div><div class="calendar-day">3</div><div class="calendar-day">4</div><div class="calendar-day">5</div><div class="calendar-day holiday">6</div><div class="calendar-day">7</div><div class="calendar-day holiday">8</div><div class="calendar-day">9</div><div class="calendar-day">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day">15</div><div class="calendar-day">16</div><div class="calendar-day">17</div><div class="calendar-day">18</div><div class="calendar-day">19</div><div class="calendar-day">20</div><div class="calendar-day">21</div><div class="calendar-day">22</div><div class="calendar-day">23</div><div class="calendar-day">24</div><div class="calendar-day holiday">25</div><div class="calendar-day">26</div><div class="calendar-day">27</div><div class="calendar-day">28</div><div class="calendar-day">29</div><div class="calendar-day">30</div><div class="calendar-day">31</div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div><div class="calendar-day inactive"></div></div></div>
+      <div class="calendar-legend">
+        <div class="legend-item"><span class="color-box holiday"></span> Festivos Oficiales</div>
+        <div class="legend-item"><span class="color-box vacation-approved"></span> Eventos Corporativos</div>
+      </div>
+      <p style="margin-top:1rem;">
+</p>
+<p style="margin-top:1rem;">
+  <a href="/hamburgueseria_luria/assets/descargables/calendario_laboral_2025_lurias_burger.pdf" target="_blank" class="btn btn-secondary">Ver Calendario en PDF</a>
+</p>
+
+    </div>
+  </div>
+</div>
+<!-- Normativa y Convenio -->
+<div id="normativa-popup" class="module-popup">
+  <div class="module-popup-content">
+    <button class="popup-close" onclick="closeModule('normativa')">&times;</button>
+    <div class="popup-header"><h2>Normativa & Convenio</h2></div>
+    <div class="popup-body">
+
+      <h3>Legislación Laboral Básica</h3>
+      <ul>
+        <li><strong>Estatuto de los Trabajadores (ET):</strong>
+          <ul>
+            <li>Jornada máxima: 40h semanales (Art. 34 ET)</li>
+            <li>Vacaciones mínimas: 30 días naturales al año (Art. 38 ET)</li>
+            <li>Permiso por matrimonio: 15 días naturales (Art. 37.3 ET)</li>
+            <li>Pago puntual del salario (Art. 29 ET)</li>
+            <li><a href="https://www.boe.es/buscar/act.php?id=BOE-A-2015-11430" target="_blank">Texto completo del ET (BOE)</a></li>
+          </ul>
+        </li>
+        <li><strong>Ley de Prevención de Riesgos Laborales (LPRL 31/95):</strong> Derecho a entorno seguro, evaluación de riesgos, formación y vigilancia de la salud. Incluye delegados de prevención.<br>
+          <a href="https://www.boe.es/buscar/act.php?id=BOE-A-1995-24292" target="_blank">Texto completo LPRL</a>
+        </li>
+        <li><strong>Ley de Igualdad (LO 3/2007):</strong> Igualdad salarial, conciliación, protocolos de acoso. Luría’s cuenta con Plan de Igualdad vigente.<br>
+          <a href="/documentos/plan_igualdad_luria.pdf" target="_blank">Descargar Plan de Igualdad</a>
+        </li>
+        <li><strong>Ley de Teletrabajo (Ley 10/2021):</strong> Derechos de teletrabajadores: voluntariedad, acuerdo escrito, compensación de gastos, desconexión digital.<br>
+          <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2021-13409" target="_blank">Texto Ley 10/2021</a>
+        </li>
+      </ul>
+
+      <h3>Convenio Colectivo Aplicable</h3>
+      <p>Luría’s Burger se rige por el <strong>Convenio Colectivo de Hostelería de Madrid (2023-2026)</strong>, de ámbito provincial. Puntos clave:</p>
+      <ul>
+        <li>Salario base según categoría (ej.: Ayudante de Cocina: 1.400€/mes)</li>
+        <li>Pluses de nocturnidad (+25%), festivos (+50%)</li>
+        <li>Jornada máxima: 39h semanales</li>
+        <li>Descanso semanal: 2 días consecutivos</li>
+        <li>Vacaciones: 32 días naturales/año</li>
+        <li>Paga extra de beneficios en marzo</li>
+      </ul>
+      <p>
+        <a href="/documentos/convenio_hosteleria_madrid.pdf" target="_blank" class="btn btn-secondary">Descargar Convenio completo (PDF)</a>
+      </p>
+
+      <h3>Políticas Internas</h3>
+      <ul>
+        <li><strong>Normas de Régimen Interno:</strong> Uniformes, puntualidad, uso de recursos.</li>
+        <li><strong>Política de Privacidad (LOPD/GDPR):</strong> Tratamiento de datos personales, videovigilancia, geolocalización de repartidores.</li>
+        <li><strong>Política de Uso de Recursos Informáticos:</strong> Buenas prácticas de email, internet y ciberseguridad.</li>
+        <li><strong>Código de Conducta:</strong> Ética, integridad, sostenibilidad, prohibición de sobornos.</li>
+      </ul>
+      <p>
+        <a href="/documentos/codigo_conducta_luria.pdf" target="_blank" class="btn btn-secondary">Descargar Código de Conducta</a>
+      </p>
+
+      <h3>Actualizaciones Legales</h3>
+      <p><strong>Última actualización:</strong> Mayo 2025</p>
+      <ul>
+        <li>RD-ley 5/2023: Permiso de 5 días por cuidado de familiar, integrado en políticas Luría’s.</li>
+        <li>Adaptación a Ley de Protección al Informante (Ley 2/2023).</li>
+      </ul>
+
+      <h3>FAQ Legales</h3>
+      <details>
+        <summary>¿Cuánto dura el permiso de paternidad?</summary>
+        <p>Actualmente 16 semanas, equiparado a maternidad. Distribución flexible, con las primeras 6 semanas obligatorias tras el nacimiento.</p>
+      </details>
+      <details>
+        <summary>¿Me pueden cambiar de centro de trabajo?</summary>
+        <p>Solo por causas económicas, organizativas o productivas justificadas. Ver movilidad geográfica en ET Art. 40.</p>
+      </details>
+      <details>
+        <summary>¿Qué pasa si hay discrepancia en la categoría profesional?</summary>
+        <p>Debes solicitar revisión a RRHH y, en caso de desacuerdo, acudir al Comité de Empresa o la Inspección de Trabajo.</p>
+      </details>
+      <details>
+        <summary>¿Las horas extra son obligatorias?</summary>
+        <p>No, salvo pacto expreso o fuerza mayor. Límite de 80h anuales según ET.</p>
+      </details>
+
+    </div>
+  </div>
+</div>
+
+<!-- Noticias y Comunicados -->
+<div id="noticias-popup" class="module-popup">
+  <div class="module-popup-content">
+    <button class="popup-close" onclick="closeModule('noticias')">&times;</button>
+    <div class="popup-header"><h2>Noticias & Comunicados</h2></div>
+    <div class="popup-body">
+
+      <h3>Últimas Noticias</h3>
+      <div class="improvements-grid">
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Premio Mejor Hamburguesa Vegana 2025</h4>
+            <span class="status-badge status-approved">Noticia</span>
+          </div>
+          <p>Luría’s Burger ha sido galardonada por su hamburguesa "Green Sensation". Un logro para todo el equipo.</p>
+        </div>
+
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Apertura de 3 nuevos locales en Valencia</h4>
+            <span class="status-badge status-approved">Noticia</span>
+          </div>
+          <p>La expansión sigue creciendo con las inauguraciones de nuestros restaurantes en Ruzafa, Campanar y Patraix.</p>
+        </div>
+
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Campaña solidaria 'Burgers contra el Hambre'</h4>
+            <span class="status-badge status-approved">RSC</span>
+          </div>
+          <p>Donaremos el 5% de las ventas de mayo a la ONG Banco de Alimentos. ¡Tu burger suma!</p>
+        </div>
+
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Nueva Directora de Operaciones: Laura Martínez</h4>
+            <span class="status-badge status-approved">Comunicado</span>
+          </div>
+          <p>Laura liderará la estrategia de expansión y optimización de procesos a nivel nacional.</p>
+        </div>
+
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Actualización Manual de Operaciones</h4>
+            <span class="status-badge status-approved">Comunicado</span>
+          </div>
+          <p>Ya disponible en la intranet la versión 2025 del manual para gerentes y responsables de local.</p>
+        </div>
+
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Convención Anual 2025</h4>
+            <span class="status-badge status-approved">Evento</span>
+          </div>
+          <p>Nos vemos en Madrid el 20 de junio para compartir logros, retos y nuevas estrategias.</p>
+        </div>
+
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Evaluación de Desempeño 2025</h4>
+            <span class="status-badge status-in-process">RRHH</span>
+          </div>
+          <p>Abierto el periodo de autoevaluaciones y entrevistas. Consulta fechas y documentos en Zona Personal.</p>
+        </div>
+
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Mensaje del CEO: Cierre del 1er Trimestre</h4>
+            <span class="status-badge status-approved">Comunicado</span>
+          </div>
+          <p>Nuestro CEO agradece el esfuerzo de todos los equipos y comparte resultados positivos.</p>
+        </div>
+      </div>
+
+      <h3>Archivo y Búsqueda</h3>
+      <p>Consulta noticias anteriores por categoría o usando palabras clave.</p>
+      <input type="text" placeholder="Buscar noticias..." style="width:100%;padding:0.75rem;margin:1rem 0;border:1px solid #ddd;border-radius:6px;">
+      <button class="btn btn-secondary" style="width:100%;">Buscar</button>
+
+      <h3>Suscripción a Notificaciones</h3>
+      <p>Recibe avisos por email cada vez que haya una noticia nueva.</p>
+      <form>
+        <label for="news-subscription">Correo corporativo:</label>
+        <input type="email" id="news-subscription" placeholder="tuemail@luriasburger.com">
+        <button type="submit" class="btn" style="width:100%;">Suscribirme</button>
+      </form>
+
+      <h3>Aporta tu Noticia</h3>
+      <p>¿Tienes algo relevante para compartir? Proponlo a Comunicación Interna.</p>
+      <button class="btn btn-secondary" style="width:100%;">Enviar Propuesta</button>
+
+    </div>
+  </div>
+</div>
+
+
+ <!-- IT & Ciberseguridad -->
+<div id="it-popup" class="module-popup">
+  <div class="module-popup-content">
+    <button class="popup-close" onclick="closeModule('it')">&times;</button>
+    <div class="popup-header"><h2>IT & Ciberseguridad</h2></div>
+    <div class="popup-body">
+      
+      <h3>Soporte Técnico (Helpdesk)</h3>
+      <p>¿Problemas con el correo, equipos o aplicaciones? Contacta con nuestro soporte:</p>
+      <ul>
+        <li><strong>Email:</strong> soporteTI@luriasburger.com</li>
+        <li><strong>Teléfono interno:</strong> 1234</li>
+        <li><strong>Horario:</strong> Lunes a viernes, 9:00-18:00h</li>
+      </ul>
+      <h3>Crear Incidencia de IT</h3>
+<p>Completa este formulario para notificar un problema técnico. El equipo de soporte te contactará a la mayor brevedad.</p>
+<form id="it-incident-form" enctype="multipart/form-data">
+  <label for="incident-category">Categoría del problema:</label>
+  <select id="incident-category" required>
+    <option value="">Selecciona...</option>
+    <option value="correo">Correo electrónico</option>
+    <option value="wifi">Conexión Wi-Fi</option>
+    <option value="hardware">Hardware (ordenador, impresora, caja)</option>
+    <option value="software">Software interno</option>
+    <option value="fichaje">Fichaje/biometría</option>
+    <option value="otros">Otros</option>
+  </select>
+
+  <label for="incident-description">Descripción detallada:</label>
+  <textarea id="incident-description" rows="4" placeholder="Explica el problema con detalle" required></textarea>
+
+  <label for="incident-urgency">Prioridad:</label>
+  <select id="incident-urgency" required>
+    <option value="">Selecciona...</option>
+    <option value="baja">Baja (no urgente)</option>
+    <option value="media">Media (afecta a mi trabajo)</option>
+    <option value="alta">Alta (imposible trabajar)</option>
+  </select>
+
+  <label for="incident-attachment">Adjuntar capturas o documentos (opcional):</label>
+  <input type="file" id="incident-attachment" multiple>
+
+  <label for="incident-contact">Correo de contacto (opcional si no anónimo):</label>
+  <input type="email" id="incident-contact" placeholder="tu.email@lurias.com">
+
+  <label style="display: flex; align-items: center; margin-bottom: 1rem;">
+    <input type="checkbox" id="incident-anonymous" style="margin-right: .5rem;">
+    Enviar de forma anónima
+  </label>
+
+  <button type="submit" class="btn" style="width:100%;">Enviar Incidencia</button>
+</form>
+
+      
+      <h3>Preguntas Frecuentes</h3>
+      <div class="table-container">
+        <table>
+          <tr><th>Problema</th><th>Solución</th></tr>
+          <tr><td>No recuerdo mi contraseña de la intranet</td><td>Pulsa en "Olvidé mi contraseña" en la pantalla de acceso y sigue las instrucciones</td></tr>
+          <tr><td>No conecta el Wi-Fi de la oficina</td><td>Reinicia el dispositivo, verifica credenciales y contacta IT si persiste</td></tr>
+          <tr><td>El sistema de fichaje no reconoce mi huella</td><td>Limpia el sensor, prueba varias veces y si sigue fallando, abre incidencia</td></tr>
+        </table>
+      </div>
+
+      <h3>Políticas de IT</h3>
+      <ul>
+        <li><strong>Correo corporativo:</strong> uso profesional, no abrir adjuntos sospechosos</li>
+        <li><strong>Software autorizado:</strong> sólo instalar programas aprobados por IT</li>
+        <li><strong>Contraseñas seguras:</strong> mín. 8 caracteres, cambio cada 6 meses, no compartir</li>
+        <li><strong>USB y dispositivos externos:</strong> siempre pasar antivirus antes de conectar</li>
+        <li><strong>Teletrabajo seguro:</strong> usar VPN, redes seguras, proteger pantalla</li>
+      </ul>
+      <p><a href="/hamburgueseria_luria/assets/descargables/Politica_IT_Ciberseguridad_LuriasBurger.pdf" class="btn btn-secondary" target="_blank">Ver Política IT Completa</a></p>
+
+      <h3>Buenas Prácticas en Ciberseguridad</h3>
+      <div class="improvements-grid">
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Phishing</h4>
+          </div>
+          <p>Desconfía de correos con enlaces o archivos no solicitados. Verifica siempre el remitente.</p>
+        </div>
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Contraseñas robustas</h4>
+          </div>
+          <p>Evita usar fechas o nombres comunes. Usa combinaciones seguras y activa doble factor si se ofrece.</p>
+        </div>
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Uso de equipos</h4>
+          </div>
+          <p>No dejes sesiones abiertas en equipos compartidos. Bloquea siempre la pantalla.</p>
+        </div>
+        <div class="improvement-card">
+          <div class="improvement-header">
+            <h4>Protección de datos</h4>
+          </div>
+          <p>No compartas datos sensibles por canales no autorizados. Usa cifrado si es necesario.</p>
+        </div>
+      </div>
+
+      <h3>Alertas y Comunicados</h3>
+      <ul>
+        <li><strong>Aviso:</strong> Detectada campaña de phishing suplantando RRHH. No abras adjuntos ZIP desconocidos.</li>
+        <li><strong>Mantenimiento:</strong> Sábado 15/06 de 1:00 a 3:00 AM, sistemas de nómina fuera de servicio.</li>
+      </ul>
+
+      <h3>Equipo Técnico Local</h3>
+      <div class="table-container">
+        <table>
+          <tr><th>Región</th><th>Contacto Técnico</th><th>Teléfono</th></tr>
+          <tr><td>Zona Centro</td><td>Juan Tech</td><td>1234</td></tr>
+          <tr><td>Zona Norte</td><td>Ana Support</td><td>1235</td></tr>
+          <tr><td>Zona Este</td><td>David IT</td><td>1236</td></tr>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Bienestar y Cultura -->
+<div id="bienestar-popup" class="module-popup">
+  <div class="module-popup-content">
+    <button class="popup-close" onclick="closeModule('bienestar')">&times;</button>
+    <div class="popup-header"><h2>Bienestar & Cultura</h2></div>
+    <div class="popup-body">
+      <p>Fomentamos el orgullo de pertenencia a Luría’s Burger mediante reconocimientos, eventos, retos y actividades que refuerzan nuestra cultura corporativa y valores.</p>
+      <ul>
+        <li><strong>Reconocimientos:</strong> Empleado del mes, aniversarios, logros educativos y premios internos.</li>
+        <li><strong>Actividades y eventos:</strong> Team building, deporte, voluntariado y retos saludables.</li>
+        <li><strong>Cultura corporativa:</strong> Historias, valores y participación de empleados en #VozDeLurias.</li>
+        <li><strong>Bienestar integral:</strong> Talleres de nutrición, ergonomía, mindfulness y conciliación.</li>
+        <li><strong>Boletín cultural trimestral:</strong> <a href="/hamburgueseria_luria/assets/descargables/boletin.png" target="_blank">Descargar última edición</a>.</li>
+      </ul>
+      <p>Descubre cómo construimos día a día un gran lugar para trabajar.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Sostenibilidad y RSC -->
+<div id="sostenibilidad-popup" class="module-popup">
+  <div class="module-popup-content">
+    <button class="popup-close" onclick="closeModule('sostenibilidad')">&times;</button>
+    <div class="popup-header"><h2>Sostenibilidad & RSC</h2></div>
+    <div class="popup-body">
+      <p>En Luría’s Burger creemos en un crecimiento responsable, respetuoso con el entorno y comprometido con la sociedad. Aquí te mostramos nuestros proyectos y objetivos en materia de sostenibilidad y responsabilidad social.</p>
+      <ul>
+        <li><strong>Compromiso medioambiental:</strong> reciclaje, eficiencia energética, reducción de huella de carbono y transporte sostenible.</li>
+        <li><strong>Responsabilidad social:</strong> apoyo a comunidades, empleo inclusivo, programas educativos y colaboraciones con ONGs.</li>
+        <li><strong>ODS Naciones Unidas:</strong> cómo contribuimos a los Objetivos de Desarrollo Sostenible.</li>
+        <li><strong>Indicadores clave:</strong> gráficos e informes de impacto ambiental y social.</li>
+        <li><strong>Documentos oficiales:</strong>
+          <ul>
+            <li><a href="/hamburgueseria_luria/assets/descargables/Politica_Medioambiente.pdf" target="_blank">Política Medioambiental</a></li>
+            <li><a href="/hamburgueseria_luria/assets/descargables/Reporte_RSC_2025.pdf" target="_blank">Reporte RSC 2025</a></li>
+          </ul>
+        </li>
+      </ul>
+      <p>Conoce nuestras iniciativas y sé parte activa del cambio.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Despidos: Qué Cabe Esperar -->
+<div id="despidos-popup" class="module-popup">
+  <div class="module-popup-content">
+    <button class="popup-close" onclick="closeModule('despidos')">&times;</button>
+    <div class="popup-header">
+      <h2>Despidos: Qué Cabe Esperar</h2>
+    </div>
+    <div class="popup-body">
+      <p>En esta sección te explicamos de forma clara qué derechos y obligaciones tienes en caso de que finalice tu relación laboral con Luría’s Burger, ya sea por despido, finalización de contrato o baja voluntaria.</p>
+      <h3>Tipos de Despido y Procedimientos</h3>
+      <ul>
+        <li><strong>Despido disciplinario:</strong> Se produce por incumplimientos graves. No hay indemnización, pero siempre cabe impugnarlo si no se está de acuerdo.</li>
+        <li><strong>Despido objetivo:</strong> Por causas económicas, técnicas, organizativas o de producción. Indemnización de 20 días por año trabajado, hasta 12 mensualidades.</li>
+        <li><strong>Finalización de contrato temporal:</strong> Indemnización de 12 días por año trabajado si procede.</li>
+        <li><strong>Baja voluntaria:</strong> El trabajador comunica su decisión. Debe respetar el preaviso según contrato (normalmente 15 días).</li>
+      </ul>
+      <h3>Derechos al finalizar la relación laboral</h3>
+      <ul>
+        <li>Recibir la liquidación de salarios pendientes, vacaciones no disfrutadas y la indemnización si corresponde.</li>
+        <li>Cobrar finiquito en plazo legal (máximo en el momento de baja).</li>
+        <li>Recibir el certificado de empresa y otros documentos necesarios para solicitar prestaciones.</li>
+        <li>Acceder a desempleo (si se cumplen los requisitos).</li>
+      </ul>
+      <h3>Vídeo explicativo</h3>
+      <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Despidos en Luría’s Burger: Derechos y Obligaciones" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Prevención de Riesgos Laborales -->
+<div id="prl-popup" class="module-popup">
+  <div class="module-popup-content">
+    <button class="popup-close" onclick="closeModule('prl')">&times;</button>
+    <div class="popup-header">
+      <h2>Prevención de Riesgos Laborales</h2>
+    </div>
+    <div class="popup-body">
+      <p>La seguridad y salud de nuestros empleados es una prioridad en Luría’s Burger. Esta sección recoge las normas y recursos para prevenir accidentes y promover un entorno de trabajo seguro.</p>
+      <h3>Principales Riesgos en el Sector</h3>
+      <ul>
+        <li>Cortes y quemaduras en cocina.</li>
+        <li>Resbalones y caídas en zonas húmedas.</li>
+        <li>Movimientos repetitivos y sobrecargas musculares.</li>
+        <li>Riesgos eléctricos y de incendios.</li>
+        <li>Estrés y fatiga en horarios de alta demanda.</li>
+      </ul>
+      <h3>Medidas Preventivas</h3>
+      <ul>
+        <li>Formación obligatoria en PRL al incorporarse.</li>
+        <li>Equipos de protección individual (EPI) adecuados a cada puesto.</li>
+        <li>Protocolos de actuación en caso de emergencia.</li>
+        <li>Señalización y mantenimiento de las instalaciones.</li>
+        <li>Evaluaciones periódicas de riesgos.</li>
+      </ul>
+      <h3>Documentación y Recursos</h3>
+      <ul>
+        <li><a href="/hamburgueseria_luria/assets/descargables/Manual_Prevencion_Riesgos_Lurias.pdf" target="_blank">Plan de Prevención de Riesgos Laborales (PDF)</a></li>
+        <li><a href="https://www.insst.es/" target="_blank">Guía oficial del Instituto Nacional de Seguridad y Salud en el Trabajo (INSST)</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2025 Luría's Burger – Intranet</p>
+      <p><a href="#">Política de privacidad</a> | <a href="#">Soporte técnico</a></p>
+    </div>
+  </footer>
+
+   <script src="/hamburgueseria_luria/js/intranet.js" defer></script>
+</body>
+</html>

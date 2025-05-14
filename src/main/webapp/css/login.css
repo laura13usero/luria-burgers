@@ -1,0 +1,108 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image: url(/hamburgueseria_luria/assets/fondos_recursos/fondo_login.png); 
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0; /* Good practice to reset default margin */
+}
+
+.container {
+    background: #ffe77b85;
+    position: fixed; /* Or 'absolute' if body is the only direct parent and has position relative (less common for full page center) */
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 270px;
+    /* Consider using min-height or height: auto if content might vary */
+    height: 345px; 
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tabs {
+    display: flex;
+    margin-bottom: 1rem;
+    width: 100%;
+    gap: 20px;
+}
+
+.tabs button {
+    font-family: 'Poppins', sans-serif;
+    flex: 1;
+    padding: 0.5rem;
+    cursor: pointer;
+    border: none;
+    background: #F8F3E6;
+    border-radius: 25px;
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+
+.tabs button:hover {
+    background-color: #e0d9c7; /* Slight hover effect */
+}
+
+.tabs button.active {
+    background: #D05A31;
+    color: white;
+    border-radius: 125px; /* This is quite large, making it very pill-shaped */
+}
+
+.form {
+    display: none;
+    width: 100%;
+}
+
+.form.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form h3 {
+    margin-top: 0; /* Adjust if needed */
+    margin-bottom: 1rem;
+    color: #333; /* Slightly darker text for better readability */
+}
+
+.form input {
+    font-family: 'Poppins', sans-serif;
+    width: 100%;
+    padding: 0.75rem; /* Increased padding for better touch/click area */
+    margin: 0.5rem 0;
+    border: 1px solid #ccc;
+    background-color: #f8f3e6c7;
+    border-radius: 15px;
+    box-sizing: border-box; /* Ensures padding and border don't add to width */
+}
+
+.form input:focus {
+    outline: none;
+    border-color: #D05A31; /* Highlight focus */
+    box-shadow: 0 0 0 2px rgba(208, 90, 49, 0.2);
+}
+
+.form button {
+    width: 100%;
+    padding: 0.75rem; /* Increased padding */
+    margin-top: 1rem; /* Added margin for spacing */
+    background: #D05A31;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: 500; /* Bolder text */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.form button:hover {
+    background: #b84926; /* Darker shade on hover */
+}

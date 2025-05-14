@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luría | Nuestras Especialidades</title>
+
+    <!-- Fuentes y estilos -->
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/hamburgueseria_luria/css/home.css">
+    <link rel="stylesheet" href="/hamburgueseria_luria/css/cards.css">
+    <link rel="icon" href="/hamburgueseria_luria/assets/fondos_recursos/flor.png" type="image/png">
+</head>
+<body>
+
+    <!-- ─────── CAPA 3 · “Tapa” fija que oculta las cards ─────── -->
+    <div class="top-overlay"></div>
+
+    <!-- ─────── CAPA 4 · Botones esquinas ─────── -->
+    <div class="corner-links">
+        <a href="/hamburgueseria_luria/public/login.html" class="corner-link">
+            <img src="/hamburgueseria_luria/assets/fondos_recursos/login.png" alt="Login">
+        </a>
+        <a href="/hamburgueseria_luria/public/orders.html" class="corner-link">
+            <img src="/hamburgueseria_luria/assets/fondos_recursos/carrito.png" alt="Carrito">
+        </a>
+    </div>
+
+    <!-- ─────── CAPA 4 · Navegación con flechas ─────── -->
+    <div class="menu-container-wrapper">
+        <button class="menu-arrow menu-arrow-left" id="menuArrowLeft"></button>
+        <nav class="menu-container" id="menuContainer">
+
+            <a href="burgers.html" class="menu-item">
+                <img src="/hamburgueseria_luria/assets/nav_icons/hamburguesas.png" alt="Burgers">
+                <div class="menu-background"></div>
+            </a>
+            <a href="complementos.html" class="menu-item">
+                <img src="/hamburgueseria_luria/assets/nav_icons/complementos.png" alt="Complementos">
+                <div class="menu-background"></div>
+            </a>
+            <a href="postres.html" class="menu-item">
+                <img src="/hamburgueseria_luria/assets/nav_icons/postres.png" alt="Postres">
+                <div class="menu-background"></div>
+            </a>
+            <a href="bebidas.html" class="menu-item">
+                <img src="/hamburgueseria_luria/assets/nav_icons/bebidas.png" alt="Bebidas">
+                <div class="menu-background"></div>
+            </a>
+
+        </nav>
+        <button class="menu-arrow menu-arrow-right" id="menuArrowRight"></button>
+    </div>
+
+      <div style="height:18vh;"></div>
+
+    <!-- ─────── CAPA 2 · Cards (scrollan) ─────── -->
+    <div class="cards-wrapper">
+        <div class="cards-container">
+            <!-- …tus cards de hamburguesas… -->
+            <div class="card">
+                <a href="/hamburgueseria_luria/public/hamburguesas/shogun.html" class="burger-button">
+                    <img src="/hamburgueseria_luria/assets/menu/cards_hamburguesas_animacion/card_shogun_burger.png" alt="Shogun Burger">
+                </a>
+            </div>
+            <div class="card">
+                <a href="/hamburgueseria_luria/public/hamburguesas/okinawa_soul.html" class="burger-button">
+                    <img src="/hamburgueseria_luria/assets/menu/cards_hamburguesas_animacion/okinawa_soul_burger.png" alt="Okinawa Soul Burger">
+                </a>
+            </div>
+            <div class="card">
+                <a href="/hamburgueseria_luria/public/hamburguesas/teriyaki.html" class="burger-button">
+                    <img src="/hamburgueseria_luria/assets/menu/cards_hamburguesas_animacion/card_teriyaki_classic_burger.png" alt="Teriyaki Burger">
+                </a>
+            </div>
+            <div class="card">
+                <a href="/hamburgueseria_luria/public/hamburguesas/katsu_sando.html" class="burger-button">
+                    <img src="/hamburgueseria_luria/assets/menu/cards_hamburguesas_animacion/card_katsu_sando_burger.png" alt="Katsu Sando Burger">
+                </a>
+            </div>
+            <div class="card">
+                <a href="/hamburgueseria_luria/public/hamburguesas/spicy_ramen.html" class="burger-button">
+                    <img src="/hamburgueseria_luria/assets/menu/cards_hamburguesas_animacion/card_spicy_ramen_burger.png" alt="Spicy Ramen Burger">
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS global -->
+    <script src="/hamburgueseria_luria/js/home.js"></script>
+</body>
+</html>

@@ -93,7 +93,7 @@ body {
 /* Flechas de scroll */
 .menu-arrow {
   position: absolute;
-  top: 23vh; /* Relative to mobile menu position */
+  top: 22vh; /* Relative to mobile menu position */
   transform: translateY(-50%);
   width: 40px;
   height: 40px;

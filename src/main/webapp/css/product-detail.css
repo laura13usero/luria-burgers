@@ -1,0 +1,180 @@
+/* /hamburgueseria_luria/css/product-detail.css */
+
+/* ───────────────────────────────────
+   RESET & VARIABLES
+─────────────────────────────────── */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-primary-button: #B82E02;
+    --color-primary-button-hover: #d13a03; /* Un poco más claro/saturado para el hover */
+    --color-button-text: #fff; /* Texto blanco para mejor contraste en el botón */
+    --font-primary: 'Montserrat', sans-serif;
+    /* --font-accent: 'Shippori Mincho B1', serif;  Si lo necesitas para títulos */
+}
+
+/* ───────────────────────────────────
+   BASE (mobile-first) - Mantenemos el diseño original de imagen a pantalla completa
+─────────────────────────────────── */
+body {
+    background-image: url('/fondos_recursos/dashboard.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    min-height: 100vh;
+    font-family: var(--font-primary);
+    /* display: flex; align-items: center; justify-content: center; YA NO ES NECESARIO PARA EL BODY EN MÓVIL */
+    /* Dejamos que el .product-view-container ocupe todo */
+}
+
+.product-view-container {
+    position: relative; /* Para posicionar elementos hijos absolutamente */
+    width: 100%;
+    min-height: 100vh; /* Asegura que ocupa al menos toda la altura del viewport */
+    display: flex; /* Para centrar el botón si la imagen no carga, o por si acaso */
+    justify-content: center;
+    align-items: flex-end; /* Para alinear el botón en la parte inferior por defecto */
+}
+
+.product-image-layer { /* Este div contendrá la imagen específica del producto */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1; /* Detrás del botón */
+}
+
+.action-button {
+    position: absolute; /* Mantenemos absoluto para móvil */
+    bottom: 50px;       /* Distancia desde abajo - AJUSTA ESTE VALOR AL ORIGINAL */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2; /* Encima de la imagen */
+
+    display: inline-block;
+    padding: 10px 25px; /* Padding original para móvil - AJUSTA AL ORIGINAL */
+    background-color: var(--color-primary-button);
+    color: var(--color-button-text); /* Aseguramos texto blanco */
+    border: none;
+    border-radius: 25px;
+    font-size: 14px;    /* Tamaño de fuente original para móvil - AJUSTA AL ORIGINAL */
+    font-weight: bold;
+    font-family: var(--font-primary);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.action-button:hover {
+    background-color: var(--color-primary-button-hover);
+    transform: translateX(-50%) translateY(-2px); /* Mantenemos el translateX para el centrado */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+}
+
+.action-button:active {
+    transform: translateX(-50%) translateY(0); /* Mantenemos el translateX para el centrado */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* ───────────────────────────────────
+   TABLET ≥ 768px - Transformamos a diseño de "card"
+─────────────────────────────────── */
+@media (min-width: 768px) {
+    body {
+        /* Ahora sí, centramos la card en el body */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 30px; /* Espacio alrededor de la card */
+    }
+
+    .product-view-container {
+        position: static; /* Ya no necesita ser el contexto de posicionamiento absoluto para toda la pantalla */
+        width: 100%;
+        max-width: 650px;  /* Ancho máximo de la card en tablet */
+        min-height: auto;  /* La altura se adaptará al contenido */
+        height: auto;
+        display: flex;
+        flex-direction: column; /* Apilamos imagen y luego el área del botón */
+        
+        background-color: rgba(250, 248, 240, 0.9); /* Un fondo para la card, puedes usar --color-background de tu home.css si quieres */
+        backdrop-filter: blur(4px);
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        overflow: hidden; /* Para que los bordes redondeados afecten a la imagen */
+    }
+
+    .product-image-layer {
+        position: static; /* La imagen ahora es parte del flujo de la card */
+        width: 100%;
+        height: 0; /* Necesario para que padding-top funcione para el aspect ratio */
+        padding-top: 75%; /* Relación de aspecto 4:3. AJUSTA (ej: 100% para cuadrado, 56.25% para 16:9) */
+        /* El background-image se define inline en el HTML */
+        border-radius: 12px 12px 0 0; /* Redondear solo las esquinas superiores */
+        z-index: auto;
+    }
+    
+    /* Contenedor para el botón y posible info adicional, debajo de la imagen */
+    .product-info-area {
+        padding: 25px;
+        text-align: center;
+        width: 100%;
+        background-color: transparent; /* O un ligero color si quieres diferenciarlo */
+    }
+
+    .action-button {
+        position: static; /* El botón ahora está en el flujo normal */
+        transform: none;  /* Reseteamos la transformación */
+        margin: 0 auto;   /* Centrar el botón si es display:block o inline-block con text-align:center en el padre */
+        /* Ajustes de tamaño para tablet */
+        padding: 14px 40px;
+        font-size: 18px;
+        bottom: auto; /* Reseteamos valores de 'absolute' */
+        left: auto;
+    }
+}
+
+/* ───────────────────────────────────
+   DESKTOP ≥ 1024px
+─────────────────────────────────── */
+@media (min-width: 1024px) {
+    body {
+        padding: 40px;
+    }
+
+    .product-view-container {
+        max-width: 550px; /* Hacemos la card un poco más compacta en desktop */
+    }
+
+    .product-image-layer {
+        padding-top: 70%; /* Puedes ajustar el aspect ratio ligeramente si quieres */
+    }
+    
+    .product-info-area {
+        padding: 30px;
+    }
+
+    .action-button {
+        padding: 16px 50px;
+        font-size: 20px;
+    }
+}
+
+/* Media query adicional por si la tenías en tus estilos originales para el botón en móvil pequeño */
+@media (max-width: 480px) {
+    .action-button {
+        bottom: 30px; /* Ejemplo de ajuste para móviles más pequeños aún */
+        padding: 10px 20px;
+        font-size: 13px;
+    }
+}
