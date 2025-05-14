@@ -5,53 +5,190 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canal de Denuncias</title>
-    <link href="css/intranet.css" rel="stylesheet">  <style>
-    /* Sobrescribe estilos específicos si es necesario, pero intenta mantenerlos mínimos */
-    form {
-        max-width: 600px;
-        margin: auto;
-        background-color: #f5f5f5;
-        padding: 2em;
-        border-radius: 10px;
-    }
-    textarea, select, button {
-        width: 100%;
-        margin-top: 1em;
-        padding: 0.8em;
-        font-size: 1em;
-    }
-    button {
-        background-color: #0077cc;
-        color: white;
-        border: none;
-        cursor: pointer;
-    }
-    button:hover {
-        background-color: #005fa3;
-    }
-</style>
+    <link href="css/intranet.css" rel="stylesheet">
+
+    <script>
+        function closeModule(moduleName) {
+            document.getElementById(moduleName + '-popup').style.display = 'none';
+        }
+    </script>
 </head>
 
 <body>
 
-<div class="container">  <h2>Canal de Denuncias</h2>
-    <p style="text-align:center;">Tu mensaje será enviado de forma confidencial y anónima al comité.</p>
-    <p>Utiliza este canal para reportar cualquier conducta irregular o inapropiada. Agradecemos tu colaboración para mantener un ambiente de trabajo ético y respetuoso.</p>
+<div class="module-popup" id="denuncias-popup">
+    <div class="module-popup-content">
+        <button class="popup-close" onclick="closeModule('denuncias')">&times;</button>
+        <div class="popup-header">
+            <h2>Canal de Denuncias</h2>
+        </div>
+        <div class="popup-body">
+            <div class="intro-section">
+                <p>
+                    El Canal de Denuncias de Luría's Burger es un medio <strong>confidencial y seguro</strong> para reportar:
+                </p>
+                <ul class="key-points">
+                    <li>Infracciones legales</li>
+                    <li>Conductas irregulares</li>
+                    <li>Actos contrarios a la ética empresarial</li>
+                </ul>
+                <p class="legal-note">
+                    Esta herramienta cumple con la <strong>Ley 2/2023, de protección al informante</strong>
+                    (transposición de la Directiva UE 2019/1937).
+                </p>
+            </div>
 
-    <form action="/control" method="post">
-        <label for="tipo">Tipo de mensaje:</label>
-        <select name="tipo" id="tipo" required>
-            <option value="consulta">Consulta</option>
-            <option value="queja">Queja</option>
-            <option value="propuesta">Propuesta</option>
-        </select>
+            <h3>¿Cómo funciona?</h3>
+            <div class="process-grid">
+                <div class="process-item">
+                    <span class="process-title">Acceso confidencial</span>
+                    <p>Formulario dentro de la intranet, con opción de <strong>denuncia anónima</strong> y pasarela de protección de IP.</p>
+                </div>
 
-        <label for="mensaje">Mensaje:</label>
-        <textarea name="mensaje" id="mensaje" rows="8" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                <div class="process-item">
+                    <span class="process-title">Formulario guiado</span>
+                    <p>Describe los hechos, fecha, lugar, personas implicadas (si las conoces) y adjunta evidencias. No es obligatorio identificarse.</p>
+                </div>
 
-        <input type="hidden" name="action" value="EnviarMensajeAnonimo">
-        <button type="submit">Enviar</button>
-    </form>
+                <div class="process-item">
+                    <span class="process-title">Confidencialidad garantizada</span>
+                    <p>Solo personas autorizadas (Compliance, Ética) acceden, bajo <strong>deber de sigilo</strong>.</p>
+                </div>
+
+                <div class="process-item">
+                    <span class="process-title">Prohibición de represalias</span>
+                    <p>Se protege al denunciante de cualquier perjuicio laboral por haber informado de buena fe.</p>
+                </div>
+
+                <div class="process-item">
+                    <span class="process-title">Derecho a respuesta</span>
+                    <p>Confirmación de recepción en <strong>7 días</strong> y resolución en un máximo de <strong>3 meses</strong>.</p>
+                </div>
+
+                <div class="process-item">
+                    <span class="process-title">Trazabilidad y seguimiento</span>
+                    <p>Cada denuncia tiene un <strong>código anónimo</strong> para consultar el estado ("Recibida", "En investigación", "Resuelta").</p>
+                </div>
+            </div>
+
+            <h3>¿Qué ocurre tras enviar una denuncia?</h3>
+            <div class="workflow">
+                <div class="workflow-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>Recepción</strong>
+                        <p>Registro interno y acuse de recibo en 7 días.</p>
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>Evaluación inicial</strong>
+                        <p>Revisión de la denuncia para determinar competencia y seriedad.</p>
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <strong>Investigación</strong>
+                        <p>Análisis de hechos, recopilación de pruebas y entrevistas si procede.</p>
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <strong>Conclusión</strong>
+                        <p>Resolución en 3 meses (prorrogable en casos complejos) y medidas correctivas si se confirma la denuncia.</p>
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <strong>Feedback al denunciante</strong>
+                        <p>Comunicación del cierre y resultado (dentro de lo permitido por ley).</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Canales externos alternativos</h3>
+            <p>Además del canal interno, puedes dirigirte a las siguientes autoridades independientes:</p>
+            <div class="external-links">
+                <a href="https://www.aai.gob.es/es/autoridad-independiente-proteccion-informante" target="_blank"
+                   class="external-link">
+                    Autoridad Independiente de Protección al Informante
+                </a>
+                <a href="https://antifraucv.es/canal-de-denuncias/" target="_blank" class="external-link">
+                    Agencia Valenciana Antifraude
+                </a>
+            </div>
+
+            <h3>Documentación y formación</h3>
+            <div class="documents-grid">
+                <a href="/documentos/politica_informacion_luria.pdf" target="_blank" class="document-item">
+                    <span class="document-icon">📄</span>
+                    <span class="document-title">Política Interna del Sistema de Información</span>
+                </a>
+                <a href="/documentos/como_denunciar_seguro.pdf" target="_blank" class="document-item">
+                    <span class="document-icon">📄</span>
+                    <span class="document-title">Guía: Cómo denunciar de forma segura</span>
+                </a>
+                <a href="/documentos/faq_denuncias.pdf" target="_blank" class="document-item">
+                    <span class="document-icon">📄</span>
+                    <span class="document-title">Preguntas frecuentes sobre el Canal de Denuncias</span>
+                </a>
+            </div>
+
+            <h3>Formulario de Denuncia</h3>
+            <p style="text-align:center;">Tu mensaje será enviado de forma confidencial y anónima al comité.</p>
+            <p>Utiliza este canal para reportar cualquier conducta irregular o inapropiada. Agradecemos tu colaboración para mantener un ambiente de trabajo ético y respetuoso.</p>
+
+            <form action="/control" method="post" class="complaint-form" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="tipo">Tipo de mensaje:</label>
+                    <select name="tipo" id="tipo" required>
+                        <option value="consulta">Consulta</option>
+                        <option value="queja">Queja</option>
+                        <option value="propuesta">Propuesta</option>
+                        <option value="denuncia">Denuncia</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="denuncia-fecha">Fecha de los hechos:</label>
+                    <input type="date" id="denuncia-fecha" name="denuncia-fecha">
+                </div>
+
+                <div class="form-group">
+                    <label for="denuncia-titulo">Asunto:</label>
+                    <input type="text" id="denuncia-titulo" name="denuncia-titulo" placeholder="Breve descripción">
+                </div>
+
+                <div class="form-group">
+                    <label for="denuncia-descripcion">Descripción detallada:</label>
+                    <textarea id="denuncia-descripcion" name="mensaje" rows="4" placeholder="Explica lo sucedido" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="denuncia-evidencias">Adjuntar evidencias:</label>
+                    <input type="file" id="denuncia-evidencias" name="denuncia-evidencias" multiple>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="denuncia-anonima" name="denuncia-anonima">
+                        <span>Enviar de forma anónima</span>
+                    </label>
+                </div>
+
+                <input type="hidden" name="action" value="EnviarMensajeAnonimo">
+                <button type="submit" class="btn submit-btn">Enviar denuncia</button>
+            </form>
+        </div>
+    </div>
 </div>
 
 </body>
