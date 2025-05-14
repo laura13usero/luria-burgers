@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Intranet de Luría's Burger">
   <meta name="theme-color" content="#D05A31">
   <title>Intranet Luría's Burger</title>
@@ -14,18 +14,19 @@
   <link rel="icon" href="assets/fondos_recursos/flor.png" type="image/png">
   <style>
     .zone-content {
-      display: none;
+        display: none;
     }
 
     .zone-content.active {
-      display: block;
+        display: block;
     }
   </style>
 </head>
+
 <body>
 <div class="container">
   <div class="welcome-message">
-    <h2>Bienvenido a tu intranet, usuario. </h2>
+    <h2>Bienvenido a tu intranet, usuario.</h2>
     <p>Accede a todas las herramientas y recursos que necesitas como miembro del equipo Luría's Burger.</p>
   </div>
 
@@ -40,71 +41,18 @@
         Zona Corporativa
       </a>
     </div>
-
   </div>
 
   <div id="personal" class="zone-content active" role="tabpanel" aria-hidden="false">
     <h2>Zona Personal</h2>
     <div class="module-grid">
-      <div class="module-card" onclick="cargarModulo('emplecomite')">
-        <div class="module-icon"><img src="assets/iconos_intranet/COMITE.png" alt="Comité"></div>
-        <div class="module-title">Comité de Empresa</div>
-        <div class="module-desc">Conoce a tus representantes</div>
-      </div>
-      <div class="module-card" onclick="cargarModulo('buzonempleado')">
-        <div class="module-icon"><img src="assets/iconos_intranet/Captura de pantalla 2025-05-09 145940.png"
-                                      alt="Sugerencias"></div>
-        <div class="module-title">Buzón de Sugerencias & FAQ</div>
-        <div class="module-desc">Envía ideas y consulta dudas</div>
-      </div>
-      <div class="module-card" onclick="cargarModulo('emplecalendario')">
-        <div class="module-icon"><img src="assets/iconos_intranet/CALENDARIO.png" alt="Calendario">
-        </div>
-        <div class="module-title">Calendario Laboral</div>
-        <div class="module-desc">Festivos, eventos y jornadas especiales</div>
-      </div>
-      <div class="module-card" onclick="cargarModulo('emplenormativa')">
-        <div class="module-icon"><img src="assets/iconos_intranet/NORMATIVA.png" alt="Normativa">
-        </div>
-        <div class="module-title">Normativa & Convenio</div>
-        <div class="module-desc">Leyes y convenios aplicables</div>
-      </div>
-      <div class="module-card" onclick="cargarModulo('emplenoticias')">
-        <div class="module-icon"><img src="assets/iconos_intranet/NOTICIAS.png" alt="Noticias"></div>
-        <div class="module-title">Noticias & Comunicados</div>
-        <div class="module-desc">Mantente informado</div>
-        <div class="notification-badge">3</div>
-      </div>
-      <div class="module-card" onclick="cargarModulo('empleciberseguridad')">
-        <div class="module-icon"><img src="assets/iconos_intranet/CIBERSEGURIDAD.png" alt="IT"></div>
-        <div class="module-title">IT & Ciberseguridad</div>
-        <div class="module-desc">Soporte y buenas prácticas</div>
-      </div>
-      <div class="module-card" onclick="cargarModulo('emplecultura')">
-        <div class="module-icon"><img src="assets/iconos_intranet/CULTURA.png" alt="Bienestar"></div>
-        <div class="module-title">Bienestar & Cultura</div>
-        <div class="module-desc">Actividades y reconocimientos</div>
-      </div>
-      <div class="module-card" onclick="cargarModulo('emplsostenibilidad')">
-        <div class="module-icon"><img src="assets/iconos_intranet/SOSTENIBILIDAD.png"
-                                      alt="Sostenibilidad"></div>
-        <div class="module-title">Sostenibilidad</div>
-        <div class="module-desc">Iniciativas ecológicas</div>
-      </div>
       <div class="module-card" onclick="cargarModulo('emplenomina')">
         <div class="module-icon"><img src="assets/iconos_intranet/NOMINA.png" alt="Nómina"></div>
         <div class="module-title">Mi Nómina</div>
         <div class="module-desc">Consulta nóminas, histórico y certificados</div>
       </div>
-      <div class="module-card" onclick="cargarModulo('emplecertificados')">
-        <div class="module-icon"><img src="assets/iconos_intranet/CERTIFICADOS.png"
-                                      alt="Certificados"></div>
-        <div class="module-title">Certificados y Trámites</div>
-        <div class="module-desc">Gestiona documentos y solicitudes</div>
-      </div>
       <div class="module-card" onclick="cargarModulo('emplevacaciones')">
-        <div class="module-icon"><img src="assets/iconos_intranet/VACACIONES.png" alt="Vacaciones">
-        </div>
+        <div class="module-icon"><img src="assets/iconos_intranet/VACACIONES.png" alt="Vacaciones"></div>
         <div class="module-title">Vacaciones y Permisos</div>
         <div class="module-desc">Planifica tus días libres y permisos</div>
       </div>
@@ -113,9 +61,13 @@
         <div class="module-title">Beneficios y Salud</div>
         <div class="module-desc">Programas de bienestar y ayudas</div>
       </div>
+      <div class="module-card" onclick="cargarModulo('emplecertificados')">
+        <div class="module-icon"><img src="assets/iconos_intranet/CERTIFICADOS.png" alt="Certificados"></div>
+        <div class="module-title">Certificados y Trámites</div>
+        <div class="module-desc">Gestiona documentos y solicitudes</div>
+      </div>
       <div class="module-card" onclick="cargarModulo('empledenuncias')">
-        <div class="module-icon"><img src="assets/iconos_intranet/DENUNCIAS.png" alt="Denuncias">
-        </div>
+        <div class="module-icon"><img src="assets/iconos_intranet/DENUNCIAS.png" alt="Denuncias"></div>
         <div class="module-title">Canal de Denuncias</div>
         <div class="module-desc">Reporta conductas irregulares</div>
       </div>
@@ -143,14 +95,12 @@
         <div class="module-desc">Envía ideas y consulta dudas</div>
       </div>
       <div class="module-card" onclick="cargarModulo('calendario')">
-        <div class="module-icon"><img src="assets/iconos_intranet/CALENDARIO.png" alt="Calendario">
-        </div>
+        <div class="module-icon"><img src="assets/iconos_intranet/CALENDARIO.png" alt="Calendario"></div>
         <div class="module-title">Calendario Laboral</div>
         <div class="module-desc">Festivos, eventos y jornadas especiales</div>
       </div>
       <div class="module-card" onclick="cargarModulo('normativa')">
-        <div class="module-icon"><img src="assets/iconos_intranet/NORMATIVA.png" alt="Normativa">
-        </div>
+        <div class="module-icon"><img src="assets/iconos_intranet/NORMATIVA.png" alt="Normativa"></div>
         <div class="module-title">Normativa & Convenio</div>
         <div class="module-desc">Leyes y convenios aplicables</div>
       </div>
@@ -176,40 +126,6 @@
         <div class="module-title">Sostenibilidad</div>
         <div class="module-desc">Iniciativas ecológicas</div>
       </div>
-      <div class="module-card" onclick="cargarModulo('nomina')">
-        <div class="module-icon"><img src="assets/iconos_intranet/NOMINA.png" alt="Nómina"></div>
-        <div class="module-title">Mi Nómina</div>
-        <div class="module-desc">Consulta nóminas, histórico y certificados</div>
-      </div>
-      <div class="module-card" onclick="cargarModulo('certificados')">
-        <div class="module-icon"><img src="assets/iconos_intranet/CERTIFICADOS.png"
-                                      alt="Certificados"></div>
-        <div class="module-title">Certificados y Trámites</div>
-        <div class="module-desc">Gestiona documentos y solicitudes</div>
-      </div>
-      <div class="module-card" onclick="cargarModulo('vacaciones')">
-        <div class="module-icon"><img src="assets/iconos_intranet/VACACIONES.png" alt="Vacaciones">
-        </div>
-        <div class="module-title">Vacaciones y Permisos</div>
-        <div class="module-desc">Planifica tus días libres y permisos</div>
-      </div>
-      <div class="module-card" onclick="cargarModulo('beneficios')">
-        <div class="module-icon"><img src="assets/iconos_intranet/SALUD.png" alt="Beneficios"></div>
-        <div class="module-title">Beneficios y Salud</div>
-        <div class="module-desc">Programas de bienestar y ayudas</div>
-      </div>
-      <div class="module-card" onclick="cargarModulo('denuncias')">
-        <div class="module-icon"><img src="assets/iconos_intranet/DENUNCIAS.png" alt="Denuncias">
-        </div>
-        <div class="module-title">Canal de Denuncias</div>
-        <div class="module-desc">Reporta conductas irregulares</div>
-      </div>
-      <div class="module-card" onclick="cargarModulo('riesgos')">
-        <div class="module-icon"><img src="assets/iconos_intranet/Captura de pantalla 2025-05-14 154433.png"
-                                      alt="Riesgos"></div>
-        <div class="module-title">Prevención de Riesgos Laborales</div>
-        <div class="module-desc">Normas de seguridad y salud</div>
-      </div>
     </div>
   </div>
 </div>
@@ -221,7 +137,6 @@
   </div>
 </div>
 
-
 <footer class="footer">
   <div class="container">
     <p>© 2025 Luría's Burger – Intranet</p>
@@ -231,31 +146,31 @@
 
 <script>
   function mostrarZona(zona) {
-    var personalDiv = document.getElementById('personal');
-    var corporativaDiv = document.getElementById('corporativa');
-    var personalTab = document.querySelector('[data-zona="personal"]');
-    var corporativaTab = document.querySelector('[data-zona="corporativa"]');
+      var personalDiv = document.getElementById('personal');
+      var corporativaDiv = document.getElementById('corporativa');
+      var personalTab = document.querySelector('[data-zona="personal"]');
+      var corporativaTab = document.querySelector('[data-zona="corporativa"]');
 
-    if (zona === 'personal') {
-      personalDiv.style.display = 'block';
-      corporativaDiv.style.display = 'none';
-      personalTab.classList.add('active');
-      corporativaTab.classList.remove('active');
-    } else if (zona === 'corporativa') {
-      personalDiv.style.display = 'none';
-      corporativaDiv.style.display = 'block';
-      personalTab.classList.remove('active');
-      corporativaTab.classList.add('active');
-    }
+      if (zona === 'personal') {
+          personalDiv.style.display = 'block';
+          corporativaDiv.style.display = 'none';
+          personalTab.classList.add('active');
+          corporativaTab.classList.remove('active');
+      } else if (zona === 'corporativa') {
+          personalDiv.style.display = 'none';
+          corporativaDiv.style.display = 'block';
+          personalTab.classList.remove('active');
+          corporativaTab.classList.add('active');
+      }
   }
 
   document.addEventListener('DOMContentLoaded', function() {
-    mostrarZona('personal');
+      mostrarZona('personal');
   });
 
   function cargarModulo(modulo) {
-    alert('Cargando módulo: ' + modulo);
-    // Aquí iría la lógica para cargar el contenido del módulo en el modal
+      alert('Cargando módulo: ' + modulo);
+      // Aquí iría la lógica para cargar el contenido del módulo en el modal
   }
 </script>
 </body>
