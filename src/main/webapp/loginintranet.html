@@ -32,9 +32,9 @@
 
         if (result.status === "ok") {
             if (result.rol === "admin") {
-                window.location.href = "/webapp-1.0-SNAPSHOT/jsp/adminintranet.jsp";
+                window.location.href = "/webapp-1.0-SNAPSHOT/jsp/adminintranet.html";
             } else if (result.rol === "empleado") {
-                window.location.href = "/webapp-1.0-SNAPSHOT/jsp/empleadointranet.jsp";
+                window.location.href = "/webapp-1.0-SNAPSHOT/jsp/empleadointranet.html";
             } else {
                 document.getElementById("error").textContent = "No tienes permiso para acceder a la intranet.";
             }
