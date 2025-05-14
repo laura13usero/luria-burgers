@@ -6,13 +6,14 @@
     <title>Luría | Nuestras Especialidades</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/home.css">
-    <link rel="stylesheet" href="/css/cards.css">
-    <link rel="icon" href="/fondos_recursos/flor.png" type="image/png">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/cards.css">
+    <link rel="icon" href="fondos_recursos/flor.png" type="image/png">
 
     <script>
         async function obtenerHamburguesas() {
           try {
+            // La petición al servlet/controlador ya es relativa al contexto de la aplicación
             const response = await fetch("control?action=getHamburguesasJSON");
             const data = await response.json();
             const container = document.querySelector('.cards-container');
@@ -23,9 +24,8 @@
                 const card = document.createElement('div');
                 card.classList.add('card');
 
-                const nombreLimpio = hamburguesa.nombre.toLowerCase().replace(/ /g, "_").replace(/á/g, "a").replace(/é/g, "e").replace(/í/g, "i").replace(/ó/g, "o").replace(/ú/g, "u").replace(/[^\w\-]/g, "");
-                //  MODIFICACIÓN CLAVE:  AÑADIDO console.log PARA DEPURAR
-                const imagenSrc = `/menu/cards_hamburguesas_animacion/${hamburguesa.imagen_png}`;
+                // Las imágenes de las hamburguesas, relativas a la raíz de webapp
+                const imagenSrc = `menu/cards_hamburguesas_animacion/${hamburguesa.imagen_png}`;
                 console.log("Intentando cargar imagen desde:", imagenSrc);
 
                 card.innerHTML = `
@@ -55,11 +55,9 @@
             const response = await fetch(`control?action=addToCart&idProducto=${idProducto}`, {
               method: "POST"
             });
-
             const result = await response.json();
-
             if (result.status === "ok") {
-              window.location.href = result.redirect;
+              window.location.href = result.redirect; // Asumimos que result.redirect ya es correcto
             } else if (result.status === "login_required") {
               window.location.href = result.redirect;
             } else {
@@ -70,7 +68,6 @@
             alert("❌ Error inesperado.");
           }
         }
-
         document.addEventListener('DOMContentLoaded', obtenerHamburguesas);
     </script>
 </head>
@@ -79,31 +76,30 @@
 <div class="top-overlay"></div>
 
 <div class="corner-links">
-    <a href="/luria_burgers/public/login.html" class="corner-link">
-        <img src="/luria_burgers/assets/fondos_recursos/login.png" alt="Login">
+    <a href="public/login.html" class="corner-link">
+        <img src="fondos_recursos/login.png" alt="Login">
     </a>
-    <a href="/luria_burgers/public/carrito.html" class="corner-link">
-        <img src="/luria_burgers/assets/fondos_recursos/carrito.png" alt="Carrito">
+    <a href="public/carrito.html" class="corner-link">
+        <img src="fondos_recursos/carrito.png" alt="Carrito">
     </a>
 </div>
 
 <div class="menu-container-wrapper">
     <button class="menu-arrow menu-arrow-left" id="menuArrowLeft"></button>
     <nav class="menu-container" id="menuContainer">
-        <a href="hamburguesas.html" class="menu-item">
-            <img src="/nav_icons/hamburguesas.png" alt="Burgers">
+        <a href="hamburguesas.html" class="menu-item"> <img src="nav_icons/hamburguesas.png" alt="Burgers">
             <div class="menu-background"></div>
         </a>
         <a href="guarniciones.html" class="menu-item">
-            <img src="/nav_icons/complementos.png" alt="Complementos">
+            <img src="nav_icons/complementos.png" alt="Complementos">
             <div class="menu-background"></div>
         </a>
         <a href="postres.html" class="menu-item">
-            <img src="/nav_icons/postres.png" alt="Postres">
+            <img src="nav_icons/postres.png" alt="Postres">
             <div class="menu-background"></div>
         </a>
         <a href="bebidas.html" class="menu-item">
-            <img src="/nav_icons/bebidas.png" alt="Bebidas">
+            <img src="nav_icons/bebidas.png" alt="Bebidas">
             <div class="menu-background"></div>
         </a>
     </nav>
@@ -115,7 +111,5 @@
     </div>
 </div>
 
-
-<script src="/index.html"></script>
-</body>
+<script src="js/main.js"></script> </body>
 </html>
