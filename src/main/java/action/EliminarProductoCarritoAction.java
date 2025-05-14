@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import dao.CompraDAO;
 import model.Compra;
-import model.Hamburguesa;
 import model.Producto;
 import model.Usuario;
 

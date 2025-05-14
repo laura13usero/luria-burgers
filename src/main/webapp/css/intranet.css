@@ -9,11 +9,11 @@
       --color-blue: #2196F3;
       --color-red: #F44336;
     }
-
+    
     /* Reseteo básico */
     * { margin:0; padding:0; box-sizing:border-box; }
     html { font-size:16px; scroll-behavior:smooth; }
-
+    
     /* Estilos generales */
     body {
       font-family:'Poppins',sans-serif;
@@ -26,7 +26,7 @@
       overflow-x:hidden;
     }
     .container { background-color:rgba(209, 221, 165, 0.911); padding:1rem; margin:0 auto; }
-
+    
     /* Encabezado */
     header {
       background-color:var(--color-primary);
@@ -38,7 +38,7 @@
     }
     .header-user { position:absolute; top:1rem; right:1rem; font-size:0.9rem; }
     .header-user span { font-weight:600; }
-
+    
     /* Tipografía */
     h1 { font-size:1.75rem; margin-bottom:0.5rem; }
     h2 {
@@ -49,7 +49,7 @@
     }
     h3 { font-size:1.25rem; margin:1.25rem 0 0.75rem; color:var(--color-primary); }
     p { margin-bottom:1rem; font-size:0.95rem; }
-
+    
     /* Grid de módulos */
     .module-grid {
       display:grid; gap:1rem; margin-top:1.5rem;
@@ -66,7 +66,7 @@
     .module-icon img { width:60px; height:60px; margin-bottom:0.8rem; }
     .module-title { font-weight:600; font-size:1rem; margin-bottom:0.5rem; text-align:center; }
     .module-desc { font-size:0.8rem; text-align:center; color:#666; }
-
+    
     /* Pestañas */
     .tabs-container { margin-bottom:1.5rem; }
     .zone-tabs { display:flex; border-bottom:3px solid var(--color-primary); }
@@ -79,7 +79,7 @@
     .zone-tab.active { background:var(--color-primary); color:#fff; }
     .zone-content { display:none; }
     .zone-content.active { display:block; }
-
+    
     /* Popup - MÁRGENES MEJORADOS */
     .module-popup {
       position:fixed; top:0; left:0; width:100%; height:100%;
@@ -87,7 +87,7 @@
       justify-content:center; overflow-y:auto; padding:1rem; z-index:1000;
     }
     .module-popup-content {
-      background:#ffe77b; border-radius:12px;
+      background:#ffe77b; border-radius:12px; 
       padding:1.75rem 1.5rem 2rem; /* Padding aumentado */
       width:100%; max-width:600px; max-height:90vh; overflow-y:auto; position:relative;
       margin:0.75rem; /* Margen exterior añadido */
@@ -100,15 +100,15 @@
     }
     .popup-close {
       position:absolute; top:1.25rem; right:1.25rem; /* Posición ajustada */
-      background:none; border:none; font-size:1.75rem;
+      background:none; border:none; font-size:1.75rem; 
       cursor:pointer; color:var(--color-text);
       width: 40px; height: 40px; /* Área de toque más grande */
       display: flex; align-items: center; justify-content: center;
     }
-
+    
     /* Tablas */
-    .table-container {
-      overflow-x:auto;
+    .table-container { 
+      overflow-x:auto; 
       margin:1.5rem 0; /* Margen vertical aumentado */
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -117,20 +117,20 @@
     th, td { padding:0.85rem 0.75rem; text-align:left; } /* Padding vertical aumentado */
     th { background:var(--color-primary); color:#fff; }
     tr:nth-child(even) { background:var(--color-secondary-bg); }
-
+    
     /* Cajas destacadas */
     .highlight-box {
-      background:var(--color-highlight); border-radius:10px;
+      background:var(--color-highlight); border-radius:10px; 
       padding:1.5rem; /* Padding aumentado */
       margin:1.5rem 0; /* Margen vertical aumentado */
       box-shadow:0 3px 5px rgba(0,0,0,0.1);
     }
-
+    
     /* Botones */
     .btn {
       display:inline-block; padding:.65rem 1.2rem; /* Botones más grandes */
       background:var(--color-primary);
-      color:#fff; border:none; border-radius:6px;
+      color:#fff; border:none; border-radius:6px; 
       cursor:pointer; font-size:.9rem;
       transition:background .3s;
     }
@@ -139,21 +139,21 @@
       background:var(--color-secondary-bg); color:var(--color-text);
     }
     .btn-secondary:hover { background:#d5d5d5; }
-
+    
     /* Notificaciones */
     .notification-badge {
       position:absolute; top:-5px; right:-5px; background:var(--color-red);
       color:#fff; border-radius:50%; width:20px; height:20px;
       display:flex; align-items:center; justify-content:center; font-size:.7rem;
     }
-
+    
     /* Formularios */
     form label {
       display: block;
       margin-bottom: 0.5rem;
       font-weight: 500;
     }
-
+    
     input[type="text"], input[type="date"], input[type="email"],
     select, textarea {
       width: 100%;
@@ -163,7 +163,7 @@
       margin-bottom: 1.25rem;
       font-family: 'Poppins', sans-serif;
     }
-
+    
     /* Estilos para las gráficas de beneficios */
     .chart-container {
       margin: 2rem 0;
@@ -172,7 +172,7 @@
       border-radius: 10px;
       box-shadow: 0 3px 8px rgba(0,0,0,0.1);
     }
-
+    
     .chart-title {
       font-weight: 600;
       font-size: 1.1rem;
@@ -180,7 +180,7 @@
       margin-bottom: 1.5rem;
       color: var(--color-primary);
     }
-
+    
     .bar-chart {
       display: flex;
       align-items: flex-end;
@@ -188,7 +188,7 @@
       height: 200px;
       padding: 0 10px;
     }
-
+    
     .bar {
       position: relative;
       width: 20%;
@@ -198,12 +198,12 @@
       transition: all 0.3s ease;
       margin: 0 5px;
     }
-
+    
     .bar:hover {
       transform: translateY(-5px);
       box-shadow: 0 7px 10px rgba(0,0,0,0.15);
     }
-
+    
     .bar-value {
       position: absolute;
       top: -25px;
@@ -217,7 +217,7 @@
       font-weight: bold;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-
+    
     .bar-label {
       position: absolute;
       bottom: -25px;
@@ -227,7 +227,7 @@
       font-weight: 500;
       white-space: nowrap;
     }
-
+    
     /* Mejora de legibilidad en popups */
     .module-popup-content h3 {
       font-size: 1.5rem; /* Más grande que el resto de h3 */
@@ -256,7 +256,7 @@
       margin-bottom: 0.5rem;
       list-style-type: disc;
     }
-
+    
     /* Mejoras para el calendario */
     .calendar-widget {
       background-color: #fff;
@@ -407,46 +407,46 @@
     .color-box.today {
       background-color: var(--color-primary);
     }
-
+    
     /* Estilos específicos para el pop-up de Beneficios */
     #beneficios-popup .intro-text {
       font-size: 1rem;
       line-height: 1.6;
       margin-bottom: 1.5rem;
     }
-
+    
     #beneficios-popup h3 {
       margin-top: 1.8rem;
       color: var(--color-primary);
       border-bottom: 1px solid #f0f0f0;
       padding-bottom: 0.5rem;
     }
-
+    
     #beneficios-popup .benefits-list {
       margin: 0.5rem 0 1rem 1.2rem;
     }
-
+    
     #beneficios-popup .benefits-list li {
       margin-bottom: 0.4rem;
       position: relative;
     }
-
+    
     #beneficios-popup .info-links {
       background-color: #f8f8f8;
       padding: 0.8rem 1rem;
       border-radius: 8px;
       margin: 0.8rem 0 1.2rem;
     }
-
+    
     #beneficios-popup .info-links ul {
       list-style-type: none;
       padding-left: 0;
     }
-
+    
     #beneficios-popup .info-links li {
       margin-bottom: 0.4rem;
     }
-
+    
     #beneficios-popup .highlight-text {
       font-weight: 500;
       padding: 0.5rem 0.8rem;
@@ -455,65 +455,65 @@
       margin: 1rem 0;
       border-radius: 4px;
     }
-
+    
     #beneficios-popup .benefits-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 0.7rem;
       margin: 1rem 0;
     }
-
+    
     #beneficios-popup .benefit-item {
       display: flex;
       align-items: baseline;
     }
-
+    
     #beneficios-popup .benefit-label {
       font-weight: 600;
       min-width: 140px;
       display: inline-block;
     }
-
+    
     #beneficios-popup .info-note {
       font-size: 0.9rem;
       font-style: italic;
       margin: 1rem 0;
       line-height: 1.5;
     }
-
+    
     #beneficios-popup .testimonial {
       position: relative;
       padding-left: 0.5rem;
       margin-bottom: 0.8rem;
     }
-
+    
     #beneficios-popup .testimonial em {
       font-style: italic;
       display: block;
       margin-bottom: 0.3rem;
     }
-
+    
     #beneficios-popup .author {
       font-size: 0.85rem;
       text-align: right;
       display: block;
     }
-
+    
     /* Estilos específicos para el pop-up de Denuncias */
     #denuncias-popup .intro-section {
       margin-bottom: 1.5rem;
     }
-
+    
     #denuncias-popup .key-points {
       margin: 0.8rem 0;
       padding-left: 1.5rem;
     }
-
+    
     #denuncias-popup .key-points li {
       margin-bottom: 0.4rem;
       font-weight: 500;
     }
-
+    
     #denuncias-popup .legal-note {
       background-color: #f8f9fa;
       padding: 0.8rem;
@@ -521,43 +521,43 @@
       font-size: 0.9rem;
       margin-top: 1rem;
     }
-
+    
     #denuncias-popup .process-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 1rem;
       margin: 1rem 0 1.5rem;
     }
-
+    
     #denuncias-popup .process-item {
       background-color: #f8f9fa;
       padding: 0.8rem;
       border-radius: 6px;
       border-left: 3px solid var(--color-primary);
     }
-
+    
     #denuncias-popup .process-title {
       font-weight: 600;
       display: block;
       margin-bottom: 0.4rem;
       color: var(--color-primary);
     }
-
+    
     #denuncias-popup .process-item p {
       margin: 0;
       font-size: 0.9rem;
     }
-
+    
     #denuncias-popup .workflow {
       margin: 1.5rem 0;
     }
-
+    
     #denuncias-popup .workflow-step {
       display: flex;
       margin-bottom: 1rem;
       align-items: flex-start;
     }
-
+    
     #denuncias-popup .step-number {
       background-color: var(--color-primary);
       color: white;
@@ -571,28 +571,28 @@
       margin-right: 1rem;
       flex-shrink: 0;
     }
-
+    
     #denuncias-popup .step-content {
       flex: 1;
     }
-
+    
     #denuncias-popup .step-content strong {
       display: block;
       margin-bottom: 0.3rem;
     }
-
+    
     #denuncias-popup .step-content p {
       margin: 0;
       font-size: 0.9rem;
     }
-
+    
     #denuncias-popup .external-links {
       display: flex;
       flex-direction: column;
       gap: 0.8rem;
       margin: 1rem 0 1.5rem;
     }
-
+    
     #denuncias-popup .external-link {
       background-color: #f8f9fa;
       padding: 0.8rem;
@@ -602,18 +602,18 @@
       font-weight: 500;
       transition: background-color 0.2s;
     }
-
+    
     #denuncias-popup .external-link:hover {
       background-color: #e9ecef;
     }
-
+    
     #denuncias-popup .documents-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 0.8rem;
       margin: 1rem 0 1.5rem;
     }
-
+    
     #denuncias-popup .document-item {
       display: flex;
       align-items: center;
@@ -624,123 +624,123 @@
       color: inherit;
       transition: background-color 0.2s;
     }
-
+    
     #denuncias-popup .document-item:hover {
       background-color: #e9ecef;
     }
-
+    
     #denuncias-popup .document-icon {
       font-size: 1.2rem;
       margin-right: 0.8rem;
     }
-
+    
     #denuncias-popup .document-title {
       font-size: 0.9rem;
     }
-
+    
     #denuncias-popup .complaint-form {
       margin-top: 1.5rem;
     }
-
+    
     #denuncias-popup .form-group {
       margin-bottom: 1.2rem;
     }
-
+    
     #denuncias-popup .checkbox-group {
       display: flex;
       align-items: center;
     }
-
+    
     #denuncias-popup .checkbox-group input {
       margin-right: 0.5rem;
     }
-
+    
     #denuncias-popup .submit-btn {
       width: 100%;
       margin-top: 1rem;
     }
-
+    
     /* Media queries */
     @media(max-width: 480px) {
       .module-popup-content {
         padding: 1.5rem 1rem 1.75rem;
       }
-
+      
       .bar-chart {
         height: 150px;
       }
-
+      
       .bar-label {
         font-size: 0.7rem;
       }
-
+      
       .bar-value {
         font-size: 0.7rem;
         padding: 2px 5px;
       }
-
+      
       .calendar-day {
         padding: 0.6rem 0.4rem;
         font-size: 0.8rem;
       }
-
+      
       .legend-item {
         flex-basis: 100%;
       }
-
+      
       .weekday {
         font-size: 0.75rem;
       }
-
+      
       #beneficios-popup .benefit-item {
         flex-direction: column;
       }
-
+      
       #beneficios-popup .benefit-label {
         margin-bottom: 0.3rem;
       }
-
+      
       #denuncias-popup .step-number {
         width: 24px;
         height: 24px;
         font-size: 0.8rem;
       }
     }
-
+    
     @media(min-width: 576px) {
       .module-grid { grid-template-columns:repeat(2,1fr); }
-
+      
       #beneficios-popup .benefits-grid {
         grid-template-columns: 1fr 1fr;
       }
-
+      
       #denuncias-popup .process-grid,
       #denuncias-popup .documents-grid {
         grid-template-columns: 1fr 1fr;
       }
     }
-
+    
     @media(min-width: 768px) {
       .container { max-width:720px; }
       .module-grid { grid-template-columns:repeat(3,1fr); }
-
+      
       .module-popup-content {
         padding: 2rem 2.5rem 2.5rem;
       }
-
+      
       .bar-chart {
         height: 250px;
       }
-
+      
       .calendar-legend {
         justify-content: center;
       }
-
+      
       .legend-item {
         flex-basis: auto;
       }
     }
-
+    
     @media(min-width: 992px) {
       .container { max-width:960px; }
       .module-grid { grid-template-columns:repeat(4,1fr); }
@@ -867,13 +867,13 @@
     max-width: 800px;
     padding: 2.5rem;
   }
-
-  .calendar-widget,
+  
+  .calendar-widget, 
   .chart-container {
     margin: 2rem auto;
     max-width: 95%;
   }
-
+  
   .improvements-grid {
     grid-template-columns: repeat(3, 1fr);
   }
