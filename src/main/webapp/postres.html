@@ -13,7 +13,7 @@
     <script>
         async function obtenerPostres() {
           try {
-            const response = await fetch("control?action=getPostresJSON");
+            const response = await fetch("control?action=getPostres");
             const data = await response.json();
             const container = document.querySelector('.cards-container');
             container.innerHTML = '';
@@ -101,6 +101,6 @@
     </div>
 </div>
 
-<script src="/js/home.js"></script>
+<script src="js/home.js"></script>
 </body>
 </html>

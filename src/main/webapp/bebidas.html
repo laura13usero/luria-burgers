@@ -13,7 +13,7 @@
     <script>
         async function obtenerBebidas() {
           try {
-            const response = await fetch("control?action=getBebidasJSON");
+            const response = await fetch("control?action=getBebidas");
             const data = await response.json();
             const container = document.querySelector('.cards-container');
             container.innerHTML = '';

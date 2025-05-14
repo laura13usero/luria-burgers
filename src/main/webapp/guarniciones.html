@@ -13,7 +13,7 @@
     <script>
         async function obtenerGuarniciones() {
           try {
-            const response = await fetch("control?action=getGuarnicionesJSON");
+            const response = await fetch("control?action=getGuarniciones");
             const data = await response.json();
             const container = document.querySelector('.cards-container');
             container.innerHTML = '';
