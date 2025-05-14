@@ -12,6 +12,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="css/intranet.css" rel="stylesheet">
   <link rel="icon" href="assets/fondos_recursos/flor.png" type="image/png">
+  <style>
+    .zone-content {
+      display: none;
+    }
+
+    .zone-content.active {
+      display: block;
+    }
+  </style>
 </head>
 <body>
 <div class="container">
@@ -220,7 +229,35 @@
   </div>
 </footer>
 
-<script src="js/intranet.js"></script>
+<script>
+  function mostrarZona(zona) {
+    var personalDiv = document.getElementById('personal');
+    var corporativaDiv = document.getElementById('corporativa');
+    var personalTab = document.querySelector('[data-zona="personal"]');
+    var corporativaTab = document.querySelector('[data-zona="corporativa"]');
+
+    if (zona === 'personal') {
+      personalDiv.style.display = 'block';
+      corporativaDiv.style.display = 'none';
+      personalTab.classList.add('active');
+      corporativaTab.classList.remove('active');
+    } else if (zona === 'corporativa') {
+      personalDiv.style.display = 'none';
+      corporativaDiv.style.display = 'block';
+      personalTab.classList.remove('active');
+      corporativaTab.classList.add('active');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    mostrarZona('personal');
+  });
+
+  function cargarModulo(modulo) {
+    alert('Cargando módulo: ' + modulo);
+    // Aquí iría la lógica para cargar el contenido del módulo en el modal
+  }
+</script>
 </body>
 
 </html>
