@@ -20,6 +20,52 @@
     .zone-content.active {
         display: block;
     }
+
+    /* Estilos del modal (puedes ajustarlos a tu gusto) */
+    .modal {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 1;
+        /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0);
+        /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4);
+        /* Black w/ opacity */
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        /* Could be 80% or whatever you want */
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
   </style>
 </head>
 
@@ -66,7 +112,7 @@
         <div class="module-title">Certificados y Trámites</div>
         <div class="module-desc">Gestiona documentos y solicitudes</div>
       </div>
-      <div class="module-card" onclick="cargarModulo('empledenuncias')">
+      <div class="module-card" onclick="cargarModulo('denuncias.html')">
         <div class="module-icon"><img src="assets/iconos_intranet/DENUNCIAS.png" alt="Denuncias"></div>
         <div class="module-title">Canal de Denuncias</div>
         <div class="module-desc">Reporta conductas irregulares</div>
@@ -168,6 +214,11 @@
       mostrarZona('personal');
   });
 
+  // Obtener el modal y el botón de cierre (mover estas líneas fuera de cargarModulo)
+  var modal = document.getElementById('module-modal');
+  var modalContent = document.getElementById('module-content');
+  var closeBtn = document.querySelector('.close');
+
   function cargarModulo(modulo) {
     // Limpiar el contenido anterior del modal
     modalContent.innerHTML = '';
@@ -185,6 +236,18 @@
             modal.style.display = 'block';
         });
 }
+
+  // Cerrar el modal al hacer clic en la "x"
+  closeBtn.onclick = function() {
+      modal.style.display = 'none';
+  }
+
+  // Cerrar el modal al hacer clic fuera de él
+  window.onclick = function(event) {
+      if (event.target == modal) {
+          modal.style.display = 'none';
+      }
+  }
 </script>
 </body>
 
