@@ -1,47 +1,152 @@
-<!-- src/main/webapp/login.html (o login.jsp si prefieres) -->
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/fondos_recursos/flor.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="css/login.css" rel="stylesheet">
+    <title>Login / Registro - Luría</title>
 </head>
 <body>
-    <h2>Login</h2>
+<div class="container">
+    <div class="tabs">
+        <button id="loginTab" class="active">Iniciar Sesión</button>
+        <button id="registerTab">Registrarse</button>
+    </div>
+    <div id="loginForm" class="form active">
+        <h3>Iniciar Sesión</h3>
+        <label>Correo electrónico: <input type="email" id="email" placeholder="Correo electrónico" required></label><br>
+        <label>Contraseña: <input type="password" id="contrasenaLogin" placeholder="Contraseña" required></label><br>
+        <button id="loginButton">Entrar</button>
+        <p class="message">¿No tienes cuenta? <a href="#" id="goToRegister">Crear cuenta</a></p>
+        <div id="loginError" class="error-message" style="display:none;"></div>
+    </div>
+    <div id="registerForm" class="form">
+        <h3>Registrarse</h3>
+        <label>Nombre: <input type="text" id="nombre" placeholder="Usuario" required></label><br>
+        <label>Correo electrónico: <input type="email" id="emailRegistro" placeholder="Correo electrónico" required></label><br>
+        <label>Contraseña: <input type="password" id="contrasenaRegistro" placeholder="Contraseña" required></label><br>
+        <label>Confirmar contraseña: <input type="password" id="confirmarContrasena" placeholder="Confirmar contraseña" required></label><br>
+        <label>Teléfono: <input type="text" id="telefono" placeholder="Teléfono" required></label><br>
+        <label>Dirección: <input type="text" id="direccion" placeholder="Dirección" required></label><br>
+        <button id="registerButton">Crear Cuenta</button>
+        <p class="message">¿Ya tienes cuenta? <a href="#" id="goToLogin">Iniciar sesión</a></p>
+        <div id="registerError" class="error-message" style="display:none;"></div>
+    </div>
+</div>
 
-    <label>E-mail: <input type="email" id="email" required></label><br>
-    <label>Password: <input type="password" id="contrasena" required></label><br>
-    <button onclick="login()">Login</button>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginTab = document.getElementById('loginTab');
+        const registerTab = document.getElementById('registerTab');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const goToRegister = document.getElementById('goToRegister');
+        const goToLogin = document.getElementById('goToLogin');
+        const loginButton = document.getElementById('loginButton');
+        const registerButton = document.getElementById('registerButton');
+        const loginError = document.getElementById('loginError');
+        const registerError = document.getElementById('registerError');
 
-    <p id="error" style="color: red;"></p>
+        loginTab.addEventListener('click', () => {
+            loginForm.classList.add('active');
+            registerForm.classList.remove('active');
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+        });
 
-    <script>
-        async function login() {
-            const email = document.getElementById("email").value;
-            const contrasena = document.getElementById("contrasena").value;
-            const errorElem = document.getElementById("error");
-            errorElem.textContent = ""; // limpia errores anteriores
+        registerTab.addEventListener('click', () => {
+            registerForm.classList.add('active');
+            loginForm.classList.remove('active');
+            registerTab.classList.add('active');
+            loginTab.classList.remove('active');
+        });
 
-            const response = await fetch("/webapp-1.0-SNAPSHOT/control?action=login", {
-                method: "POST",
+        goToRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerTab.click();
+        });
+
+        goToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginTab.click();
+        });
+
+        loginButton.addEventListener('click', async () => {
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('contrasenaLogin');
+            const email = emailInput.value;
+            const contrasena = passwordInput.value;
+
+            loginError.textContent = ""; // Limpiar errores anteriores
+
+            const response = await fetch('/webapp-1.0-SNAPSHOT/control?action=login', {
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json"
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ email, contrasena })
             });
 
             const result = await response.json();
 
-            if (result.status === "ok") {
-                if (result.rol === "admin") {
-                    window.location.href = "/webapp-1.0-SNAPSHOT/jsp/adminintranet.jsp";
-                } else if (result.rol === "empleado") {
-                    window.location.href = "/webapp-1.0-SNAPSHOT/jsp/empleadointranet.jsp";
+            if (result.status === 'ok') {
+                if (result.rol === 'admin') {
+                    window.location.href = '/webapp-1.0-SNAPSHOT/jsp/adminintranet.jsp';
+                } else if (result.rol === 'empleado') {
+                    window.location.href = '/webapp-1.0-SNAPSHOT/jsp/empleadointranet.jsp';
                 } else {
-                    window.location.href = "/webapp-1.0-SNAPSHOT/loginExitoso.html";
+                    window.location.href = '/webapp-1.0-SNAPSHOT/index.html'; // Redirigir a la página principal
                 }
             } else {
-                errorElem.textContent = result.message;
+                loginError.textContent = result.message;
+                loginError.style.display = 'block';
             }
-        }
-    </script>
+        });
+
+        registerButton.addEventListener('click', async () => {
+            const nombreInput = document.getElementById('nombre');
+            const emailInput = document.getElementById('emailRegistro');
+            const passwordInput = document.getElementById('contrasenaRegistro');
+            const confirmPasswordInput = document.getElementById('confirmarContrasena');
+            const telefonoInput = document.getElementById('telefono');
+            const direccionInput = document.getElementById('direccion');
+
+            const nombre = nombreInput.value;
+            const email = emailInput.value;
+            const contrasena = passwordInput.value;
+            const confirmarContrasena = confirmPasswordInput.value;
+            const telefono = telefonoInput.value;
+            const direccion = direccionInput.value;
+
+            registerError.textContent = ""; // Limpiar errores anteriores
+
+            if (contrasena !== confirmarContrasena) {
+                registerError.textContent = 'Las contraseñas no coinciden.';
+                registerError.style.display = 'block';
+                return;
+            }
+
+            const response = await fetch('/webapp-1.0-SNAPSHOT/control?action=registro', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nombre, email, contrasena, telefono, direccion })
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'ok') {
+                alert('Registro exitoso. Por favor, inicia sesión.');
+                loginTab.click(); // Cambiar al tab de login
+            } else {
+                registerError.textContent = result.message || 'Error al registrar usuario.';
+                registerError.style.display = 'block';
+            }
+        });
+    });
+</script>
 </body>
 </html>
