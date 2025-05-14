@@ -169,9 +169,22 @@
   });
 
   function cargarModulo(modulo) {
-      alert('Cargando módulo: ' + modulo);
-      // Aquí iría la lógica para cargar el contenido del módulo en el modal
-  }
+    // Limpiar el contenido anterior del modal
+    modalContent.innerHTML = '';
+
+    // Usar Fetch API para cargar el contenido del módulo
+    fetch(modulo)
+        .then(response => response.text())
+        .then(data => {
+            modalContent.innerHTML = data;
+            modal.style.display = 'block'; // Mostrar el modal después de cargar el contenido
+        })
+        .catch(error => {
+            console.error('Error al cargar el módulo:', error);
+            modalContent.innerHTML = '<p>Error al cargar el contenido.</p>';
+            modal.style.display = 'block';
+        });
+}
 </script>
 </body>
 
