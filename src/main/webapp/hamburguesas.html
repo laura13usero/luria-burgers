@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luría | Nuestras Especialidades</title>
 
-    <!-- Fuentes y estilos -->
     <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/home.css">
     <link rel="stylesheet" href="/css/cards.css">
@@ -25,8 +24,9 @@
                 card.classList.add('card');
 
                 const nombreLimpio = hamburguesa.nombre.toLowerCase().replace(/ /g, "_").replace(/á/g, "a").replace(/é/g, "e").replace(/í/g, "i").replace(/ó/g, "o").replace(/ú/g, "u").replace(/[^\w\-]/g, "");
+                //  MODIFICACIÓN CLAVE:  AÑADIDO console.log PARA DEPURAR
                 const imagenSrc = `/menu/cards_hamburguesas_animacion/${hamburguesa.imagen_png}`;
-
+                console.log("Intentando cargar imagen desde:", imagenSrc);
 
                 card.innerHTML = `
                   <div class="card-img-container">
@@ -76,10 +76,8 @@
 </head>
 <body>
 
-<!-- CAPA 3 · Tapa -->
 <div class="top-overlay"></div>
 
-<!-- CAPA 4 · Botones esquinas -->
 <div class="corner-links">
     <a href="/luria_burgers/public/login.html" class="corner-link">
         <img src="/luria_burgers/assets/fondos_recursos/login.png" alt="Login">
@@ -89,7 +87,6 @@
     </a>
 </div>
 
-<!-- Navegación -->
 <div class="menu-container-wrapper">
     <button class="menu-arrow menu-arrow-left" id="menuArrowLeft"></button>
     <nav class="menu-container" id="menuContainer">
@@ -113,10 +110,8 @@
     <button class="menu-arrow menu-arrow-right" id="menuArrowRight"></button>
 </div>
 
-<!-- Cards de hamburguesas (rellenadas por JS) -->
 <div class="cards-wrapper">
     <div class="cards-container">
-        <!-- Aquí se insertarán las hamburguesas dinámicamente -->
     </div>
 </div>
 
