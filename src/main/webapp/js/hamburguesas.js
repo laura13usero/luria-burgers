@@ -30,11 +30,11 @@ async function obtenerHamburguesas(filtro = '') {
 
                 const rankingHTML = `
                     <div class="ranking-container" data-producto-id="${hamburguesa.id}">
-                        <img src="assets/iconos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="1" onclick="calificarHamburguesa(${hamburguesa.id}, 1)">
-                        <img src="assets/iconos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="2" onclick="calificarHamburguesa(${hamburguesa.id}, 2)">
-                        <img src="assets/iconos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="3" onclick="calificarHamburguesa(${hamburguesa.id}, 3)">
-                        <img src="assets/iconos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="4" onclick="calificarHamburguesa(${hamburguesa.id}, 4)">
-                        <img src="assets/iconos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="5" onclick="calificarHamburguesa(${hamburguesa.id}, 5)">
+                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="1" onclick="calificarHamburguesa(${hamburguesa.id}, 1)">
+                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="2" onclick="calificarHamburguesa(${hamburguesa.id}, 2)">
+                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="3" onclick="calificarHamburguesa(${hamburguesa.id}, 3)">
+                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="4" onclick="calificarHamburguesa(${hamburguesa.id}, 4)">
+                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="5" onclick="calificarHamburguesa(${hamburguesa.id}, 5)">
                     </div>
                 `;
 
