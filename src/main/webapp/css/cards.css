@@ -125,46 +125,25 @@
 
 
 /*RANKING*/
-/* Estilos para el ranking de flores de hibisco */
 
-.rating-container {
+
+/* Estilos para el ranking de imágenes */
+.ranking-container {
     display: flex;
-    justify-content: center; /* Centrar las flores horizontalmente */
-    align-items: center;    /* Centrar las flores verticalmente (opcional) */
-    margin-top: 5px;       /* Espacio entre la información de la hamburguesa y las flores */
-    margin-bottom: 10px;
+    align-items: center;
+    margin-top: 10px;
 }
 
-.hibisco {
-    color: #ff69b4;       /* Rosa fuerte para flores llenas */
-    font-size: 1.2em;      /* Tamaño de las flores (ajusta según necesites) */
-    margin: 0 2px;        /* Espacio entre cada flor */
-    transition: color 0.3s ease; /* Transición suave para el color */
-}
-
-.hibisco-vacio {
-    color: #ccc;            /* Gris claro para flores vacías */
-    transition: color 0.3s ease;
-}
-
-/* Si usas Font Awesome (o similar) */
-.fas.fa-flower { /* Asegúrate de que coincida con la clase de Font Awesome */
-    font-size: 1.2em; /* Ajusta el tamaño si es necesario */
-}
-
-/* Opcional: Estilos para el botón de votar (si lo añades dentro de la card) */
-.vote-button {
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 5px 10px;
+.rating-icon {
+    height: 25px;  /* Ajusta el tamaño según lo necesites */
+    width: 25px;
+    margin: 0 5px;
     cursor: pointer;
-    font-size: 0.8em;
-    margin-top: 5px;
+    transition: opacity 0.3s ease;
 }
 
-.vote-button:hover {
-    background-color: #e0e0e0;
+.rating-icon:hover {
+    opacity: 0.8;
 }
 
 

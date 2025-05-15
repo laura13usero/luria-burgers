@@ -50,7 +50,7 @@ public class HamburguesaDAO {
         try (Connection conn = MotorSQL.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, "%" + filtro + "%");
+            stmt.setString(1, "%" + filtro + "%"); // Ej: %spicy%
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -62,7 +62,7 @@ public class HamburguesaDAO {
                     p.setFiltros(rs.getString("filtros"));
                     p.setImagen_png(rs.getString("imagen_png"));
                     p.setEnlace_html(rs.getString("enlace_html"));
-                    p.setRanking(convertStringToList(rs.getString("ranking"))); // Convertir string a lista
+                    p.setRanking(convertStringToList(rs.getString("ranking")));
 
                     hamburguesasFiltradas.add(p);
                 }
@@ -75,23 +75,21 @@ public class HamburguesaDAO {
         return hamburguesasFiltradas;
     }
 
-    // Método auxiliar para convertir la cadena del ranking en una lista
     private List<String> convertStringToList(String rankingString) {
         if (rankingString != null && !rankingString.isEmpty()) {
             return Arrays.asList(rankingString.split(","));
         } else {
-            return new ArrayList<>(); // Retorna una lista vacía si es null o vacío
+            return new ArrayList<>();
         }
     }
 
-    // Método para actualizar el ranking de una hamburguesa
-    public void actualizarRankingHamburguesa(int idProducto, String nuevoUsuario) {
+    public void actualizarRankingHamburguesa(int idProducto, String usuarioRating) {  // Cambiado el nombre
         String sql = "UPDATE Productos SET ranking = array_append(ranking, ?) WHERE id_producto = ?";
 
         try (Connection conn = MotorSQL.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, nuevoUsuario);
+            stmt.setString(1, usuarioRating);  // Usar el nuevo nombre
             stmt.setInt(2, idProducto);
             stmt.executeUpdate();
 
