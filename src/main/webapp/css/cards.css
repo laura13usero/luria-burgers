@@ -31,6 +31,8 @@
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   transition: opacity .3s ease, transform .3s ease, box-shadow .3s ease;
+  display: flex;
+  flex-direction: column; /* Cambiado a column */
 }
 .card img {
   width: 100%;
@@ -114,37 +116,36 @@
     min-width: max-content;
   }
   .card {
-    max-width: 260px; /* ajusta si quieres un poco más grande o pequeño */
+    max-width: 350px;
   }
-  /* desactivamos el scroll-fade */
-  .card.scrolled-out {
-    opacity: 1;
-    transform: none;
-  }
+}
 
-
-
-/*RANKING*/
-
-
-/* Estilos para el ranking de imágenes */
+/* Nuevos estilos para el ranking */
 .ranking-container {
     display: flex;
+    justify-content: center; /* Centrar las imágenes horizontalmente */
     align-items: center;
     margin-top: 10px;
 }
 
 .rating-icon {
-    height: 25px;  /* Ajusta el tamaño según lo necesites */
-    width: 25px;
+    height: 20px; /* Mucho más pequeñas */
+    width: 20px;
     margin: 0 5px;
     cursor: pointer;
     transition: opacity 0.3s ease;
 }
 
 .rating-icon:hover {
-    opacity: 0.8;
+    opacity: 0.7;
 }
 
-
+.card-info {
+    position: relative; /* Añadido para posicionar el botón absolutamente */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* Asegura que card-info ocupa toda la altura de la tarjeta */
 }
+

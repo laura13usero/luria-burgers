@@ -1,5 +1,6 @@
 let activeFilter = ''; // Variable para almacenar el filtro activo
 let votosUsuario = {};  // Objeto para controlar los votos del usuario
+let usuarioActual = null; // Variable para almacenar el usuario actual
 
 async function obtenerHamburguesas(filtro = '') {
     activeFilter = filtro; // Actualiza el filtro activo
@@ -29,11 +30,11 @@ async function obtenerHamburguesas(filtro = '') {
 
                 const rankingHTML = `
                     <div class="ranking-container" data-producto-id="${hamburguesa.id}">
-                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="1" onclick="calificarHamburguesa(${hamburguesa.id}, 1)">
-                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="2" onclick="calificarHamburguesa(${hamburguesa.id}, 2)">
-                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="3" onclick="calificarHamburguesa(${hamburguesa.id}, 3)">
-                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="4" onclick="calificarHamburguesa(${hamburguesa.id}, 4)">
-                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="5" onclick="calificarHamburguesa(${hamburguesa.id}, 5)">
+                        <img src="assets/iconos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="1" onclick="calificarHamburguesa(${hamburguesa.id}, 1)">
+                        <img src="assets/iconos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="2" onclick="calificarHamburguesa(${hamburguesa.id}, 2)">
+                        <img src="assets/iconos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="3" onclick="calificarHamburguesa(${hamburguesa.id}, 3)">
+                        <img src="assets/iconos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="4" onclick="calificarHamburguesa(${hamburguesa.id}, 4)">
+                        <img src="assets/iconos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="5" onclick="calificarHamburguesa(${hamburguesa.id}, 5)">
                     </div>
                 `;
 
@@ -45,7 +46,7 @@ async function obtenerHamburguesas(filtro = '') {
                         <h3>${hamburguesa.nombre}</h3>
                         <p>${hamburguesa.descripcion || ''}</p>
                         ${rankingHTML}
-                        <button onclick="agregarAlCarrito(${hamburguesa.id}, 'hamburguesa')">
+                        <button class="add-to-cart-button" onclick="agregarAlCarrito(${hamburguesa.id}, 'hamburguesa')">
                             Añadir al carrito - $${hamburguesa.precio}
                         </button>
                     </div>
@@ -106,24 +107,24 @@ function mostrarPuntuacion(idProducto, ranking) {
     iconos.forEach(icon => {
         const rating = parseInt(icon.dataset.rating);
         if (rating <= puntuacion) {
-            icon.src = 'assets/fondos_recursos/flor.png';  // Ruta a la imagen "activada"
+            icon.src = 'assets/iconos/flor-activada.png';  // Ruta a la imagen "activada"
             icon.alt = 'Calificado con ' + rating + ' estrellas';
         } else {
-            icon.src = 'assets/fondos_recursos/flor-apagada.png';
+            icon.src = 'assets/iconos/flor-apagada.png';
             icon.alt = 'Sin calificar';
         }
     });
 }
 
 async function calificarHamburguesa(idHamburguesa, rating) {
-    const usuario = obtenerUsuarioActual(); // Función para obtener el usuario actual (implementar)
+    usuarioActual = obtenerUsuarioActual(); // Obtener el usuario al hacer clic
 
-    if (!usuario) {
+    if (!usuarioActual) {
         alert("Debes iniciar sesión para calificar.");
         return;
     }
 
-    if (haVotado(usuario, idHamburguesa)) {
+    if (haVotado(usuarioActual, idHamburguesa)) {
         alert("Ya has calificado esta hamburguesa.");
         return;
     }
@@ -136,7 +137,7 @@ async function calificarHamburguesa(idHamburguesa, rating) {
             },
             body: JSON.stringify({
                 idProducto: idHamburguesa,
-                usuario: `${usuario}_${rating}`  // Almacenar usuario y puntuación
+                usuario: `${usuarioActual}_${rating}`  // Almacenar usuario y puntuación
             })
         });
 
@@ -144,8 +145,8 @@ async function calificarHamburguesa(idHamburguesa, rating) {
 
         if (data.status === "ok") {
             alert("¡Gracias por tu calificación!");
-            votosUsuario[usuario] = votosUsuario[usuario] || {};
-            votosUsuario[usuario][idHamburguesa] = true;  // Marcar como votado
+            votosUsuario[usuarioActual] = votosUsuario[usuarioActual] || {};
+            votosUsuario[usuarioActual][idHamburguesa] = true;  // Marcar como votado
             obtenerHamburguesas(activeFilter); // Recargar para mostrar la nueva puntuación
         } else {
             alert("Error al calificar. Inténtalo de nuevo.");
@@ -158,30 +159,18 @@ async function calificarHamburguesa(idHamburguesa, rating) {
 }
 
 function obtenerUsuarioActual() {
-    // Implementa esta función para obtener el usuario actual (desde la sesión, localStorage, etc.)
-    // Por ejemplo, si tienes el nombre de usuario en localStorage:
-    return localStorage.getItem('nombreUsuario');
-    // Si usas sesiones, necesitarás una llamada al servidor para obtenerlo.
-    // Si no tienes autenticación, podrías usar un prompt para simularlo (solo para desarrollo).
-    // const usuario = prompt("Ingresa tu nombre de usuario:");
-    // return usuario;
-    return null; // Devuelve null si no hay usuario
+    // Intenta obtener el usuario de la sesión (esto dependerá de cómo lo manejes en el backend)
+    const usuario = sessionStorage.getItem('usuarioLogueado'); // O localStorage, según tu caso
+    return usuario ? JSON.parse(usuario).email : null; // Devuelve el email del usuario o null si no hay sesión
 }
 
 function haVotado(usuario, idProducto) {
-    // Verificar en el array de ranking si el usuario ya votó por este producto
-    const contenedor = document.querySelector(`.ranking-container[data-producto-id="${idProducto}"]`);
-    if (!contenedor) return false;
-    const iconos = contenedor.querySelectorAll('.rating-icon');
-    let yaVoto = false;
-    iconos.forEach(icon => {
-        if (icon.classList.contains('votado-' + usuario)) {
-            yaVoto = true;
-        }
-    });
-    return yaVoto;
+    return votosUsuario[usuario] && votosUsuario[usuario][idProducto];
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    obtenerUsuarioActual(); // Obtener el usuario al cargar la página
     obtenerHamburguesas(); // Carga todas las hamburguesas al inicio
+    console.log("Usuario actual:", usuarioActual);
+
 });
