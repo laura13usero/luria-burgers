@@ -174,13 +174,13 @@
 }
 
 .rating-button {
-    background-color: #f0f0f0;
+    background-color: rgb(231 170 148 / 80%);
     border: none;
     padding: 5px 10px;
     margin: 0 5px;
     cursor: pointer;
     font-size: 1em;
-    border-radius: 5px;
+    border-radius: 15px;
     transition: background-color 0.3s ease;
 }
 
@@ -193,7 +193,8 @@
 }
 
 .send-rating-button {
-    background-color: #4CAF50;
+    font-family: 'Montserrat';
+    background-color: #d05a31;
     color: white;
     border: none;
     padding: 8px 16px;
