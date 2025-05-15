@@ -28,54 +28,43 @@ async function obtenerHamburguesas(filtro = '') {
                 const imagenSrc = `assets/menu/cards_hamburguesas_animacion/${hamburguesa.imagen_png}`;
                 console.log("Intentando cargar imagen desde:", imagenSrc);
 
-                // Generar las flores de ranking
-                let rankingHTML = `<div class="ranking-container" data-producto-id="${hamburguesa.id}">`;
-                for (let i = 1; i <= 5; i++) {
-                    let florSrc = "assets/fondos_recursos/flor-apagada.png";
-                    if (hamburguesa.promedioRanking >= (i * 2) - 1 && hamburguesa.promedioRanking <= (i * 2)) {
-                        florSrc = "assets/fondos_recursos/flor.png";
-                    } else if (hamburguesa.promedioRanking > (i * 2)) {
-                        florSrc = "assets/fondos_recursos/flor.png";
-                    }
-                    rankingHTML += `<img src="${florSrc}" alt="Calificación ${i}" class="rating-icon ${haVotado(usuarioActual, hamburguesa.id) ? 'votado' : ''}" data-rating="${i}"
-                                    onclick="calificarHamburguesa(${hamburguesa.id}, ${i})">`;
-                }
-                rankingHTML += `</div>`;
-
-                // Mostrar el promedio
-                let promedioHTML = `<p class="promedio-ranking">Promedio: ${hamburguesa.promedioRanking.toFixed(1)}</p>`;
-
+                const rankingHTML = `
+                    <div class="ranking-container" data-producto-id="${hamburguesa.id}">
+                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="1" onclick="calificarHamburguesa(${hamburguesa.id}, 1)">
+                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="2" onclick="calificarHamburguesa(${hamburguesa.id}, 2)">
+                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="3" onclick="calificarHamburguesa(${hamburguesa.id}, 3)">
+                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="4" onclick="calificarHamburguesa(${hamburguesa.id}, 4)">
+                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="5" onclick="calificarHamburguesa(${hamburguesa.id}, 5)">
+                    </div>
+                `;
 
                 card.innerHTML = `
                     <img src="${imagenSrc}" alt="${hamburguesa.nombre}">
                     <div class="burger-info">
-                        <h3>${hamburguesa.nombre}</h3>
+                        <h2>${hamburguesa.nombre}</h2>
                         <p>${hamburguesa.descripcion}</p>
-                        <p class="price">S/ ${hamburguesa.precio.toFixed(2)}</p>
+                        <p class="precio">S/ ${hamburguesa.precio.toFixed(2)}</p>
                         ${rankingHTML}
-                        ${promedioHTML}
-                        <a href="${hamburguesa.enlace_html}" class="order-button">Pedir Ahora</a>
+                        <button class="add-to-cart-button" onclick="agregarAlCarrito(${hamburguesa.id}, 'hamburguesa')">
+                          Añadir al carrito - $${hamburguesa.precio}
+                        </button>
                     </div>
                 `;
                 container.appendChild(card);
+                actualizarRankingVisual(hamburguesa, usuarioActual);
             });
         } else {
             container.innerHTML = '<p>No se encontraron hamburguesas.</p>';
         }
     } catch (error) {
         console.error('Error al obtener las hamburguesas:', error);
-        container.innerHTML = '<p>Error al cargar las hamburguesas.</p>';
+        document.querySelector('.cards-container').innerHTML = '<p>Error al cargar las hamburguesas.</p>';
     }
 }
 
 async function calificarHamburguesa(idHamburguesa, rating) {
     if (!usuarioActual) {
         alert("Debes iniciar sesión para calificar.");
-        return;
-    }
-
-    if (haVotado(usuarioActual, idHamburguesa)) {
-        alert("Ya has calificado esta hamburguesa.");
         return;
     }
 
@@ -87,7 +76,7 @@ async function calificarHamburguesa(idHamburguesa, rating) {
             },
             body: new URLSearchParams({
                 idProducto: idHamburguesa,
-                usuario: `${usuarioActual}_${rating}`, // Incluir usuario y rating
+                usuario: usuarioActual,
                 rating: rating
             })
         });
@@ -109,25 +98,46 @@ async function calificarHamburguesa(idHamburguesa, rating) {
     }
 }
 
-function obtenerUsuarioActual() {
+async function obtenerUsuarioLogueado() {
     try {
-        const usuario = sessionStorage.getItem('usuarioLogueado');
-        if (usuario) {
-            return JSON.parse(usuario).email;
+        const response = await fetch('control?action=getUsuarioLogueado');
+        const data = await response.json();
+        if (data.status === 'ok') {
+            usuarioActual = data.nombre;  //  O data.email, o lo que necesites
+            // Si envías más datos del usuario, puedes acceder a ellos aquí
+            // Por ejemplo:  usuarioActual = data.usuario.email;
+        } else {
+            usuarioActual = null;
         }
-        return null;
     } catch (error) {
-        console.error("Error al obtener el usuario de sessionStorage:", error);
-        return null;
+        console.error('Error al obtener el usuario logueado:', error);
+        usuarioActual = null;
     }
 }
+
 
 function haVotado(usuario, idProducto) {
     return votosUsuario[usuario] && votosUsuario[usuario][idProducto];
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    usuarioActual = obtenerUsuarioActual();
+document.addEventListener('DOMContentLoaded', async () => {
+    await obtenerUsuarioLogueado(); // Obtener el usuario al cargar la página
     obtenerHamburguesas();
     console.log("Usuario actual (DOMContentLoaded):", usuarioActual);
 });
+
+function actualizarRankingVisual(hamburguesa, usuarioActual) {
+    const rankingContainer = document.querySelector(`.ranking-container[data-producto-id="${hamburguesa.id}"]`);
+    if (!rankingContainer) return;
+
+    const iconosRating = rankingContainer.querySelectorAll('.rating-icon');
+    iconosRating.forEach(icon => {
+        icon.src = "assets/fondos_recursos/flor-apagada.png"; // Resetea
+    });
+
+    if (usuarioActual && hamburguesa.ranking && hamburguesa.ranking.includes(usuarioActual)) {
+        iconosRating.forEach((icon, index) => {
+            icon.src = "assets/fondos_recursos/flor.png";
+        });
+    }
+}
