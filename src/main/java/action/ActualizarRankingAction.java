@@ -15,10 +15,10 @@ public class ActualizarRankingAction implements Action {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         int idProducto = Integer.parseInt(request.getParameter("idProducto"));
         String usuario = request.getParameter("usuario");
-        int rating = Integer.parseInt(request.getParameter("rating")); // Obtener el rating
+        int rating = Integer.parseInt(request.getParameter("rating"));
 
         HamburguesaDAO hamburguesaDAO = new HamburguesaDAO();
-        hamburguesaDAO.actualizarRankingHamburguesa(idProducto, usuario + "_" + rating); // Concatenar usuario y rating
+        hamburguesaDAO.actualizarRankingHamburguesa(idProducto, usuario + "_" + rating);
 
         Map<String, String> jsonResponse = new HashMap<>();
         jsonResponse.put("status", "ok");

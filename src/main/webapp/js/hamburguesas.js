@@ -117,6 +117,7 @@ function mostrarPuntuacion(idProducto, ranking) {
 }
 
 async function calificarHamburguesa(idHamburguesa, rating) {
+    // Obtener el usuario *inmediatamente* antes de la verificación y la llamada al servidor
     usuarioActual = obtenerUsuarioActual();
 
     if (!usuarioActual) {
@@ -137,8 +138,8 @@ async function calificarHamburguesa(idHamburguesa, rating) {
             },
             body: JSON.stringify({
                 idProducto: idHamburguesa,
-                usuario: usuarioActual,  // Enviar solo el email
-                rating: rating          // Y el rating por separado
+                usuario: usuarioActual,
+                rating: rating
             })
         });
 
@@ -160,17 +161,25 @@ async function calificarHamburguesa(idHamburguesa, rating) {
 }
 
 function obtenerUsuarioActual() {
-    const usuario = sessionStorage.getItem('usuarioLogueado');
-    return usuario ? JSON.parse(usuario).email : null;
+    try {
+        const usuario = sessionStorage.getItem('usuarioLogueado');
+        if (usuario) {
+            return JSON.parse(usuario).email;
+        }
+        return null;
+    } catch (error) {
+        console.error("Error al obtener el usuario de sessionStorage:", error);
+        return null; // Importante manejar el error y retornar null
+    }
 }
+
 
 function haVotado(usuario, idProducto) {
     return votosUsuario[usuario] && votosUsuario[usuario][idProducto];
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    obtenerUsuarioActual();
+    usuarioActual = obtenerUsuarioActual(); // Obtener el usuario al cargar la página
     obtenerHamburguesas();
-    console.log("Usuario actual:", usuarioActual);
-
+    console.log("Usuario actual (DOMContentLoaded):", usuarioActual);
 });
