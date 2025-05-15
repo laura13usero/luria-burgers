@@ -10,65 +10,107 @@
     <link rel="stylesheet" href="css/cards.css">
     <link rel="icon" href="assets/fondos_recursos/flor.png" type="image/png">
 
+    <style>
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .filter-button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1em;
+        }
+
+        .filter-button:hover {
+            background-color: #eee;
+        }
+
+        .filter-button.active {
+            background-color: #e0e0e0;
+            border-color: #bbb;
+        }
+    </style>
+
     <script>
-        async function obtenerHamburguesas() {
-          try {
-            // La petición al servlet/controlador ya es relativa al contexto de la aplicación
-            const response = await fetch("control?action=getHamburguesasJSON");
-            const data = await response.json();
-            const container = document.querySelector('.cards-container');
-            container.innerHTML = '';
+        let activeFilter = ''; // Variable para almacenar el filtro activo
 
-            if (data.length > 0) {
-              data.forEach(hamburguesa => {
-                const card = document.createElement('div');
-                card.classList.add('card');
+        async function obtenerHamburguesas(filtro = '') {
+            activeFilter = filtro; // Actualiza el filtro activo
+            document.querySelectorAll('.filter-button').forEach(button => {
+                button.classList.remove('active');
+                if (button.dataset.filter === filtro) {
+                    button.classList.add('active');
+                }
+            });
 
-                // Las imágenes de las hamburguesas, relativas a la raíz de webapp
-                const imagenSrc = `assets/menu/cards_hamburguesas_animacion/${hamburguesa.imagen_png}`;
-                console.log("Intentando cargar imagen desde:", imagenSrc);
+            try {
+                const url = filtro
+                    ? `control?action=filtrarHamburguesas&filtro=${filtro}`
+                    : `control?action=getHamburguesasJSON`;
+                const response = await fetch(url);
+                const data = await response.json();
+                const container = document.querySelector('.cards-container');
+                container.innerHTML = '';
 
-                card.innerHTML = `
-                  <div class="card-img-container">
-                    <img src="${imagenSrc}" alt="${hamburguesa.nombre}" class="burger-image">
-                  </div>
-                  <div class="card-info">
-                    <h3>${hamburguesa.nombre}</h3>
-                    <p>${hamburguesa.descripcion || ''}</p>
-                    <button onclick="agregarAlCarrito(${hamburguesa.id}, 'hamburguesa')">
-                      Añadir al carrito - $${hamburguesa.precio}
-                    </button>
-                  </div>
-                `;
-                container.appendChild(card);
-              });
-            } else {
-              container.innerHTML = '<p>No hay hamburguesas disponibles.</p>';
+                if (data.length > 0) {
+                    data.forEach(hamburguesa => {
+                        const card = document.createElement('div');
+                        card.classList.add('card');
+
+                        const imagenSrc = `assets/menu/cards_hamburguesas_animacion/${hamburguesa.imagen_png}`;
+                        console.log("Intentando cargar imagen desde:", imagenSrc);
+
+                        card.innerHTML = `
+                            <div class="card-img-container">
+                                <img src="${imagenSrc}" alt="${hamburguesa.nombre}" class="burger-image">
+                            </div>
+                            <div class="card-info">
+                                <h3>${hamburguesa.nombre}</h3>
+                                <p>${hamburguesa.descripcion || ''}</p>
+                                <button onclick="agregarAlCarrito(${hamburguesa.id}, 'hamburguesa')">
+                                    Añadir al carrito - $${hamburguesa.precio}
+                                </button>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                } else {
+                    container.innerHTML = '<p>No hay hamburguesas disponibles con este filtro.</p>';
+                }
+            } catch (error) {
+                console.error('Error al obtener hamburguesas:', error);
             }
-          } catch (error) {
-            console.error('Error al obtener hamburguesas:', error);
-          }
         }
 
         async function agregarAlCarrito(idProducto, tipoProducto) {
-          try {
-            const response = await fetch(`control?action=addToCart&idProducto=${idProducto}`, {
-              method: "POST"
-            });
-            const result = await response.json();
-            if (result.status === "ok") {
-              window.location.href = result.redirect; // Asumimos que result.redirect ya es correcto
-            } else if (result.status === "login_required") {
-              window.location.href = result.redirect;
-            } else {
-              alert("❌ Error al añadir al carrito: " + result.message);
+            try {
+                const response = await fetch(`control?action=addToCart&idProducto=${idProducto}`, {
+                    method: "POST"
+                });
+                const result = await response.json();
+                if (result.status === "ok") {
+                    window.location.href = result.redirect;
+                } else if (result.status === "login_required") {
+                    window.location.href = result.redirect;
+                } else {
+                    alert("❌ Error al añadir al carrito: " + result.message);
+                }
+            } catch (error) {
+                console.error("❌ Error de red al añadir al carrito:", error);
+                alert("❌ Error inesperado.");
             }
-          } catch (error) {
-            console.error("❌ Error de red al añadir al carrito:", error);
-            alert("❌ Error inesperado.");
-          }
         }
-        document.addEventListener('DOMContentLoaded', obtenerHamburguesas);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            obtenerHamburguesas(); // Carga todas las hamburguesas al inicio
+        });
     </script>
 </head>
 <body>
@@ -87,7 +129,7 @@
 <div class="menu-container-wrapper">
     <button class="menu-arrow menu-arrow-left" id="menuArrowLeft"></button>
     <nav class="menu-container" id="menuContainer">
-        <a href="hamburguesas.html" class="menu-item"> <img src="assets/nav_icons/hamburguesas.png" alt="Burgers">
+        <a href="hamburguesas.html" class="menu-item active"> <img src="assets/nav_icons/hamburguesas.png" alt="Burgers">
             <div class="menu-background"></div>
         </a>
         <a href="guarniciones.html" class="menu-item">
@@ -107,9 +149,16 @@
 </div>
 
 <div class="cards-wrapper">
+    <div class="filter-buttons">
+        <button class="filter-button" data-filter="" onclick="obtenerHamburguesas()">Todas</button>
+        <button class="filter-button" data-filter="spicy" onclick="obtenerHamburguesas('spicy')">Spicy</button>
+        <button class="filter-button" data-filter="chicken" onclick="obtenerHamburguesas('chicken')">Chicken</button>
+        <button class="filter-button" data-filter="premium" onclick="obtenerHamburguesas('premium')">Premium</button>
+    </div>
     <div class="cards-container">
     </div>
 </div>
 
-<script src="js/main.js"></script> </body>
+<script src="js/main.js"></script>
+</body>
 </html>
