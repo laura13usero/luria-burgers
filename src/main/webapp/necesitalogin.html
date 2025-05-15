@@ -1,25 +1,90 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>You need to log in</title>
+    <title>Luría | Nuestras Especialidades</title>
+
+    <link
+            href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700&family=Montserrat:wght@400;500;600&display=swap"
+            rel="stylesheet">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/cards.css">
+    <link rel="icon" href="assets/fondos_recursos/flor.png" type="image/png">
+
+    <style>
+        body {
+            background-image: url(assets/fondos_recursos/fondo_necesita_login.jpg);
+            background-size: 100% auto; /* 100% de ancho, altura automática */
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Opcional: para que la imagen no se desplace con el scroll */
+        }
+    </style>
+
 </head>
+
 <body>
 
-    <h1>To view the cart, you need to register or log in!</h1>
+<div class="top-overlay"></div>
 
-    <form action="/webapp-1.0-SNAPSHOT/login.html" method="get" style="margin-bottom: 10px;">
-        <button type="submit">Please, Log In</button>
-    </form>
+<div class="corner-links">
+    <a href="login.html" class="corner-link">
+        <img src="assets/fondos_recursos/login.png" alt="Login">
+    </a>
+    <a href="carrito.html" class="corner-link">
+        <img src="assets/fondos_recursos/carrito.png" alt="Carrito">
+    </a>
+</div>
 
-    <form action="/webapp-1.0-SNAPSHOT/registro.html" method="get" style="margin-bottom: 10px;">
-        <button type="submit">Or Sign up!</button>
-    </form>
+<div class="menu-container-wrapper">
+    <button class="menu-arrow menu-arrow-left" id="menuArrowLeft"></button>
+    <nav class="menu-container" id="menuContainer">
+        <a href="hamburguesas.html" class="menu-item active"> <img src="assets/nav_icons/hamburguesas.png"
+                                                                   alt="Burgers">
+            <div class="menu-background"></div>
+        </a>
+        <a href="guarniciones.html" class="menu-item">
+            <img src="assets/nav_icons/complementos.png" alt="Complementos">
+            <div class="menu-background"></div>
+        </a>
+        <a href="postres.html" class="menu-item">
+            <img src="assets/nav_icons/postres.png" alt="Postres">
+            <div class="menu-background"></div>
+        </a>
+        <a href="bebidas.html" class="menu-item">
+            <img src="assets/nav_icons/bebidas.png" alt="Bebidas">
+            <div class="menu-background"></div>
+        </a>
+    </nav>
+    <button class="menu-arrow menu-arrow-right" id="menuArrowRight"></button>
+</div>
 
-    <form action="/webapp-1.0-SNAPSHOT/index.html" method="get">
-        <button type="submit">Go back to the homepage</button>
-    </form>
+<div class="cards-wrapper">
+    <div class="filter-buttons">
+        <button class="filter-button" data-filter="" onclick="obtenerHamburguesas()">Todas</button>
+        <button class="filter-button" data-filter="spicy" onclick="obtenerHamburguesas('spicy')">Spicy</button>
+        <button class="filter-button" data-filter="chicken" onclick="obtenerHamburguesas('chicken')">Chicken</button>
+        <button class="filter-button" data-filter="premium" onclick="obtenerHamburguesas('premium')">Premium</button>
+    </div>
+    <div class="cards-container">
+    </div>
+</div>
+
+<div class="ranking-container" data-producto-id="${hamburguesa.id}">
+    <button class="rating-button minus" onclick="cambiarRating(${hamburguesa.id}, -1)">-</button>
+    <img src="assets/fondos_recursos/flor.png" alt="Calificación 1" class="rating-icon" data-rating="1">
+    <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 2" class="rating-icon" data-rating="2">
+    <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 3" class="rating-icon" data-rating="3">
+    <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 4" class="rating-icon" data-rating="4">
+    <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 5" class="rating-icon" data-rating="5">
+    <button class="rating-button plus" onclick="cambiarRating(${hamburguesa.id}, 1)">+</button>
+    <button class="send-rating-button" onclick="enviarCalificacion(${hamburguesa.id})">Enviar Calificación</button>
+    <p class="current-rating">Calificación: <span id="rating-${hamburguesa.id}">1</span></p>
+</div>
+
+<script src="js/hamburguesas.js"></script>
 
 </body>
+
 </html>
