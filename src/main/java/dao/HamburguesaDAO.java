@@ -15,7 +15,7 @@ public class HamburguesaDAO {
 
     public List<Producto> obtenerHamburguesas() {
         List<Producto> hamburguesas = new ArrayList<>();
-        String sql = "SELECT id_producto, nombre, descripcion, precio, filtros, imagen_png, enlace_html, ranking FROM Productos WHERE categoria ILIKE 'Burger'";
+        String sql = "SELECT id_producto, nombre, precio, filtros, imagen_png, enlace_html, ranking FROM Productos WHERE categoria ILIKE 'Burger'";
 
         try (Connection conn = MotorSQL.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -25,7 +25,6 @@ public class HamburguesaDAO {
                 Producto p = new Producto();
                 p.setId(rs.getInt("id_producto"));
                 p.setNombre(rs.getString("nombre"));
-                p.setDescripcion(rs.getString("descripcion"));
                 p.setPrecio(rs.getDouble("precio"));
                 p.setFiltros(rs.getString("filtros"));
                 p.setImagen_png(rs.getString("imagen_png"));
@@ -43,7 +42,7 @@ public class HamburguesaDAO {
 
     public List<Producto> obtenerHamburguesasPorFiltro(String filtro) {
         List<Producto> hamburguesasFiltradas = new ArrayList<>();
-        String sql = "SELECT id_producto, nombre, descripcion, precio, filtros, imagen_png, enlace_html, ranking " +
+        String sql = "SELECT id_producto, nombre, precio, filtros, imagen_png, enlace_html, ranking " +
                 "FROM Productos " +
                 "WHERE categoria ILIKE 'Burger' AND filtros ILIKE ?";
 
@@ -57,7 +56,6 @@ public class HamburguesaDAO {
                     Producto p = new Producto();
                     p.setId(rs.getInt("id_producto"));
                     p.setNombre(rs.getString("nombre"));
-                    p.setDescripcion(rs.getString("descripcion"));
                     p.setPrecio(rs.getDouble("precio"));
                     p.setFiltros(rs.getString("filtros"));
                     p.setImagen_png(rs.getString("imagen_png"));
