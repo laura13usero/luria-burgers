@@ -38,8 +38,7 @@ async function obtenerHamburguesas(filtro = '') {
                         <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 4" class="rating-icon" data-rating="4">
                         <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 5" class="rating-icon" data-rating="5">
                         <button class="rating-button plus" onclick="cambiarRating(${hamburguesa.id}, 1)">+</button>
-                        <button class="send-rating-button" onclick="enviarCalificacion(${hamburguesa.id})">Enviar Calificación</button>
-                        <p class="current-rating">Calificación: <span id="rating-${hamburguesa.id}">1</span></p>
+                        <button class="send-rating-button" onclick="enviarCalificacion(${hamburguesa.id})">Send rate</button>
                     </div>
                 `;
 
