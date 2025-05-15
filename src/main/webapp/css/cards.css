@@ -240,3 +240,28 @@
     background-color: #1e7e34; /* Más oscuro al hacer clic */
     transform: scale(0.98); /* Ligeramente más pequeño al hacer clic */
 }
+
+.filter-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 30vh; /* Ajusta este valor */
+    margin-bottom: 20px; /* Opcional: para añadir espacio debajo de los botones */
+}
+
+.filter-button {
+    /* Estilos existentes */
+    padding: 10px 15px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    margin: 0 10px;
+    border-radius: 5px;
+}
+
+.filter-button.active {
+    background-color: #ddd;
+}
+
+.filter-button:hover {
+    background-color: #e0e0e0;
+}
