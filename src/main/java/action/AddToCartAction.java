@@ -89,7 +89,7 @@ public class AddToCartAction implements Action {
 
         } else {
             json.addProperty("status", "login_required");
-            json.addProperty("redirect", request.getContextPath() + "/necesitaLogin.html");
+            json.addProperty("redirect", request.getContextPath() + "/necesitalogin.html");
         }
 
         out.print(json);
