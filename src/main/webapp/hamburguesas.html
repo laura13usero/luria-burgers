@@ -27,19 +27,19 @@
 
 <div class="menu-container-wrapper">
     <button class="menu-arrow menu-arrow-left" id="menuArrowLeft"></button>
-    <nav class="menu-container" id="menuContainer">
-        <a href="hamburguesas.html" class="menu-item active"> <img src="assets/nav_icons/hamburguesas.png" alt="Burgers">
+    <nav    class="menu-container"              id="menuContainer">
+        <a href="hamburguesas.html"      class="menu-item active"> <img src="assets/nav_icons/hamburguesas.png" alt="Burgers">
             <div class="menu-background"></div>
         </a>
         <a href="guarniciones.html" class="menu-item">
             <img src="assets/nav_icons/complementos.png" alt="Complementos">
             <div class="menu-background"></div>
         </a>
-        <a href="postres.html" class="menu-item">
+        <a href="postres.html"      class="menu-item">
             <img src="assets/nav_icons/postres.png" alt="Postres">
             <div class="menu-background"></div>
         </a>
-        <a href="bebidas.html" class="menu-item">
+        <a href="bebidas.html"      class="menu-item">
             <img src="assets/nav_icons/bebidas.png" alt="Bebidas">
             <div class="menu-background"></div>
         </a>
@@ -66,10 +66,11 @@
     <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 4" class="rating-icon" data-rating="4">
     <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 5" class="rating-icon" data-rating="5">
     <button class="rating-button plus" onclick="cambiarRating(${hamburguesa.id}, 1)">+</button>
-    <button class="send-rating-button" onclick="enviarCalificacion(${hamburguesa.id})">Send rate</button>
+    <button class="send-rating-button" onclick="enviarCalificacion(${hamburguesa.id})">Enviar Calificación</button>
+    <p class="current-rating">Calificación: <span id="rating-${hamburguesa.id}">1</span></p>
 </div>
 
-<script src="js/main.js"></script>
 <script src="js/hamburguesas.js"></script>
+
 </body>
 </html>

@@ -27,43 +27,24 @@
                 console.log("Intentando cargar imagen desde:", imagenSrc);
 
                 card.innerHTML = `
-                  <div class="card-img-container">
-                    <img src="${imagenSrc}" alt="${postre.nombre}" class="burger-image">
-                  </div>
+                  <img src="${imagenSrc}" alt="${postre.nombre}">
                   <div class="card-info">
-                    <h3>${postre.nombre}</h3>
-                    <p>${postre.descripcion || ''}</p>
-                    <button onclick="agregarAlCarrito(${postre.id}, 'postre')">
-                      Añadir al carrito - $${postre.precio}
+                    <h2>${postre.nombre}</h2>
+                    <p>${postre.descripcion}</p>
+                    <p class="price">S/ ${postre.precio.toFixed(2)}</p>
+                    <button class="add-to-cart-button" onclick="agregarAlCarrito(${postre.id}, 'postre')">
+                      Añadir al carrito - S/ ${postre.precio.toFixed(2)}
                     </button>
                   </div>
                 `;
                 container.appendChild(card);
               });
             } else {
-              container.innerHTML = '<p>No hay postres disponibles.</p>';
+              container.innerHTML = '<p>No se encontraron postres.</p>';
             }
           } catch (error) {
-            console.error('Error al obtener postres:', error);
-          }
-        }
-
-        async function agregarAlCarrito(idProducto, tipoProducto) {
-          try {
-            const response = await fetch(`control?action=addToCart&idProducto=${idProducto}`, {
-              method: "POST"
-            });
-            const result = await response.json();
-            if (result.status === "ok") {
-              window.location.href = result.redirect;
-            } else if (result.status === "login_required") {
-              window.location.href = result.redirect;
-            } else {
-              alert("❌ Error al añadir al carrito: " + result.message);
-            }
-          } catch (error) {
-            console.error("❌ Error de red al añadir al carrito:", error);
-            alert("❌ Error inesperado.");
+            console.error('Error al obtener los postres:', error);
+            container.innerHTML = '<p>Error al cargar los postres.</p>';
           }
         }
 
@@ -89,18 +70,4 @@
         <a href="hamburguesas.html"      class="menu-item"><img src="assets/nav_icons/hamburguesas.png" alt="Hamburguesas"><div class="menu-background"></div></a>
         <a href="guarniciones.html" class="menu-item"><img src="assets/nav_icons/complementos.png" alt="Complementos"><div class="menu-background"></div></a>
         <a href="postres.html"      class="menu-item active"><img src="assets/nav_icons/postres.png"      alt="Postres"><div class="menu-background"></div></a>
-        <a href="bebidas.html"      class="menu-item"><img src="assets/nav_icons/bebidas.png"      alt="Bebidas"><div class="menu-background"></div></a>
-    </nav>
-    <button class="menu-arrow menu-arrow-right" id="menuArrowRight"></button>
-</div>
-
-<div style="height:20vh;"></div>
-
-<div class="cards-wrapper">
-    <div class="cards-container">
-    </div>
-</div>
-
-<script src="js/home.js"></script>
-</body>
-</html>
+        <a href="bebidas.html"      class="menu-item"><img src="assets/nav_icons/bebidas.png"      alt="Bebidas"><div class
