@@ -16,7 +16,7 @@
 .cards-container {
   width: 100%;
   max-width: 450px;
-  margin-top: 12vh;
+  margin-top: 0vh;
   padding: 15px 10px 80px;
   display: flex;
   flex-direction: column;
@@ -245,7 +245,7 @@
     display: flex;
     justify-content: center;
     margin-top: 30vh; /* Ajusta este valor */
-    margin-bottom: 20px; /* Opcional: para añadir espacio debajo de los botones */
+    margin-bottom: 0px; /* Opcional: para añadir espacio debajo de los botones */
 }
 
 .filter-button {
