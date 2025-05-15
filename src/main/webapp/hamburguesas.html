@@ -10,108 +10,7 @@
     <link rel="stylesheet" href="css/cards.css">
     <link rel="icon" href="assets/fondos_recursos/flor.png" type="image/png">
 
-    <style>
-        .filter-buttons {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
 
-        .filter-button {
-            padding: 10px 20px;
-            margin: 0 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-            cursor: pointer;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1em;
-        }
-
-        .filter-button:hover {
-            background-color: #eee;
-        }
-
-        .filter-button.active {
-            background-color: #e0e0e0;
-            border-color: #bbb;
-        }
-    </style>
-
-    <script>
-        let activeFilter = ''; // Variable para almacenar el filtro activo
-
-        async function obtenerHamburguesas(filtro = '') {
-            activeFilter = filtro; // Actualiza el filtro activo
-            document.querySelectorAll('.filter-button').forEach(button => {
-                button.classList.remove('active');
-                if (button.dataset.filter === filtro) {
-                    button.classList.add('active');
-                }
-            });
-
-            try {
-                const url = filtro
-                    ? `control?action=filtrarHamburguesas&filtro=${filtro}`
-                    : `control?action=getHamburguesasJSON`;
-                const response = await fetch(url);
-                const data = await response.json();
-                const container = document.querySelector('.cards-container');
-                container.innerHTML = '';
-
-                if (data.length > 0) {
-                    data.forEach(hamburguesa => {
-                        const card = document.createElement('div');
-                        card.classList.add('card');
-
-                        const imagenSrc = `assets/menu/cards_hamburguesas_animacion/${hamburguesa.imagen_png}`;
-                        console.log("Intentando cargar imagen desde:", imagenSrc);
-
-                        card.innerHTML = `
-                            <div class="card-img-container">
-                                <img src="${imagenSrc}" alt="${hamburguesa.nombre}" class="burger-image">
-                            </div>
-                            <div class="card-info">
-                                <h3>${hamburguesa.nombre}</h3>
-                                <p>${hamburguesa.descripcion || ''}</p>
-                                <button onclick="agregarAlCarrito(${hamburguesa.id}, 'hamburguesa')">
-                                    Añadir al carrito - $${hamburguesa.precio}
-                                </button>
-                            </div>
-                        `;
-                        container.appendChild(card);
-                    });
-                } else {
-                    container.innerHTML = '<p>No hay hamburguesas disponibles con este filtro.</p>';
-                }
-            } catch (error) {
-                console.error('Error al obtener hamburguesas:', error);
-            }
-        }
-
-        async function agregarAlCarrito(idProducto, tipoProducto) {
-            try {
-                const response = await fetch(`control?action=addToCart&idProducto=${idProducto}`, {
-                    method: "POST"
-                });
-                const result = await response.json();
-                if (result.status === "ok") {
-                    window.location.href = result.redirect;
-                } else if (result.status === "login_required") {
-                    window.location.href = result.redirect;
-                } else {
-                    alert("❌ Error al añadir al carrito: " + result.message);
-                }
-            } catch (error) {
-                console.error("❌ Error de red al añadir al carrito:", error);
-                alert("❌ Error inesperado.");
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            obtenerHamburguesas(); // Carga todas las hamburguesas al inicio
-        });
-    </script>
 </head>
 <body>
 
@@ -160,5 +59,6 @@
 </div>
 
 <script src="js/main.js"></script>
+<script src="js/hamburguesas.js"></script>
 </body>
 </html>
