@@ -18,7 +18,7 @@
    CAPA 0 · Fondo base (móvil / tablet)
 ─────────────────────────────────── */
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Caveat Brush", cursive;
   background-image: url("../assets/fondos_recursos/dashboard.png");
   background-repeat: no-repeat;
   background-attachment: fixed;
