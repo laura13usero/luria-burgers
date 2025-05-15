@@ -31,10 +31,13 @@ async function obtenerHamburguesas(filtro = '') {
                 // Generar las flores de ranking
                 let rankingHTML = `<div class="ranking-container" data-producto-id="${hamburguesa.id}">`;
                 for (let i = 1; i <= 5; i++) {
-                    const florSrc = i <= Math.round(hamburguesa.promedioRanking)
-                        ? "assets/fondos_recursos/flor.png"
-                        : "assets/fondos_recursos/flor-apagada.png";
-                    rankingHTML += `<img src="${florSrc}" alt="Calificación ${i}" class="rating-icon" data-rating="${i}"
+                    let florSrc = "assets/fondos_recursos/flor-apagada.png";
+                    if (hamburguesa.promedioRanking >= (i * 2) - 1 && hamburguesa.promedioRanking <= (i * 2)) {
+                        florSrc = "assets/fondos_recursos/flor.png";
+                    } else if (hamburguesa.promedioRanking > (i * 2)) {
+                        florSrc = "assets/fondos_recursos/flor.png";
+                    }
+                    rankingHTML += `<img src="${florSrc}" alt="Calificación ${i}" class="rating-icon ${haVotado(usuarioActual, hamburguesa.id) ? 'votado' : ''}" data-rating="${i}"
                                     onclick="calificarHamburguesa(${hamburguesa.id}, ${i})">`;
                 }
                 rankingHTML += `</div>`;
@@ -71,6 +74,11 @@ async function calificarHamburguesa(idHamburguesa, rating) {
         return;
     }
 
+    if (haVotado(usuarioActual, idHamburguesa)) {
+        alert("Ya has calificado esta hamburguesa.");
+        return;
+    }
+
     try {
         const response = await fetch('control?action=actualizarRanking', {
             method: 'POST',
@@ -79,7 +87,7 @@ async function calificarHamburguesa(idHamburguesa, rating) {
             },
             body: new URLSearchParams({
                 idProducto: idHamburguesa,
-                usuario: usuarioActual,
+                usuario: `${usuarioActual}_${rating}`, // Incluir usuario y rating
                 rating: rating
             })
         });

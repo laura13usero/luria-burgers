@@ -106,9 +106,22 @@ public class HamburguesaDAO {
 
     public void actualizarRankingHamburguesa(int idProducto, String nuevoUsuario) {
         String sql = "UPDATE Productos SET ranking = array_append(ranking, ?) WHERE id_producto = ?";
+        String sqlCheck = "SELECT ranking FROM Productos WHERE id_producto = ?";
 
         try (Connection conn = MotorSQL.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             PreparedStatement stmtCheck = conn.prepareStatement(sqlCheck)) {
+
+            stmtCheck.setInt(1, idProducto);
+            ResultSet rs = stmtCheck.executeQuery();
+
+            if (rs.next()) {
+                String rankingString = rs.getString("ranking");
+                if (rankingString != null && rankingString.contains(nuevoUsuario.split("_")[0])) {
+                    // El usuario ya votó
+                    return; // Salir sin actualizar
+                }
+            }
 
             stmt.setString(1, nuevoUsuario);
             stmt.setInt(2, idProducto);
@@ -116,7 +129,7 @@ public class HamburguesaDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            // Manejar la excepción (log, lanzar una excepción personalizada, etc.)
+            // Manejar la excepción
         }
     }
 }
