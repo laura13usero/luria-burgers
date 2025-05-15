@@ -1,9 +1,9 @@
-let activeFilter = ''; // Variable para almacenar el filtro activo
-let votosUsuario = {};  // Objeto para controlar los votos del usuario
-let usuarioActual = null; // Variable para almacenar el usuario actual
+let activeFilter = '';
+let votosUsuario = {};
+let usuarioActual = null;
 
 async function obtenerHamburguesas(filtro = '') {
-    activeFilter = filtro; // Actualiza el filtro activo
+    activeFilter = filtro;
     document.querySelectorAll('.filter-button').forEach(button => {
         button.classList.remove('active');
         if (button.dataset.filter === filtro) {
@@ -52,7 +52,7 @@ async function obtenerHamburguesas(filtro = '') {
                     </div>
                 `;
                 container.appendChild(card);
-                mostrarPuntuacion(hamburguesa.id, hamburguesa.ranking);  // Mostrar puntuación inicial
+                mostrarPuntuacion(hamburguesa.id, hamburguesa.ranking);
             });
         } else {
             container.innerHTML = '<p>No hay hamburguesas disponibles con este filtro.</p>';
@@ -86,7 +86,7 @@ function calcularPuntuacion(ranking) {
 
     let total = 0;
     for (let i = 0; i < ranking.length; i++) {
-        total += parseInt(ranking[i].split('_')[1]); // Extraer la puntuación del string "usuario_puntuacion"
+        total += parseInt(ranking[i].split('_')[1]);
     }
     let promedio = total / ranking.length;
 
@@ -99,7 +99,7 @@ function calcularPuntuacion(ranking) {
 
 function mostrarPuntuacion(idProducto, ranking) {
     const contenedor = document.querySelector(`.ranking-container[data-producto-id="${idProducto}"]`);
-    if (!contenedor) return;  // Si no se encuentra el contenedor, salir
+    if (!contenedor) return;
 
     const puntuacion = calcularPuntuacion(ranking);
     const iconos = contenedor.querySelectorAll('.rating-icon');
@@ -107,7 +107,7 @@ function mostrarPuntuacion(idProducto, ranking) {
     iconos.forEach(icon => {
         const rating = parseInt(icon.dataset.rating);
         if (rating <= puntuacion) {
-            icon.src = 'assets/fondos_recursos/flor.png';  // Ruta a la imagen "activada"
+            icon.src = 'assets/fondos_recursos/flor-activada.png';
             icon.alt = 'Calificado con ' + rating + ' estrellas';
         } else {
             icon.src = 'assets/fondos_recursos/flor-apagada.png';
@@ -117,7 +117,7 @@ function mostrarPuntuacion(idProducto, ranking) {
 }
 
 async function calificarHamburguesa(idHamburguesa, rating) {
-    usuarioActual = obtenerUsuarioActual(); // Obtener el usuario al hacer clic
+    usuarioActual = obtenerUsuarioActual();
 
     if (!usuarioActual) {
         alert("Debes iniciar sesión para calificar.");
@@ -130,14 +130,15 @@ async function calificarHamburguesa(idHamburguesa, rating) {
     }
 
     try {
-        const response = await fetch('control?action=ActualizarRanking', {  // Ajusta la URL si es necesario
+        const response = await fetch('control?action=ActualizarRanking', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 idProducto: idHamburguesa,
-                usuario: `${usuarioActual}_${rating}`  // Almacenar usuario y puntuación
+                usuario: usuarioActual,  // Enviar solo el email
+                rating: rating          // Y el rating por separado
             })
         });
 
@@ -146,8 +147,8 @@ async function calificarHamburguesa(idHamburguesa, rating) {
         if (data.status === "ok") {
             alert("¡Gracias por tu calificación!");
             votosUsuario[usuarioActual] = votosUsuario[usuarioActual] || {};
-            votosUsuario[usuarioActual][idHamburguesa] = true;  // Marcar como votado
-            obtenerHamburguesas(activeFilter); // Recargar para mostrar la nueva puntuación
+            votosUsuario[usuarioActual][idHamburguesa] = true;
+            obtenerHamburguesas(activeFilter);
         } else {
             alert("Error al calificar. Inténtalo de nuevo.");
         }
@@ -159,9 +160,8 @@ async function calificarHamburguesa(idHamburguesa, rating) {
 }
 
 function obtenerUsuarioActual() {
-    // Intenta obtener el usuario de la sesión (esto dependerá de cómo lo manejes en el backend)
-    const usuario = sessionStorage.getItem('usuarioLogueado'); // O localStorage, según tu caso
-    return usuario ? JSON.parse(usuario).email : null; // Devuelve el email del usuario o null si no hay sesión
+    const usuario = sessionStorage.getItem('usuarioLogueado');
+    return usuario ? JSON.parse(usuario).email : null;
 }
 
 function haVotado(usuario, idProducto) {
@@ -169,8 +169,8 @@ function haVotado(usuario, idProducto) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    obtenerUsuarioActual(); // Obtener el usuario al cargar la página
-    obtenerHamburguesas(); // Carga todas las hamburguesas al inicio
+    obtenerUsuarioActual();
+    obtenerHamburguesas();
     console.log("Usuario actual:", usuarioActual);
 
 });

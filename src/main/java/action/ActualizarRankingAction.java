@@ -14,12 +14,12 @@ public class ActualizarRankingAction implements Action {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         int idProducto = Integer.parseInt(request.getParameter("idProducto"));
-        String usuarioRating = request.getParameter("usuario");  // Cambiado el nombre
+        String usuario = request.getParameter("usuario");
+        int rating = Integer.parseInt(request.getParameter("rating")); // Obtener el rating
 
         HamburguesaDAO hamburguesaDAO = new HamburguesaDAO();
-        hamburguesaDAO.actualizarRankingHamburguesa(idProducto, usuarioRating);  // Usar el nuevo nombre
+        hamburguesaDAO.actualizarRankingHamburguesa(idProducto, usuario + "_" + rating); // Concatenar usuario y rating
 
-        // Enviar una respuesta JSON al cliente
         Map<String, String> jsonResponse = new HashMap<>();
         jsonResponse.put("status", "ok");
 

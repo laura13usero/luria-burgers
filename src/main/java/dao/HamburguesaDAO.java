@@ -30,7 +30,7 @@ public class HamburguesaDAO {
                 p.setFiltros(rs.getString("filtros"));
                 p.setImagen_png(rs.getString("imagen_png"));
                 p.setEnlace_html(rs.getString("enlace_html"));
-                p.setRanking(convertStringToList(rs.getString("ranking"))); // Convertir string a lista
+                p.setRanking(convertStringToList(rs.getString("ranking")));
                 hamburguesas.add(p);
             }
 
@@ -50,7 +50,7 @@ public class HamburguesaDAO {
         try (Connection conn = MotorSQL.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, "%" + filtro + "%"); // Ej: %spicy%
+            stmt.setString(1, "%" + filtro + "%");
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -63,7 +63,6 @@ public class HamburguesaDAO {
                     p.setImagen_png(rs.getString("imagen_png"));
                     p.setEnlace_html(rs.getString("enlace_html"));
                     p.setRanking(convertStringToList(rs.getString("ranking")));
-
                     hamburguesasFiltradas.add(p);
                 }
             }
@@ -83,19 +82,18 @@ public class HamburguesaDAO {
         }
     }
 
-    public void actualizarRankingHamburguesa(int idProducto, String usuarioRating) {  // Cambiado el nombre
+    public void actualizarRankingHamburguesa(int idProducto, String nuevoUsuario) {
         String sql = "UPDATE Productos SET ranking = array_append(ranking, ?) WHERE id_producto = ?";
 
         try (Connection conn = MotorSQL.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, usuarioRating);  // Usar el nuevo nombre
+            stmt.setString(1, nuevoUsuario);
             stmt.setInt(2, idProducto);
             stmt.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            // Manejar la excepción (log, lanzar una excepción personalizada, etc.)
         }
     }
 }
