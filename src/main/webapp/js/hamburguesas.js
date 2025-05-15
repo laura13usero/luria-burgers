@@ -1,6 +1,7 @@
 let activeFilter = '';
 let votosUsuario = {};
 let usuarioActual = null;
+let currentRatings = {}; // Objeto para almacenar los ratings temporales
 
 async function obtenerHamburguesas(filtro = '') {
     activeFilter = filtro;
@@ -28,13 +29,17 @@ async function obtenerHamburguesas(filtro = '') {
                 const imagenSrc = `assets/menu/cards_hamburguesas_animacion/${hamburguesa.imagen_png}`;
                 console.log("Intentando cargar imagen desde:", imagenSrc);
 
-                const rankingHTML = `
+                let rankingHTML = `
                     <div class="ranking-container" data-producto-id="${hamburguesa.id}">
-                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="1" onclick="calificarHamburguesa(${hamburguesa.id}, 1)">
-                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="2" onclick="calificarHamburguesa(${hamburguesa.id}, 2)">
-                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="3" onclick="calificarHamburguesa(${hamburguesa.id}, 3)">
-                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="4" onclick="calificarHamburguesa(${hamburguesa.id}, 4)">
-                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Sin calificar" class="rating-icon" data-rating="5" onclick="calificarHamburguesa(${hamburguesa.id}, 5)">
+                        <button class="rating-button minus" onclick="cambiarRating(${hamburguesa.id}, -1)">-</button>
+                        <img src="assets/fondos_recursos/flor.png" alt="Calificación 1" class="rating-icon" data-rating="1">
+                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 2" class="rating-icon" data-rating="2">
+                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 3" class="rating-icon" data-rating="3">
+                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 4" class="rating-icon" data-rating="4">
+                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 5" class="rating-icon" data-rating="5">
+                        <button class="rating-button plus" onclick="cambiarRating(${hamburguesa.id}, 1)">+</button>
+                        <button class="send-rating-button" onclick="enviarCalificacion(${hamburguesa.id})">Enviar Calificación</button>
+                        <p class="current-rating">Calificación: <span id="rating-${hamburguesa.id}">1</span></p>
                     </div>
                 `;
 
@@ -46,11 +51,12 @@ async function obtenerHamburguesas(filtro = '') {
                         <p class="precio">S/ ${hamburguesa.precio.toFixed(2)}</p>
                         ${rankingHTML}
                         <button class="add-to-cart-button" onclick="agregarAlCarrito(${hamburguesa.id}, 'hamburguesa')">
-                          Añadir al carrito - $${hamburguesa.precio}
+                            Añadir al carrito - S/ ${hamburguesa.precio.toFixed(2)}
                         </button>
                     </div>
                 `;
                 container.appendChild(card);
+                currentRatings[hamburguesa.id] = 1; // Inicializar el rating actual
                 actualizarRankingVisual(hamburguesa, usuarioActual);
             });
         } else {
@@ -62,11 +68,35 @@ async function obtenerHamburguesas(filtro = '') {
     }
 }
 
-async function calificarHamburguesa(idHamburguesa, rating) {
+function cambiarRating(idHamburguesa, cambio) {
     if (!usuarioActual) {
         alert("Debes iniciar sesión para calificar.");
         return;
     }
+
+    let rating = currentRatings[idHamburguesa] || 1; // Obtener el rating actual o inicializar en 1
+    rating += cambio;
+
+    if (rating < 1) rating = 1;
+    if (rating > 5) rating = 5;
+
+    currentRatings[idHamburguesa] = rating;
+    actualizarRankingVisual({ id: idHamburguesa }, usuarioActual, rating); // Pasar el rating actual
+    document.getElementById(`rating-${idHamburguesa}`).textContent = rating;
+}
+
+async function enviarCalificacion(idHamburguesa) {
+    if (!usuarioActual) {
+        alert("Debes iniciar sesión para calificar.");
+        return;
+    }
+
+    if (haVotado(usuarioActual, idHamburguesa)) {
+        alert("Ya has calificado esta hamburguesa.");
+        return;
+    }
+
+    const rating = currentRatings[idHamburguesa];
 
     try {
         const response = await fetch('control?action=actualizarRanking', {
@@ -115,7 +145,6 @@ async function obtenerUsuarioLogueado() {
     }
 }
 
-
 function haVotado(usuario, idProducto) {
     return votosUsuario[usuario] && votosUsuario[usuario][idProducto];
 }
@@ -126,7 +155,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log("Usuario actual (DOMContentLoaded):", usuarioActual);
 });
 
-function actualizarRankingVisual(hamburguesa, usuarioActual) {
+function actualizarRankingVisual(hamburguesa, usuarioActual, currentRating) {
     const rankingContainer = document.querySelector(`.ranking-container[data-producto-id="${hamburguesa.id}"]`);
     if (!rankingContainer) return;
 
@@ -135,9 +164,22 @@ function actualizarRankingVisual(hamburguesa, usuarioActual) {
         icon.src = "assets/fondos_recursos/flor-apagada.png"; // Resetea
     });
 
+    let rating = currentRating || Math.round(hamburguesa.promedioRanking) || 1;
+    for (let i = 0; i < rating; i++) {
+        if (iconosRating[i]) {
+            iconosRating[i].src = "assets/fondos_recursos/flor.png";
+        }
+    }
+
     if (usuarioActual && hamburguesa.ranking && hamburguesa.ranking.includes(usuarioActual)) {
-        iconosRating.forEach((icon, index) => {
-            icon.src = "assets/fondos_recursos/flor.png";
+        // Si el usuario ya votó, podrías deshabilitar los botones
+        const botones = rankingContainer.querySelectorAll('.rating-button');
+        botones.forEach(boton => {
+            boton.disabled = true;
         });
+        const sendButton = rankingContainer.querySelector('.send-rating-button');
+        if (sendButton) {
+            sendButton.disabled = true;
+        }
     }
 }
