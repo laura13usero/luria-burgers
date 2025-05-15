@@ -9,9 +9,10 @@ public class Producto {
     private double precio;
     private String categoria;
     private String filtros;
-    private List<String> ranking;  // <-- ya estaba
-    private String enlace_html;    // <-- nuevo campo
-    private String imagen_png;     // <-- nuevo campo
+    private List<String> ranking;
+    private String enlace_html;
+    private String imagen_png;
+    private double promedioRanking; // Nuevo campo
 
     public int getId() {
         return id;
@@ -83,5 +84,13 @@ public class Producto {
 
     public void setImagen_png(String imagen_png) {
         this.imagen_png = imagen_png;
+    }
+
+    public double getPromedioRanking() {
+        return promedioRanking;
+    }
+
+    public void setPromedioRanking(double promedioRanking) {
+        this.promedioRanking = promedioRanking;
     }
 }
