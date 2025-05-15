@@ -107,10 +107,10 @@ function mostrarPuntuacion(idProducto, ranking) {
     iconos.forEach(icon => {
         const rating = parseInt(icon.dataset.rating);
         if (rating <= puntuacion) {
-            icon.src = 'assets/flor.png';  // Ruta a la imagen "activada"
+            icon.src = 'assets/fondos_recursos/flor.png';  // Ruta a la imagen "activada"
             icon.alt = 'Calificado con ' + rating + ' estrellas';
         } else {
-            icon.src = 'assets/flor-apagada.png';
+            icon.src = 'assets/fondos_recursos/flor-apagada.png';
             icon.alt = 'Sin calificar';
         }
     });
