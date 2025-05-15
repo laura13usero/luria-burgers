@@ -45,7 +45,9 @@ async function obtenerHamburguesas(filtro = '') {
                         <p>${hamburguesa.descripcion}</p>
                         <p class="precio">S/ ${hamburguesa.precio.toFixed(2)}</p>
                         ${rankingHTML}
-                        <a href="${hamburguesa.enlace_html}" class="order-btn">Ordenar</a>
+                        <button class="add-to-cart-button" onclick="agregarAlCarrito(${hamburguesa.id}, 'hamburguesa')">
+                          Añadir al carrito - $${hamburguesa.precio}
+                        </button>
                     </div>
                 `;
                 container.appendChild(card);
