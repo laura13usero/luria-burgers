@@ -135,9 +135,21 @@ function actualizarRankingVisual(hamburguesa, usuarioActual) {
         icon.src = "assets/fondos_recursos/flor-apagada.png"; // Resetea
     });
 
-    if (usuarioActual && hamburguesa.ranking && hamburguesa.ranking.includes(usuarioActual)) {
+    if (hamburguesa.ranking && hamburguesa.ranking.length > 0) {
+        let totalRating = 0;
+        hamburguesa.ranking.forEach(rating => {
+            totalRating += parseInt(rating); // Sumar los ratings (convertir a número)
+        });
+        const averageRating = Math.round(totalRating / hamburguesa.ranking.length); // Calcular el promedio y redondear
+
+        for (let i = 0; i < averageRating; i++) {
+            iconosRating[i].src = "assets/fondos_recursos/flor.png"; // Mostrar flores según el promedio
+        }
+    } else if (usuarioActual && hamburguesa.ranking && hamburguesa.ranking.includes(usuarioActual)) {
+        // Esto sigue funcionando para cuando el usuario HA votado
         iconosRating.forEach((icon, index) => {
             icon.src = "assets/fondos_recursos/flor.png";
         });
     }
+}
 }
