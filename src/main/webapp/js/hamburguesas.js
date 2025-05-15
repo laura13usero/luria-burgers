@@ -39,104 +39,40 @@ async function obtenerHamburguesas(filtro = '') {
                 `;
 
                 card.innerHTML = `
-                    <div class="card-img-container">
-                        <img src="${imagenSrc}" alt="${hamburguesa.nombre}" class="burger-image">
-                    </div>
-                    <div class="card-info">
-                        <h3>${hamburguesa.nombre}</h3>
-                        <p>${hamburguesa.descripcion || ''}</p>
+                    <img src="${imagenSrc}" alt="${hamburguesa.nombre}">
+                    <div class="burger-info">
+                        <h2>${hamburguesa.nombre}</h2>
+                        <p>${hamburguesa.descripcion}</p>
+                        <p class="precio">S/ ${hamburguesa.precio.toFixed(2)}</p>
                         ${rankingHTML}
-                        <button class="add-to-cart-button" onclick="agregarAlCarrito(${hamburguesa.id}, 'hamburguesa')">
-                            Añadir al carrito - $${hamburguesa.precio}
-                        </button>
+                        <a href="${hamburguesa.enlace_html}" class="order-btn">Ordenar</a>
                     </div>
                 `;
                 container.appendChild(card);
-                mostrarPuntuacion(hamburguesa.id, hamburguesa.ranking);
+                actualizarRankingVisual(hamburguesa, usuarioActual);
             });
         } else {
-            container.innerHTML = '<p>No hay hamburguesas disponibles con este filtro.</p>';
+            container.innerHTML = '<p>No se encontraron hamburguesas.</p>';
         }
     } catch (error) {
-        console.error('Error al obtener hamburguesas:', error);
+        console.error('Error al obtener las hamburguesas:', error);
+        document.querySelector('.cards-container').innerHTML = '<p>Error al cargar las hamburguesas.</p>';
     }
-}
-
-async function agregarAlCarrito(idProducto, tipoProducto) {
-    try {
-        const response = await fetch(`control?action=addToCart&idProducto=${idProducto}`, {
-            method: "POST"
-        });
-        const result = await response.json();
-        if (result.status === "ok") {
-            window.location.href = result.redirect;
-        } else if (result.status === "login_required") {
-            window.location.href = result.redirect;
-        } else {
-            alert("❌ Error al añadir al carrito: " + result.message);
-        }
-    } catch (error) {
-        console.error("❌ Error de red al añadir al carrito:", error);
-        alert("❌ Error inesperado.");
-    }
-}
-
-function calcularPuntuacion(ranking) {
-    if (!ranking || ranking.length === 0) return 0;
-
-    let total = 0;
-    for (let i = 0; i < ranking.length; i++) {
-        total += parseInt(ranking[i].split('_')[1]);
-    }
-    let promedio = total / ranking.length;
-
-    if (promedio <= 2) return 1;
-    if (promedio <= 4) return 2;
-    if (promedio <= 6) return 3;
-    if (promedio <= 8) return 4;
-    return 5;
-}
-
-function mostrarPuntuacion(idProducto, ranking) {
-    const contenedor = document.querySelector(`.ranking-container[data-producto-id="${idProducto}"]`);
-    if (!contenedor) return;
-
-    const puntuacion = calcularPuntuacion(ranking);
-    const iconos = contenedor.querySelectorAll('.rating-icon');
-
-    iconos.forEach(icon => {
-        const rating = parseInt(icon.dataset.rating);
-        if (rating <= puntuacion) {
-            icon.src = 'assets/fondos_recursos/flor-activada.png';
-            icon.alt = 'Calificado con ' + rating + ' estrellas';
-        } else {
-            icon.src = 'assets/fondos_recursos/flor-apagada.png';
-            icon.alt = 'Sin calificar';
-        }
-    });
 }
 
 async function calificarHamburguesa(idHamburguesa, rating) {
-    // Obtener el usuario *inmediatamente* antes de la verificación y la llamada al servidor
-    usuarioActual = obtenerUsuarioActual();
-
     if (!usuarioActual) {
         alert("Debes iniciar sesión para calificar.");
         return;
     }
 
-    if (haVotado(usuarioActual, idHamburguesa)) {
-        alert("Ya has calificado esta hamburguesa.");
-        return;
-    }
-
     try {
-        const response = await fetch('control?action=ActualizarRanking', {
+        const response = await fetch('control?action=actualizarRanking', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: JSON.stringify({
+            body: new URLSearchParams({
                 idProducto: idHamburguesa,
                 usuario: usuarioActual,
                 rating: rating
@@ -160,16 +96,20 @@ async function calificarHamburguesa(idHamburguesa, rating) {
     }
 }
 
-function obtenerUsuarioActual() {
+async function obtenerUsuarioLogueado() {
     try {
-        const usuario = sessionStorage.getItem('usuarioLogueado');
-        if (usuario) {
-            return JSON.parse(usuario).email;
+        const response = await fetch('control?action=getUsuarioLogueado');
+        const data = await response.json();
+        if (data.status === 'ok') {
+            usuarioActual = data.nombre;  //  O data.email, o lo que necesites
+            // Si envías más datos del usuario, puedes acceder a ellos aquí
+            // Por ejemplo:  usuarioActual = data.usuario.email;
+        } else {
+            usuarioActual = null;
         }
-        return null;
     } catch (error) {
-        console.error("Error al obtener el usuario de sessionStorage:", error);
-        return null; // Importante manejar el error y retornar null
+        console.error('Error al obtener el usuario logueado:', error);
+        usuarioActual = null;
     }
 }
 
@@ -178,8 +118,24 @@ function haVotado(usuario, idProducto) {
     return votosUsuario[usuario] && votosUsuario[usuario][idProducto];
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    usuarioActual = obtenerUsuarioActual(); // Obtener el usuario al cargar la página
+document.addEventListener('DOMContentLoaded', async () => {
+    await obtenerUsuarioLogueado(); // Obtener el usuario al cargar la página
     obtenerHamburguesas();
     console.log("Usuario actual (DOMContentLoaded):", usuarioActual);
 });
+
+function actualizarRankingVisual(hamburguesa, usuarioActual) {
+    const rankingContainer = document.querySelector(`.ranking-container[data-producto-id="${hamburguesa.id}"]`);
+    if (!rankingContainer) return;
+
+    const iconosRating = rankingContainer.querySelectorAll('.rating-icon');
+    iconosRating.forEach(icon => {
+        icon.src = "assets/fondos_recursos/flor-apagada.png"; // Resetea
+    });
+
+    if (usuarioActual && hamburguesa.ranking && hamburguesa.ranking.includes(usuarioActual)) {
+        iconosRating.forEach((icon, index) => {
+            icon.src = "assets/fondos_recursos/flor.png";
+        });
+    }
+}
