@@ -46,7 +46,6 @@ async function obtenerHamburguesas(filtro = '') {
                     <img src="${imagenSrc}" alt="${hamburguesa.nombre}">
                     <div class="burger-info">
                         <h2>${hamburguesa.nombre}</h2>
-                        <p>${hamburguesa.descripcion}</p>
                         <p class="precio">S/ ${hamburguesa.precio.toFixed(2)}</p>
                         ${rankingHTML}
                         <button class="add-to-cart-button" onclick="agregarAlCarrito(${hamburguesa.id}, 'hamburguesa')">

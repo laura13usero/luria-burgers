@@ -14,7 +14,7 @@ public class ProductosDAO {
     // Método para obtener productos de una categoría específica
     public List<Producto> obtenerProductosPorCategoria(String categoria) {
         List<Producto> productos = new ArrayList<>();
-        String sql = "SELECT id_producto, nombre, descripcion, precio, categoria, enlace_html, imagen_png FROM Productos WHERE categoria = ?";
+        String sql = "SELECT id_producto, nombre, precio, categoria, enlace_html, imagen_png FROM Productos WHERE categoria = ?";
 
         try (Connection conn = MotorSQL.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -26,7 +26,6 @@ public class ProductosDAO {
                     Producto p = new Producto();
                     p.setId(rs.getInt("id_producto"));
                     p.setNombre(rs.getString("nombre"));
-                    p.setDescripcion(rs.getString("descripcion"));
                     p.setPrecio(rs.getDouble("precio"));
                     p.setCategoria(rs.getString("categoria"));
                     p.setEnlace_html(rs.getString("enlace_html"));
@@ -45,7 +44,7 @@ public class ProductosDAO {
     // Método para obtener todos los productos
     public List<Producto> obtenerTodosLosProductos() {
         List<Producto> productos = new ArrayList<>();
-        String sql = "SELECT id_producto, nombre, descripcion, precio, categoria, enlace_html, imagen_png FROM Productos";
+        String sql = "SELECT id_producto, nombre, precio, categoria, enlace_html, imagen_png FROM Productos";
 
         try (Connection conn = MotorSQL.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -55,7 +54,6 @@ public class ProductosDAO {
                 Producto p = new Producto();
                 p.setId(rs.getInt("id_producto"));
                 p.setNombre(rs.getString("nombre"));
-                p.setDescripcion(rs.getString("descripcion"));
                 p.setPrecio(rs.getDouble("precio"));
                 p.setCategoria(rs.getString("categoria"));
                 p.setEnlace_html(rs.getString("enlace_html"));
