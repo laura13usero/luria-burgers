@@ -10,7 +10,6 @@ public class Usuario {
     private String email;
     private String contrasena;
     private String telefono;
-    private String direccion;
     private LocalDateTime fechaRegistro;
     private String rol;  // Añadido el campo para el rol
 
@@ -22,7 +21,6 @@ public class Usuario {
         this.email = email;
         this.contrasena = contrasena;
         this.telefono = telefono;
-        this.direccion = direccion;
         this.fechaRegistro = fechaRegistro;
         this.rol = rol;  // Inicialización del rol
     }
@@ -76,14 +74,6 @@ public class Usuario {
         this.telefono = telefono;
     }
 
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
     public LocalDateTime getFechaRegistro() {
         return fechaRegistro;
     }
@@ -100,6 +90,6 @@ public class Usuario {
     @Override
     public String toString() {
         return "Usuario [idUsuario=" + idUsuario + ", nombre=" + nombre + ", email=" + email + ", telefono=" + telefono
-                + ", direccion=" + direccion + ", fechaRegistro=" + fechaRegistro + ", rol=" + rol + "]";  // Mostramos también el rol
+                 + ", fechaRegistro=" + fechaRegistro + ", rol=" + rol + "]";  // Mostramos también el rol
     }
 }

@@ -27,9 +27,7 @@
         <label>Nombre: <input type="text" id="nombre" placeholder="Usuario" required></label><br>
         <label>Correo electrónico: <input type="email" id="emailRegistro" placeholder="Correo electrónico" required></label><br>
         <label>Contraseña: <input type="password" id="contrasenaRegistro" placeholder="Contraseña" required></label><br>
-        <label>Confirmar contraseña: <input type="password" id="confirmarContrasena" placeholder="Confirmar contraseña" required></label><br>
         <label>Teléfono: <input type="text" id="telefono" placeholder="Teléfono" required></label><br>
-        <label>Dirección: <input type="text" id="direccion" placeholder="Dirección" required></label><br>
         <button id="registerButton">Crear Cuenta</button>
         <p class="message">¿Ya tienes cuenta? <a href="#" id="goToLogin">Iniciar sesión</a></p>
         <div id="registerError" class="error-message" style="display:none;"></div>
@@ -118,18 +116,12 @@
 
             registerError.textContent = ""; // Limpiar errores anteriores
 
-            if (contrasena !== confirmarContrasena) {
-                registerError.textContent = 'Las contraseñas no coinciden.';
-                registerError.style.display = 'block';
-                return;
-            }
-
             const response = await fetch('/webapp-1.0-SNAPSHOT/control?action=registro', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nombre, email, contrasena, telefono, direccion })
+                body: JSON.stringify({ nombre, email, contrasena, telefono })
             });
 
             const result = await response.json();
