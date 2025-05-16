@@ -32,7 +32,7 @@ body {
     display: flex;
     margin-bottom: 1rem;
     width: 100%;
-    gap: 20px;
+    gap: 10px;
 }
 
 .tabs button {
