@@ -28,3 +28,5 @@ public class EmpleadoEditarAction implements Action {
         request.getRequestDispatcher("/jsp/registrarEmpleado.jsp").forward(request, response);
     }
 }
+
+//lalalalalalal
