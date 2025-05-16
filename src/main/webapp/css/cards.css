@@ -185,7 +185,7 @@
 }
 
 .rating-button:hover {
-    background-color: rgb(231 170 148);
+   background-color: rgb(231 170 148 / 80%);
 }
 
 .rating-button:active {
