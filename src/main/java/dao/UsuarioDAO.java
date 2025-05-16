@@ -28,6 +28,7 @@ public class UsuarioDAO {
             stmt.setString(2, usuario.getEmail());
             stmt.setString(3, usuario.getContrasena()); // Contraseña ya encriptada
             stmt.setString(4, usuario.getTelefono());
+            stmt.setString(5, usuario.getDireccion());
             stmt.setTimestamp(6, Timestamp.valueOf(usuario.getFechaRegistro()));
             stmt.executeUpdate();
 
@@ -59,6 +60,7 @@ public class UsuarioDAO {
             stmt.setString(2, usuario.getEmail());
             stmt.setString(3, usuario.getContrasena()); // Contraseña ya encriptada
             stmt.setString(4, usuario.getTelefono());
+            stmt.setString(5, usuario.getDireccion());
             stmt.setTimestamp(6, Timestamp.valueOf(usuario.getFechaRegistro()));
             stmt.executeUpdate();
 
@@ -116,6 +118,7 @@ public class UsuarioDAO {
                     u.setNombre(rs.getString("nombre"));
                     u.setEmail(rs.getString("email"));
                     u.setTelefono(rs.getString("telefono"));
+                    u.setDireccion(rs.getString("direccion"));
                     u.setFechaRegistro(rs.getTimestamp("fecha_registro").toLocalDateTime());
                     empleados.add(u);
                 }
@@ -157,6 +160,7 @@ public class UsuarioDAO {
                     u.setEmail(rs.getString("email"));
                     u.setContrasena(rs.getString("contraseña"));
                     u.setTelefono(rs.getString("telefono"));
+                    u.setDireccion(rs.getString("direccion"));
                     u.setFechaRegistro(rs.getTimestamp("fecha_registro").toLocalDateTime());
 
                     // Asignamos el rol al usuario
@@ -190,6 +194,7 @@ public class UsuarioDAO {
                     u.setEmail(rs.getString("email"));
                     u.setContrasena(rs.getString("contraseña"));
                     u.setTelefono(rs.getString("telefono"));
+                    u.setDireccion(rs.getString("direccion"));
                     u.setFechaRegistro(rs.getTimestamp("fecha_registro").toLocalDateTime());
 
                     // Asignamos el rol al usuario

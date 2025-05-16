@@ -32,6 +32,7 @@ public class UserRegisterAction implements Action {
             String email = data.get("email");
             String contrasena = data.get("contrasena");
             String telefono = data.get("telefono");
+            String direccion = data.get("direccion");
 
             String contrasenaEncriptada = CryptoUtils.encriptarContrasena(contrasena);
 
@@ -40,6 +41,7 @@ public class UserRegisterAction implements Action {
             usuario.setEmail(email);
             usuario.setContrasena(contrasenaEncriptada);
             usuario.setTelefono(telefono);
+            usuario.setDireccion(direccion);
             usuario.setFechaRegistro(LocalDateTime.now());
             usuario.setRol("cliente");
 
