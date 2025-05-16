@@ -17,14 +17,25 @@ public class ViewCartAction implements Action {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
-        response.setContentType("application/json");
 
+        // Map para la respuesta JSON (lo usaremos si no redirigimos)
         Map<String, Object> result = new HashMap<>();
 
         if (session == null || session.getAttribute("usuarioLogueado") == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            result.put("error", "Usuario no logueado");
+            // Usuario no logueado:  ¡Redirigir!
+            response.sendRedirect(request.getContextPath() + "/necesitalogin.html");
+            return; // Importante: detener la ejecución aquí
+
+            // Si por alguna razón *no* quieres redirigir, sino enviar JSON:
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // result.put("error", "Usuario no logueado");
+            // String json = new Gson().toJson(result);
+            // response.setContentType("application/json");
+            // response.getWriter().write(json);
+            // return;
+
         } else {
+            // Usuario logueado:  Mostrar el carrito (como antes)
             Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
             CompraDAO compraDAO = new CompraDAO();
             Compra compraActiva = compraDAO.getCompraActivaPorUsuario(usuario);
@@ -44,14 +55,18 @@ public class ViewCartAction implements Action {
                 session.setAttribute("carrito", carrito);
                 result.put("carrito", carrito);
                 result.put("total", total);
+
             } else {
-                result.put("carrito", List.of());
-                result.put("total", 0.0);
+                carrito = List.of(); // Asegurarse de que no sea nulo
+                total = 0.0;
+                result.put("carrito", carrito);
+                result.put("total", total);
                 result.put("mensaje", "No hay compra activa");
             }
-        }
 
-        String json = new Gson().toJson(result);
-        response.getWriter().write(json);
+            String json = new Gson().toJson(result);
+            response.setContentType("application/json"); // Establecer el tipo de contenido antes de escribir
+            response.getWriter().write(json);
+        }
     }
 }
