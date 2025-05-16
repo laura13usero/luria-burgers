@@ -31,7 +31,6 @@ public class EmpleadoRegisterAction implements Action {
         usuario.setEmail(email);
         usuario.setContrasena(contrasenaEncriptada);
         usuario.setTelefono(telefono);
-        usuario.setDireccion(direccion);
         usuario.setFechaRegistro(LocalDateTime.now());
         usuario.setRol("empleado");  // Esto es solo informativo, no se usa en la inserción
 
