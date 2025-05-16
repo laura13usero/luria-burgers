@@ -9,56 +9,56 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0; /* Good practice to reset default margin */
+    margin: 0;
 }
 
 .container {
     background: #ffe77b85;
-    position: fixed; /* Or 'absolute' if body is the only direct parent and has position relative (less common for full page center) */
-    padding: 2rem;
+    position: fixed;
+    padding: 1.5rem; /* Reducido el padding vertical */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     width: 270px;
-    /* Consider using min-height or height: auto if content might vary */
-    height: 345px; 
-
+    height: 500px; /* Altura fija de 500px */
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 
 .tabs {
     display: flex;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem; /* Reducido el margen inferior */
     width: 100%;
-    gap: 10px;
+    gap: 5px; /* Reducido el espacio entre los botones */
 }
 
 .tabs button {
     font-family: 'Poppins', sans-serif;
     flex: 1;
-    padding: 0.5rem;
+    padding: 0.3rem; /* Reducido el padding de los botones */
     cursor: pointer;
     border: none;
     background: #F8F3E6;
     border-radius: 25px;
-    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+    font-size: 0.9rem; /* Reducido el tamaño de la fuente */
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .tabs button:hover {
-    background-color: #e0d9c7; /* Slight hover effect */
+    background-color: #e0d9c7;
 }
 
 .tabs button.active {
     background: #D05A31;
     color: white;
-    border-radius: 125px; /* This is quite large, making it very pill-shaped */
+    border-radius: 125px;
 }
 
 .form {
     display: none;
     width: 100%;
+    overflow-y: auto; /* Añade scroll vertical cuando sea necesario */
+    padding: 0.5rem 0; /* Añade un poco de padding vertical dentro del formulario */
 }
 
 .form.active {
@@ -68,41 +68,78 @@ body {
 }
 
 .form h3 {
-    margin-top: 0; /* Adjust if needed */
-    margin-bottom: 1rem;
-    color: #333; /* Slightly darker text for better readability */
+    margin-top: 0;
+    margin-bottom: 0.75rem; /* Reducido el margen inferior */
+    color: #333;
+    font-size: 1.1rem; /* Reducido el tamaño de la fuente del título */
+}
+
+.form label {
+    font-size: 0.9rem; /* Reducido el tamaño de la fuente de las etiquetas */
+    margin-bottom: 0.25rem; /* Reducido el margen inferior de las etiquetas */
+    width: 100%;
+    text-align: left; /* Alinea el texto de la etiqueta a la izquierda */
 }
 
 .form input {
     font-family: 'Poppins', sans-serif;
     width: 100%;
-    padding: 0.75rem; /* Increased padding for better touch/click area */
-    margin: 0.5rem 0;
+    padding: 0.5rem; /* Reducido el padding de los inputs */
+    margin-bottom: 0.3rem; /* Reducido el margen inferior de los inputs */
     border: 1px solid #ccc;
     background-color: #f8f3e6c7;
     border-radius: 15px;
-    box-sizing: border-box; /* Ensures padding and border don't add to width */
+    box-sizing: border-box;
+    font-size: 0.9rem; /* Reducido el tamaño de la fuente de los inputs */
 }
 
 .form input:focus {
     outline: none;
-    border-color: #D05A31; /* Highlight focus */
+    border-color: #D05A31;
     box-shadow: 0 0 0 2px rgba(208, 90, 49, 0.2);
 }
 
 .form button {
     width: 100%;
-    padding: 0.75rem; /* Increased padding */
-    margin-top: 1rem; /* Added margin for spacing */
+    padding: 0.6rem; /* Reducido el padding del botón */
+    margin-top: 0.75rem; /* Reducido el margen superior del botón */
     background: #D05A31;
     color: white;
     border: none;
     border-radius: 15px;
     cursor: pointer;
-    font-weight: 500; /* Bolder text */
-    transition: background-color 0.3s; /* Smooth transition */
+    font-weight: 500;
+    font-size: 0.9rem; /* Reducido el tamaño de la fuente del botón */
+    transition: background-color 0.3s;
 }
 
 .form button:hover {
-    background: #b84926; /* Darker shade on hover */
+    background: #b84926;
+}
+
+.form .message {
+    font-size: 0.8rem; /* Reducido el tamaño de la fuente del mensaje */
+    margin-top: 0.5rem; /* Reducido el margen superior del mensaje */
+    text-align: center;
+}
+
+.form .message a {
+    color: #D05A31;
+    text-decoration: none;
+}
+
+.form .message a:hover {
+    text-decoration: underline;
+}
+
+.form .error-message {
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+    text-align: center;
+}
+
+#registerForm {
+    overflow-y: auto; /* Asegura el scroll para el formulario de registro */
+    max-height: calc(500px - 2rem - 0.75rem - 1.1rem - 0.5rem); /* Ajusta la altura máxima para evitar que sobresalga */
 }
