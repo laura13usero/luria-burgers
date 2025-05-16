@@ -27,7 +27,7 @@ public class UserLoginAction implements Action {
         String contrasena = datos.get("contrasena");
 
         UsuarioDAO dao = new UsuarioDAO();
-        Usuario usuario = dao.buscarPorEmail(email);
+        Usuario usuario = dao.buscarPorEmailYContrasena(email, contrasena); // Llamada correcta para la autenticación
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -35,27 +35,28 @@ public class UserLoginAction implements Action {
         Map<String, String> resultado = new HashMap<>();
 
         if (usuario != null) {
-            if (CryptoUtils.compararContrasena(contrasena, usuario.getContrasena())) {
+            // La contraseña ya fue verificada dentro de buscarPorEmailYContrasena
+            HttpSession session = request.getSession();
+            session.setAttribute("usuarioLogueado", usuario);
+            session.setAttribute("rol", usuario.getRol());
+            session.setMaxInactiveInterval(30 * 60);
 
-                HttpSession session = request.getSession();
-                session.setAttribute("usuarioLogueado", usuario);
-                session.setAttribute("rol", usuario.getRol());
-                session.setMaxInactiveInterval(30 * 60);
+            resultado.put("status", "ok");
+            resultado.put("rol", usuario.getRol());
+        } else {
+            // buscarPorEmailYContrasena devuelve null si no encuentra el usuario o la contraseña no coincide
+            Usuario usuarioPorEmail = dao.buscarPorEmail(email); // Para dar un mensaje más específico
 
-                resultado.put("status", "ok");
-                resultado.put("rol", usuario.getRol());
-
-            } else {
+            if (usuarioPorEmail != null) {
                 resultado.put("status", "error");
                 resultado.put("message", "Contraseña incorrecta");
+            } else {
+                resultado.put("status", "error");
+                resultado.put("message", "Email no registrado");
             }
-        } else {
-            resultado.put("status", "error");
-            resultado.put("message", "Email no registrado");
         }
 
         String json = gson.toJson(resultado);
         response.getWriter().write(json);
     }
 }
-
