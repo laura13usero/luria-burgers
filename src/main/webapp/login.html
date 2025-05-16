@@ -6,30 +6,30 @@
     <link rel="icon" href="assets/fondos_recursos/flor.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="css/login.css" rel="stylesheet">
-    <title>Login / Registro - Luría</title>
+    <title>Log In / Sign In - Luría</title>
 </head>
 <body>
 <div class="container">
     <div class="tabs">
-        <button id="loginTab" class="active">Iniciar Sesión</button>
-        <button id="registerTab">Registrarse</button>
+        <button id="loginTab" class="active">Log In</button>
+        <button id="registerTab">Sign In</button>
     </div>
     <div id="loginForm" class="form active">
-        <h3>Iniciar Sesión</h3>
-        <label>Correo electrónico: <input type="email" id="email" placeholder="Correo electrónico" required></label><br>
-        <label>Contraseña: <input type="password" id="contrasenaLogin" placeholder="Contraseña" required></label><br>
-        <button id="loginButton">Entrar</button>
-        <p class="message">¿No tienes cuenta? <a href="#" id="goToRegister">Crear cuenta</a></p>
+        <h3>Log In</h3>
+        <label>E-mail: <input type="email" id="email" placeholder="Correo electrónico" required></label><br>
+        <label>Password: <input type="password" id="contrasenaLogin" placeholder="Contraseña" required></label><br>
+        <button id="loginButton">Log In</button>
+        <p class="message">Don't you have an account? Then <a href="#" id="goToRegister">Sign In</a></p>
         <div id="loginError" class="error-message" style="display:none;"></div>
     </div>
     <div id="registerForm" class="form">
-        <h3>Registrarse</h3>
-        <label>Nombre: <input type="text" id="nombre" placeholder="Usuario" required></label><br>
-        <label>Correo electrónico: <input type="email" id="emailRegistro" placeholder="Correo electrónico" required></label><br>
-        <label>Contraseña: <input type="password" id="contrasenaRegistro" placeholder="Contraseña" required></label><br>
-        <label>Teléfono: <input type="text" id="telefono" placeholder="Teléfono" required></label><br>
-        <button id="registerButton">Crear Cuenta</button>
-        <p class="message">¿Ya tienes cuenta? <a href="#" id="goToLogin">Iniciar sesión</a></p>
+        <h3>Sign In</h3>
+        <label>User: <input type="text" id="nombre" placeholder="User" required></label><br>
+        <label>E-mail: <input type="email" id="emailRegistro" placeholder="E-mail" required></label><br>
+        <label>Password: <input type="password" id="contrasenaRegistro" placeholder="Password" required></label><br>
+        <label>Telephone: <input type="text" id="telefono" placeholder="Telephone" required></label><br>
+        <button id="registerButton">Sign In</button>
+        <p class="message">Do you have an account already? <a href="#" id="goToLogin">Log In</a></p>
         <div id="registerError" class="error-message" style="display:none;"></div>
     </div>
 </div>

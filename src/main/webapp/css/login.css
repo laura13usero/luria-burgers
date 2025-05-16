@@ -15,11 +15,11 @@ body {
 .container {
     background: #ffe77b85;
     position: fixed;
-    padding: 1.5rem; /* Reducido el padding vertical */
+    padding: 1.5rem;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     width: 270px;
-    height: 500px; /* Altura fija de 500px */
+    height: 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -27,20 +27,20 @@ body {
 
 .tabs {
     display: flex;
-    margin-bottom: 0.75rem; /* Reducido el margen inferior */
+    margin-bottom: 0.75rem;
     width: 100%;
-    gap: 5px; /* Reducido el espacio entre los botones */
+    gap: 5px;
 }
 
 .tabs button {
     font-family: 'Poppins', sans-serif;
     flex: 1;
-    padding: 0.3rem; /* Reducido el padding de los botones */
+    padding: 0.3rem;
     cursor: pointer;
     border: none;
     background: #F8F3E6;
     border-radius: 25px;
-    font-size: 0.9rem; /* Reducido el tamaño de la fuente */
+    font-size: 0.9rem;
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -57,8 +57,7 @@ body {
 .form {
     display: none;
     width: 100%;
-    overflow-y: auto; /* Añade scroll vertical cuando sea necesario */
-    padding: 0.5rem 0; /* Añade un poco de padding vertical dentro del formulario */
+    padding: 0.5rem 0;
 }
 
 .form.active {
@@ -67,30 +66,44 @@ body {
     align-items: center;
 }
 
+/* Estilos específicos para el formulario de login activo */
+#loginForm.active {
+    justify-content: center; /* Centra verticalmente el contenido del login */
+    overflow-y: auto; /* Añade scroll si el contenido del login crece (poco probable pero más seguro) */
+    max-height: calc(100% - 2rem - 0.75rem - 1.1rem - 0.5rem); /* Ajusta la altura máxima */
+}
+
+/* Estilos específicos para el formulario de registro activo */
+#registerForm.active {
+    overflow-y: auto; /* Permite el scroll en el formulario de registro */
+    max-height: calc(100% - 2rem - 0.75rem - 1.1rem - 0.5rem); /* Ajusta la altura máxima */
+    justify-content: flex-start; /* Alinea el contenido del registro al inicio para el scroll */
+}
+
 .form h3 {
     margin-top: 0;
-    margin-bottom: 0.75rem; /* Reducido el margen inferior */
+    margin-bottom: 0.75rem;
     color: #333;
-    font-size: 1.1rem; /* Reducido el tamaño de la fuente del título */
+    font-size: 1.1rem;
 }
 
 .form label {
-    font-size: 0.9rem; /* Reducido el tamaño de la fuente de las etiquetas */
-    margin-bottom: 0.25rem; /* Reducido el margen inferior de las etiquetas */
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
     width: 100%;
-    text-align: left; /* Alinea el texto de la etiqueta a la izquierda */
+    text-align: left;
 }
 
 .form input {
     font-family: 'Poppins', sans-serif;
     width: 100%;
-    padding: 0.5rem; /* Reducido el padding de los inputs */
-    margin-bottom: 0.3rem; /* Reducido el margen inferior de los inputs */
+    padding: 0.5rem;
+    margin-bottom: 0.3rem;
     border: 1px solid #ccc;
     background-color: #f8f3e6c7;
     border-radius: 15px;
     box-sizing: border-box;
-    font-size: 0.9rem; /* Reducido el tamaño de la fuente de los inputs */
+    font-size: 0.9rem;
 }
 
 .form input:focus {
@@ -101,15 +114,15 @@ body {
 
 .form button {
     width: 100%;
-    padding: 0.6rem; /* Reducido el padding del botón */
-    margin-top: 0.75rem; /* Reducido el margen superior del botón */
+    padding: 0.6rem;
+    margin-top: 0.75rem;
     background: #D05A31;
     color: white;
     border: none;
     border-radius: 15px;
     cursor: pointer;
     font-weight: 500;
-    font-size: 0.9rem; /* Reducido el tamaño de la fuente del botón */
+    font-size: 0.9rem;
     transition: background-color 0.3s;
 }
 
@@ -118,8 +131,8 @@ body {
 }
 
 .form .message {
-    font-size: 0.8rem; /* Reducido el tamaño de la fuente del mensaje */
-    margin-top: 0.5rem; /* Reducido el margen superior del mensaje */
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
     text-align: center;
 }
 
@@ -137,9 +150,4 @@ body {
     font-size: 0.8rem;
     margin-top: 0.3rem;
     text-align: center;
-}
-
-#registerForm {
-    overflow-y: auto; /* Asegura el scroll para el formulario de registro */
-    max-height: calc(500px - 2rem - 0.75rem - 1.1rem - 0.5rem); /* Ajusta la altura máxima para evitar que sobresalga */
 }
