@@ -31,12 +31,15 @@ async function obtenerHamburguesas(filtro = '') {
 
                 let rankingHTML = `
                     <div class="ranking-container" data-producto-id="${hamburguesa.id}">
-                        <button class="rating-button minus" onclick="cambiarRating(${hamburguesa.id}, -1)">-</button>
+                        <button class="rating-button minus" onclick="cambiarRating(event, ${hamburguesa.id}, -1)">-</button>
                         <img src="assets/fondos_recursos/flor.png" alt="Calificación 1" class="rating-icon" data-rating="1">
                         <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 2" class="rating-icon" data-rating="2">
                         <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 3" class="rating-icon" data-rating="3">
                         <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 4" class="rating-icon" data-rating="4">
                         <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 5" class="rating-icon" data-rating="5">
+                        <button class="rating-button plus" onclick="cambiarRating(event, ${hamburguesa.id}, 1)">+</button>
+                        <button class="send-rating-button" onclick="enviarCalificacion(${hamburguesa.id})">Enviar Calificación</button>
+                        <p class="current-rating">Calificación: <span id="rating-${hamburguesa.id}">1</span></p>
                     </div>
                 `;
 
@@ -63,11 +66,15 @@ async function obtenerHamburguesas(filtro = '') {
     }
 }
 
-function cambiarRating(idHamburguesa, cambio) {
+function cambiarRating(event, idHamburguesa, cambio) {
     if (!usuarioActual) {
         alert("Debes iniciar sesión para calificar.");
         return;
     }
+
+    // Encontrar el ranking-container padre del botón clickeado
+    const rankingContainer = event.target.closest('.ranking-container');
+    if (!rankingContainer) return;
 
     let rating = currentRatings[idHamburguesa] || 1; // Obtener el rating actual o inicializar en 1
     rating += cambio;
@@ -76,8 +83,11 @@ function cambiarRating(idHamburguesa, cambio) {
     if (rating > 5) rating = 5;
 
     currentRatings[idHamburguesa] = rating;
-    actualizarRankingVisual({ id: idHamburguesa }, usuarioActual, rating); // Pasar el rating actual
-    document.getElementById(`rating-${idHamburguesa}`).textContent = rating;
+    actualizarRankingVisual({ id: idHamburguesa }, usuarioActual, rating, rankingContainer); // Pasar el contenedor
+    const ratingDisplay = rankingContainer.querySelector(`#rating-${idHamburguesa}`);
+    if (ratingDisplay) {
+        ratingDisplay.textContent = rating;
+    }
 }
 
 async function enviarCalificacion(idHamburguesa) {
@@ -150,8 +160,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log("Usuario actual (DOMContentLoaded):", usuarioActual);
 });
 
-function actualizarRankingVisual(hamburguesa, usuarioActual, currentRating) {
-    const rankingContainer = document.querySelector(`.ranking-container[data-producto-id="${hamburguesa.id}"]`);
+function actualizarRankingVisual(hamburguesa, usuarioActual, currentRating, rankingContainerElement) {
+    const rankingContainer = rankingContainerElement || document.querySelector(`.ranking-container[data-producto-id="${hamburguesa.id}"]`);
     if (!rankingContainer) return;
 
     const iconosRating = rankingContainer.querySelectorAll('.rating-icon');
@@ -166,15 +176,18 @@ function actualizarRankingVisual(hamburguesa, usuarioActual, currentRating) {
         }
     }
 
+    const minusButton = rankingContainer.querySelector('.rating-button.minus');
+    const plusButton = rankingContainer.querySelector('.rating-button.plus');
+    const sendButton = rankingContainer.querySelector('.send-rating-button');
+
     if (usuarioActual && hamburguesa.ranking && hamburguesa.ranking.includes(usuarioActual)) {
         // Si el usuario ya votó, podrías deshabilitar los botones
-        const botones = rankingContainer.querySelectorAll('.rating-button');
-        botones.forEach(boton => {
-            boton.disabled = true;
-        });
-        const sendButton = rankingContainer.querySelector('.send-rating-button');
-        if (sendButton) {
-            sendButton.disabled = true;
-        }
+        if (minusButton) minusButton.disabled = true;
+        if (plusButton) plusButton.disabled = true;
+        if (sendButton) sendButton.disabled = true;
+    } else {
+        if (minusButton) minusButton.disabled = false;
+        if (plusButton) plusButton.disabled = false;
+        if (sendButton) sendButton.disabled = false;
     }
 }
