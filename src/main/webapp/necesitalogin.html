@@ -4,23 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>You need to log in</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f4f4f4; /* Un gris claro de fondo */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* Para que ocupe toda la altura de la pantalla */
+            margin: 0;
+        }
 
+        h1 {
+            color: #333; /* Texto principal en un gris oscuro */
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        button {
+            background-color: #007bff; /* Azul llamativo para los botones */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease; /* Transición suave al pasar el ratón */
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Un tono de azul más oscuro al pasar el ratón */
+        }
+    </style>
 </head>
 <body>
 
-    <h1>To view the cart, you need to register or log in!</h1>
+<h1>Para ver el carrito, ¡necesitas registrarte o iniciar sesión!</h1>
 
-    <form action="/webapp-1.0-SNAPSHOT/login.html" method="get" style="margin-bottom: 10px;">
-        <button type="submit">Please, Log In</button>
-    </form>
+<form action="/webapp-1.0-SNAPSHOT/login.html" method="get" style="margin-bottom: 10px;">
+    <button type="submit">Por favor, Inicia Sesión</button>
+</form>
 
-    <form action="/webapp-1.0-SNAPSHOT/registro.html" method="get" style="margin-bottom: 10px;">
-        <button type="submit">Or Sign up!</button>
-    </form>
+<form action="/webapp-1.0-SNAPSHOT/registro.html" method="get" style="margin-bottom: 10px;">
+    <button type="submit">¡O Regístrate!</button>
+</form>
 
-    <form action="/webapp-1.0-SNAPSHOT/index.html" method="get">
-        <button type="submit">Go back to the homepage</button>
-    </form>
+<form action="/webapp-1.0-SNAPSHOT/index.html" method="get">
+    <button type="submit">Volver a la página principal</button>
+</form>
 
 </body>
 </html>
