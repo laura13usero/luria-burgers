@@ -265,3 +265,7 @@
 .filter-button:hover {
     background-color:rgb(231 170 148);
 }
+
+.card-info h2 {
+  font-family: 'Shippori Mincho B1', serif;
+}
