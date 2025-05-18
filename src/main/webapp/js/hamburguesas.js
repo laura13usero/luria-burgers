@@ -21,22 +21,24 @@ async function obtenerHamburguesas(filtro = '') {
         const container = document.querySelector('.cards-container');
         container.innerHTML = '';
 
+        const s3BaseUrl = "https://luriaburgers.s3.us-east-1.amazonaws.com/";
+
         if (data.length > 0) {
             data.forEach(hamburguesa => {
                 const card = document.createElement('div');
                 card.classList.add('card');
 
-                const imagenSrc = `assets/menu/cards_hamburguesas_animacion/${hamburguesa.imagen_png}`;
+                const imagenSrc = `${s3BaseUrl}menu/cards_hamburguesas_animacion/${hamburguesa.imagen_png}`;
                 console.log("Intentando cargar imagen desde:", imagenSrc);
 
                 let rankingHTML = `
                     <div class="ranking-container" data-producto-id="${hamburguesa.id}">
                         <button class="rating-button minus" onclick="cambiarRating(event, ${hamburguesa.id}, -1)">-</button>
-                        <img src="assets/fondos_recursos/flor.png" alt="Calificación 1" class="rating-icon" data-rating="1">
-                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 2" class="rating-icon" data-rating="2">
-                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 3" class="rating-icon" data-rating="3">
-                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 4" class="rating-icon" data-rating="4">
-                        <img src="assets/fondos_recursos/flor-apagada.png" alt="Calificación 5" class="rating-icon" data-rating="5">
+                        <img src="${s3BaseUrl}fondos_recursos/flor.png" alt="Calificación 1" class="rating-icon" data-rating="1">
+                        <img src="${s3BaseUrl}fondos_recursos/flor-apagada.png" alt="Calificación 2" class="rating-icon" data-rating="2">
+                        <img src="${s3BaseUrl}fondos_recursos/flor-apagada.png" alt="Calificación 3" class="rating-icon" data-rating="3">
+                        <img src="${s3BaseUrl}fondos_recursos/flor-apagada.png" alt="Calificación 4" class="rating-icon" data-rating="4">
+                        <img src="${s3BaseUrl}fondos_recursos/flor-apagada.png" alt="Calificación 5" class="rating-icon" data-rating="5">
                         <button class="rating-button plus" onclick="cambiarRating(event, ${hamburguesa.id}, 1)">+</button>
                         <button class="send-rating-button" onclick="enviarCalificacion(${hamburguesa.id})">Send rate</button>
                     </div>
@@ -165,13 +167,13 @@ function actualizarRankingVisual(hamburguesa, usuarioActual, currentRating, rank
 
     const iconosRating = rankingContainer.querySelectorAll('.rating-icon');
     iconosRating.forEach(icon => {
-        icon.src = "assets/fondos_recursos/flor-apagada.png"; // Resetea
+        icon.src = "https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/flor-apagada.png"; // Resetea
     });
 
     let rating = currentRating || Math.round(hamburguesa.promedioRanking) || 1;
     for (let i = 0; i < rating; i++) {
         if (iconosRating[i]) {
-            iconosRating[i].src = "assets/fondos_recursos/flor.png";
+            iconosRating[i].src = "https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/flor.png";
         }
     }
 
