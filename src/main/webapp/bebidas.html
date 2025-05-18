@@ -6,9 +6,9 @@
     <title>Luría | Nuestras Bebidas</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="css/cards.css">
-    <link rel="icon" href="assets/fondos_recursos/flor.png" type="image/png">
+    <link rel="stylesheet" href="css/home.css"> {/* Considera si este CSS también usa imágenes locales */}
+    <link rel="stylesheet" href="css/cards.css"> {/* Considera si este CSS también usa imágenes locales */}
+    <link rel="icon" href="https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/flor.png" type="image/png">
 
 
     <style>
@@ -18,18 +18,22 @@
     <script>
         async function obtenerBebidas() {
           try {
-            const response = await fetch("control?action=getBebidas");
+            const response = await fetch("control?action=getBebidas"); // Esta llamada se mantiene igual
             const data = await response.json();
             const container = document.querySelector('.cards-container');
             container.innerHTML = '';
+
+            const s3BaseUrl = "https://luriaburgers.s3.us-east-1.amazonaws.com/";
 
             if (data.length > 0) {
               data.forEach(bebida => {
                 const card = document.createElement('div');
                 card.classList.add('card');
 
-                const imagenSrc = `assets/menu/cards_bebidas_animacion/${bebida.imagen_png}`;
-                console.log("Intentando cargar imagen desde:", imagenSrc);
+                // Asumiendo que 'bebida.imagen_png' solo contiene el nombre del archivo, ej: "cocacola.png"
+                // y que en tu S3 están dentro de "menu/cards_bebidas_animacion/"
+                const imagenSrc = `${s3BaseUrl}menu/cards_bebidas_animacion/${bebida.imagen_png}`;
+                console.log("Intentando cargar imagen desde S3:", imagenSrc);
 
                 card.innerHTML = `
                   <img src="${imagenSrc}" alt="${bebida.nombre}">
@@ -51,6 +55,43 @@
           }
         }
 
+        // La función agregarAlCarrito se mantiene igual que en la respuesta anterior,
+        // ya que su lógica no depende de las URLs de las imágenes directamente.
+        // Asegúrate de que ya tienes la versión que verifica el login.
+        async function agregarAlCarrito(idProducto, categoria) {
+          try {
+            const response = await fetch("control?action=isUserLoggedIn");
+            const data = await response.json();
+
+            if (data.loggedIn) {
+              const addToCartResponse = await fetch("control?action=addToCart", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: `idProducto=${idProducto}&categoria=${categoria}`,
+              });
+
+              const addToCartResult = await addToCartResponse.json();
+
+              if (addToCartResult.status === "ok") {
+                window.location.href = addToCartResult.redirect;
+              } else if (addToCartResult.status === "login_required") { // Manejar si AddToCartAction devuelve esto
+                window.location.href = addToCartResult.redirect;
+              }
+              else {
+                alert("Error al añadir al carrito: " + addToCartResult.message);
+              }
+            } else {
+              window.location.href = data.redirect;
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("Error al procesar la solicitud.");
+          }
+        }
+
+
         document.addEventListener('DOMContentLoaded', obtenerBebidas);
     </script>
 </head>
@@ -60,10 +101,10 @@
 
 <div class="corner-links">
     <a href="login.html" class="corner-link">
-        <img src="assets/fondos_recursos/login.png" alt="Login">
+        <img src="https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/login.png" alt="Login">
     </a>
     <a href="carrito.html" class="corner-link">
-        <img src="assets/fondos_recursos/carrito.png" alt="Carrito">
+        <img src="https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/carrito.png" alt="Carrito">
     </a>
 </div>
 
@@ -71,10 +112,10 @@
 <div class="menu-container-wrapper">
     <button class="menu-arrow menu-arrow-left"  id="menuArrowLeft"></button>
     <nav    class="menu-container"              id="menuContainer">
-        <a href="hamburguesas.html"      class="menu-item"><img src="assets/nav_icons/hamburguesas.png" alt="Hamburguesas"><div class="menu-background"></div></a>
-        <a href="guarniciones.html" class="menu-item"><img src="assets/nav_icons/complementos.png" alt="Complementos"><div class="menu-background"></div></a>
-        <a href="postres.html"      class="menu-item"><img src="assets/nav_icons/postres.png"      alt="Postres"><div class="menu-background"></div></a>
-        <a href="bebidas.html"      class="menu-item active"><img src="assets/nav_icons/bebidas.png"      alt="Bebidas"><div class="menu-background"></div></a>
+        <a href="hamburguesas.html"      class="menu-item"><img src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/hamburguesas.png" alt="Hamburguesas"><div class="menu-background"></div></a>
+        <a href="guarniciones.html" class="menu-item"><img src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/complementos.png" alt="Complementos"><div class="menu-background"></div></a>
+        <a href="postres.html"      class="menu-item"><img src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/postres.png"      alt="Postres"><div class="menu-background"></div></a>
+        <a href="bebidas.html"      class="menu-item active"><img src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/bebidas.png"      alt="Bebidas"><div class="menu-background"></div></a>
     </nav>
     <button class="menu-arrow menu-arrow-right" id="menuArrowRight"></button>
 </div>
