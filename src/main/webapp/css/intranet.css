@@ -17,7 +17,7 @@
     /* Estilos generales */
     body {
       font-family:'Poppins',sans-serif;
-      background-image: url("../assets/fondos_recursos/fondo_intranet.png");
+      background-image: url("https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/fondo_intranet.png");
       background-repeat: no-repeat;
       background-position: absolute;
       background-size: cover;

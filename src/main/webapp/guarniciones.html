@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luría | Nuestras Guarniciones</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link
+            href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700&family=Montserrat:wght@400;500;600&display=swap"
+            rel="stylesheet">
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/cards.css">
-    <link rel="icon" href="assets/fondos_recursos/flor.png" type="image/png">
+    <link rel="icon" href="https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/flor.png" type="image/png">
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap');
@@ -16,21 +19,24 @@
 
     <script>
         async function obtenerGuarniciones() {
-          try {
-            const response = await fetch("control?action=getGuarniciones");
-            const data = await response.json();
-            const container = document.querySelector('.cards-container');
-            container.innerHTML = '';
+            try {
+                const response = await fetch("control?action=getGuarniciones");
+                const data = await response.json();
+                const container = document.querySelector('.cards-container');
+                container.innerHTML = '';
 
-            if (data.length > 0) {
-              data.forEach(guarnicion => {
-                const card = document.createElement('div');
-                card.classList.add('card');
+                const s3BaseUrl = "https://luriaburgers.s3.us-east-1.amazonaws.com/";
 
-                const imagenSrc = `assets/menu/cards_complementos_animacion/${guarnicion.imagen_png}`;
-                console.log("Intentando cargar imagen desde:", imagenSrc);
+                if (data.length > 0) {
+                    data.forEach(guarnicion => {
+                        const card = document.createElement('div');
+                        card.classList.add('card');
 
-                card.innerHTML = `
+                        //  **¡CRÍTICO!  Revisa ESTA LÍNEA cuidadosamente**
+                        const imagenSrc = `${s3BaseUrl}menu/cards_complementos_animacion/${guarnicion.imagen_png}`;
+                        console.log("Intentando cargar imagen desde:", imagenSrc);
+
+                        card.innerHTML = `
                   <img src="${imagenSrc}" alt="${guarnicion.nombre}">
                   <div class="card-info">
                     <h2>${guarnicion.nombre}</h2>
@@ -39,40 +45,53 @@
                     </button>
                   </div>
                 `;
-                container.appendChild(card);
-              });
-            } else {
-              container.innerHTML = '<p>No se encontraron guarniciones.</p>';
+                        container.appendChild(card);
+                    });
+                } else {
+                    container.innerHTML = '<p>No se encontraron guarniciones.</p>';
+                }
+            } catch (error) {
+                console.error('Error al obtener las guarniciones:', error);
+                container.innerHTML = '<p>Error al cargar las guarniciones.</p>';
             }
-          } catch (error) {
-            console.error('Error al obtener las guarniciones:', error);
-            container.innerHTML = '<p>Error al cargar las guarniciones.</p>';
-          }
         }
 
         document.addEventListener('DOMContentLoaded', obtenerGuarniciones);
     </script>
 </head>
+
 <body>
 
 <div class="top-overlay"></div>
 
 <div class="corner-links">
     <a href="login.html" class="corner-link">
-        <img src="assets/fondos_recursos/login.png" alt="Login">
+        <img src="https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/login.png" alt="Login">
     </a>
     <a href="carrito.html" class="corner-link">
-        <img src="assets/fondos_recursos/carrito.png" alt="Carrito">
+        <img src="https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/carrito.png" alt="Carrito">
     </a>
 </div>
 
 <div class="menu-container-wrapper">
-    <button class="menu-arrow menu-arrow-left"  id="menuArrowLeft"></button>
-    <nav    class="menu-container"              id="menuContainer">
-        <a href="hamburguesas.html"      class="menu-item"><img src="assets/nav_icons/hamburguesas.png" alt="Hamburguesas"><div class="menu-background"></div></a>
-        <a href="guarniciones.html" class="menu-item active"><img src="assets/nav_icons/complementos.png" alt="Complementos"><div class="menu-background"></div></a>
-        <a href="postres.html"      class="menu-item"><img src="assets/nav_icons/postres.png"      alt="Postres"><div class="menu-background"></div></a>
-        <a href="bebidas.html"      class="menu-item"><img src="assets/nav_icons/bebidas.png"      alt="Bebidas"><div class="menu-background"></div></a>
+    <button class="menu-arrow menu-arrow-left" id="menuArrowLeft"></button>
+    <nav class="menu-container" id="menuContainer">
+        <a href="hamburguesas.html" class="menu-item"><img
+                src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/hamburguesas.png" alt="Hamburguesas">
+            <div class="menu-background"></div>
+        </a>
+        <a href="guarniciones.html" class="menu-item active"><img
+                src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/complementos.png" alt="Complementos">
+            <div class="menu-background"></div>
+        </a>
+        <a href="postres.html" class="menu-item"><img
+                src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/postres.png" alt="Postres">
+            <div class="menu-background"></div>
+        </a>
+        <a href="bebidas.html" class="menu-item"><img
+                src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/bebidas.png" alt="Bebidas">
+            <div class="menu-background"></div>
+        </a>
     </nav>
     <button class="menu-arrow menu-arrow-right" id="menuArrowRight"></button>
 </div>
@@ -85,4 +104,5 @@
 </div>
 
 </body>
+
 </html>
