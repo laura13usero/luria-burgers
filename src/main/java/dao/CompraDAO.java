@@ -26,6 +26,35 @@ public class CompraDAO {
     }
 
 
+
+    public boolean actualizarCantidadProductoEnCarrito(Usuario usuario, int idProducto, int cambio) throws SQLException {
+        Compra compra = getCompraActivaPorUsuario(usuario);
+        if (compra == null) {
+            return false; // No hay compra activa
+        }
+
+        String sql = "UPDATE lineacompra SET cantidad = cantidad + ?, subtotal = subtotal + (? * (subtotal / cantidad)) WHERE id_compra = ? AND id_producto = ?";
+
+        try (Connection conn = MotorSQL.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, cambio);
+            stmt.setBigDecimal(2, BigDecimal.valueOf(cambio));
+            stmt.setInt(3, compra.getIdCompra());
+            stmt.setInt(4, idProducto);
+
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                actualizarTotalCompra(compra.getIdCompra(), calcularTotalCompra(compra.getIdCompra())); // Recalcular total
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+    }
+
+
     // Método para obtener la compra pendiente de un usuario
     public Compra getCompraActivaPorUsuario(Usuario usuario) {
         String query = "SELECT * FROM compra WHERE id_usuario = ? AND estado = 'pendiente'";
@@ -292,10 +321,9 @@ public class CompraDAO {
                 producto.setPrecio(rs.getDouble("precio"));
                 // Si la cantidad está en la tabla línea de compra
                 int cantidad = rs.getInt("cantidad");
-                // Lógica para agregar los productos al carrito, según la cantidad
-                for (int i = 0; i < cantidad; i++) {
-                    productos.add(producto);
-                }
+                producto.setCantidad(cantidad); // **Add this line!**
+                productos.add(producto);
+
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Aquí debería usar un sistema de logging adecuado

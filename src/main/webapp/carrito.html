@@ -3,6 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Tu Carrito</title>
+    <style>
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+        }
+        .quantity-button {
+            padding: 5px 10px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
@@ -33,6 +44,10 @@
                 const li = document.createElement('li');
                 li.innerHTML = `
                     <strong>${producto.nombre}</strong> - ${producto.precio.toFixed(2)} €
+                    <div class="quantity-controls">
+                        <button class="quantity-button" onclick="actualizarCantidad(${index}, -1)">-</button>
+                        <span id="cantidad-${index}">1</span>  <button class="quantity-button" onclick="actualizarCantidad(${index}, 1)">+</button>
+                    </div>
                     <button onclick="eliminarProducto(${index})">Eliminar</button>
                 `;
                 lista.appendChild(li);
@@ -41,6 +56,24 @@
             document.getElementById('total').textContent = data.total.toFixed(2);
         } catch (err) {
             window.location.href = 'necesitalogin.html';
+        }
+    }
+
+    async function actualizarCantidad(index, cambio) {
+        try {
+            const res = await fetch(`/webapp-1.0-SNAPSHOT/control?action=actualizarCantidadCarrito&index=${index}&cambio=${cambio}`, {
+                method: 'POST'  // Usamos POST para modificar datos
+            });
+            if (!res.ok) throw new Error('Error al actualizar cantidad');
+            const data = await res.json();
+            if (data.status === 'ok') {
+                cargarCarrito(); // Recargar el carrito para reflejar los cambios
+            } else {
+                alert(data.message || 'Error desconocido al actualizar la cantidad.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al comunicarse con el servidor.');
         }
     }
 

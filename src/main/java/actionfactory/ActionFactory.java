@@ -31,7 +31,8 @@ public class ActionFactory {
             case "getPostres" -> new GetPostresJSONAction();
             case "getResumenCompra" -> new GetResumenCompraAction();
             case "actualizarRanking" -> new ActualizarRankingAction();
-            case "isUserLoggedIn" -> new IsUserLoggedInAction(); // Add this line
+            case "isUserLoggedIn" -> new IsUserLoggedInAction();
+            case "actualizarCantidadCarrito" -> new ActualizarCantidadCarritoAction();
 
 
             default -> new UnknownAction();

@@ -13,6 +13,7 @@ public class Producto {
     private String enlace_html;
     private String imagen_png;
     private double promedioRanking; // Nuevo campo
+    private int cantidad; // Nuevo campo
 
     public int getId() {
         return id;
@@ -92,5 +93,13 @@ public class Producto {
 
     public void setPromedioRanking(double promedioRanking) {
         this.promedioRanking = promedioRanking;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 }
