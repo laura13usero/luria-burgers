@@ -31,9 +31,9 @@
         const result = await response.json();
 
         if (result.status === "ok") {
-            if (result.rol === "admin") {
+            if (result.rol.toLowerCase() === "admin") { // Compare role in lowercase
                 window.location.href = "/webapp-1.0-SNAPSHOT/adminintranet.html";
-            } else if (result.rol === "empleado") {
+            } else if (result.rol.toLowerCase() === "empleado") { // Compare role in lowercase
                 window.location.href = "/webapp-1.0-SNAPSHOT/empleadointranet.html";
             } else {
                 window.location.href = "/webapp-1.0-SNAPSHOT/accesoDenegado.html";

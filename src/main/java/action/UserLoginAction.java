@@ -39,12 +39,14 @@ public class UserLoginAction implements Action {
             if (CryptoUtils.compararContrasena(contrasena, usuario.getContrasena())) {
                 HttpSession session = request.getSession();
                 session.setAttribute("usuarioLogueado", usuario);
-                session.setAttribute("usuarioLogueadoNombre", usuario.getNombre()); // Guardar el nombre
-                session.setAttribute("rol", usuario.getRol());
+                session.setAttribute("usuarioLogueadoNombre", usuario.getNombre());
+                String rol = usuario.getRol().toLowerCase(); // Convert role to lowercase
+                session.setAttribute("rol", rol);
                 session.setMaxInactiveInterval(30 * 60);
 
                 resultado.put("status", "ok");
-                resultado.put("nombre", usuario.getNombre()); // Send the name for potential display
+                resultado.put("nombre", usuario.getNombre());
+                resultado.put("rol", rol); // Send lowercase role in response
             } else {
                 resultado.put("status", "error");
                 resultado.put("message", "Contraseña incorrecta");
