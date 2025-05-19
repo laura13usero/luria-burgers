@@ -1,193 +1,206 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <title>Registrar Empleado</title>
+    <title>Gestión de Empleados</title>
     <style>
-        body { font-family: sans-serif; }
-        h2, h3 { text-align: center; }
-        p.success, p.error { text-align: center; font-weight: bold; }
-        p.success { color: green; }
-        p.error { color: red; }
-        form { margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
-        label { display: inline-block; width: 100px; text-align: right; margin-right: 10px; }
-        input[type=text], input[type=email], input[type=password] { width: calc(100% - 120px); padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 3px; box-sizing: border-box; }
-        button { padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        button:hover { background-color: #0056b3; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        td form { display: inline; }
-        td form button { font-size: 0.9em; padding: 5px 8px; margin-right: 5px; }
-        td a { color: red; text-decoration: none; margin-left: 5px; }
-        td a:hover { text-decoration: underline; }
+        body {
+            font-family: sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 6px 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
 
-    <h2>Registrar nuevo empleado</h2>
+<h1>Gestión de Empleados</h1>
 
-    <div id="registroMensaje"></div>
+<div id="empleadosLista">
+</div>
 
-    <form id="registroForm">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required><br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br>
-        <label for="contrasena">Contraseña:</label>
-        <input type="password" id="contrasena" name="contrasena" required><br>
-        <label for="telefono">Teléfono:</label>
-        <input type="text" id="telefono" name="telefono"><br>
-        <label for="direccion">Dirección:</label>
-        <input type="text" id="direccion" name="direccion"><br>
-        <button type="submit">Registrar</button>
-    </form>
+<script>
+    async function cargarEmpleados() {
+        try {
+            const response = await fetch('/webapp-1.0-SNAPSHOT/control?action=empleado-listado-json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            const empleadosListaDiv = document.getElementById('empleadosLista');
+            empleadosListaDiv.innerHTML = '';
 
-    <h3>Empleados actuales</h3>
-    <div id="empleadosLista">
-        <p>Cargando empleados...</p>
-    </div>
-
-    <form action="adminintranet.html" method="get" style="margin-top: 20px;">
-        <button type="submit">Volver al panel de administración</button>
-    </form>
-
-    <script>
-        async function registrarEmpleado() {
-            const form = document.getElementById('registroForm');
-            const formData = new FormData(form);
-            formData.append('action', 'empleado-register');
-
-            try {
-                const response = await fetch('/webapp-1.0-SNAPSHOT/control', {
-                    method: 'POST',
-                    body: formData
+            if (data.status === 'ok' && data.empleados && data.empleados.length > 0) {
+                const table = document.createElement('table');
+                const thead = document.createElement('thead');
+                const headerRow = document.createElement('tr');
+                ['ID', 'Nombre', 'Email', 'Teléfono', 'Dirección', 'Fecha Registro', 'Acciones'].forEach(text => {
+                    const th = document.createElement('th');
+                    th.textContent = text;
+                    headerRow.appendChild(th);
                 });
-                const data = await response.json();
-                const mensajeDiv = document.getElementById('registroMensaje');
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+                const tbody = document.createElement('tbody');
+                data.empleados.forEach(empleado => {
+                    const row = document.createElement('tr');
 
-                if (data.status === 'ok') {
-                    mensajeDiv.innerHTML = '<p class="success">✅ Registro de empleado completado</p>';
-                    form.reset();
-                    cargarEmpleados(); // Recargar la lista de empleados
-                } else {
-                    mensajeDiv.innerHTML = `<p class="error">❌ Error al registrar el empleado: ${data.message || 'Error desconocido'}</p>`;
-                }
-            } catch (error) {
-                console.error('Error al registrar empleado:', error);
-                document.getElementById('registroMensaje').innerHTML = '<p class="error">❌ Error de conexión al registrar.</p>';
-            }
-        }
+                    const idTd = document.createElement('td');
+                    idTd.textContent = empleado.idUsuario;
+                    row.appendChild(idTd);
 
-        async function cargarEmpleados() {
-            try {
-                const response = await fetch('/webapp-1.0-SNAPSHOT/control?action=empleado-listado-json');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                const empleadosListaDiv = document.getElementById('empleadosLista');
-                empleadosListaDiv.innerHTML = ''; // Limpiar la lista anterior
+                    const nombreTd = document.createElement('td');
+                    nombreTd.textContent = empleado.nombre;
+                    row.appendChild(nombreTd);
 
-                if (data.status === 'ok' && data.empleados && data.empleados.length > 0) {
-                    const table = document.createElement('table');
-                    const thead = document.createElement('thead');
-                    const headerRow = document.createElement('tr');
-                    ['ID', 'Nombre', 'Email', 'Teléfono', 'Dirección', 'Fecha Registro', 'Acciones'].forEach(text => {
-                        const th = document.createElement('th');
-                        th.textContent = text;
-                        headerRow.appendChild(th);
-                    });
-                    thead.appendChild(headerRow);
-                    table.appendChild(thead);
-                    const tbody = document.createElement('tbody');
-                    data.empleados.forEach(empleado => {
-                        const row = document.createElement('tr');
-                        const editarForm = document.createElement('form');
-                        editarForm.addEventListener('submit', (event) => editarEmpleado(event, empleado.idUsuario));
-                        editarForm.innerHTML = `
-                            <input type="hidden" name="action" value="empleado-editar-json">
-                            <input type="hidden" name="id" value="${empleado.idUsuario}">
-                            <td>${empleado.idUsuario}</td>
-                            <td>${empleado.nombre}</td>
-                            <td>${empleado.email}</td>
-                            <td><input type="text" name="telefono" value="${empleado.telefono || ''}" size="10"></td>
-                            <td><input type="text" name="direccion" value="${empleado.direccion || ''}" size="15"></td>
-                            <td>${empleado.fechaRegistro}</td>
-                            <td>
-                                <button type="submit">Guardar</button>
-                                <button type="button" onclick="darDeBajaEmpleado(${empleado.idUsuario})">Dar de baja</button>
-                            </td>
-                        `;
-                        row.appendChild(editarForm);
-                        tbody.appendChild(row);
-                    });
-                    table.appendChild(tbody);
-                    empleadosListaDiv.appendChild(table);
-                } else {
-                    empleadosListaDiv.innerHTML = '<p>No hay empleados registrados todavía.</p>';
-                }
+                    const emailTd = document.createElement('td');
+                    emailTd.textContent = empleado.email;
+                    row.appendChild(emailTd);
 
-            } catch (error) {
-                console.error('Error al cargar empleados:', error);
-                document.getElementById('empleadosLista').innerHTML = '<p class="error">Error al cargar la lista de empleados.</p>';
-            }
-        }
+                    const telefonoTd = document.createElement('td');
+                    const telefonoInput = document.createElement('input');
+                    telefonoInput.type = 'text';
+                    telefonoInput.name = 'telefono';
+                    telefonoInput.value = empleado.telefono || '';
+                    telefonoInput.size = 10;
+                    const telefonoForm = document.createElement('form');
+                    telefonoForm.addEventListener('submit', (event) => editarEmpleado(event, empleado.idUsuario));
+                    telefonoForm.appendChild(telefonoInput);
+                    telefonoForm.innerHTML += `<input type="hidden" name="action" value="empleado-editar-json">
+                                                <input type="hidden" name="id" value="${empleado.idUsuario}">`;
+                    telefonoTd.appendChild(telefonoForm);
+                    row.appendChild(telefonoTd);
 
-        async function darDeBajaEmpleado(id) {
-            if (confirm('¿Estás seguro de que quieres dar de baja a este empleado?')) {
-                try {
-                    const response = await fetch('/webapp-1.0-SNAPSHOT/control', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: `action=empleado-baja-json&id=${id}`
-                    });
-                    const data = await response.json();
-                    const mensajeDiv = document.getElementById('registroMensaje');
-                    if (data.status === 'ok') {
-                        mensajeDiv.innerHTML = '<p class="success">✅ Empleado dado de baja correctamente</p>';
-                        cargarEmpleados(); // Recargar la lista de empleados
-                    } else {
-                        mensajeDiv.innerHTML = `<p class="error">❌ Error al dar de baja al empleado: ${data.message || 'Error desconocido'}</p>`;
-                    }
-                } catch (error) {
-                    console.error('Error al dar de baja al empleado:', error);
-                    document.getElementById('registroMensaje').innerHTML = '<p class="error">❌ Error de conexión al dar de baja.</p>';
-                }
-            }
-        }
 
-        async function editarEmpleado(event, id) {
-            event.preventDefault();
-            const form = event.target;
-            const formData = new FormData(form);
+                    const direccionTd = document.createElement('td');
+                    const direccionInput = document.createElement('input');
+                    direccionInput.type = 'text';
+                    direccionInput.name = 'direccion';
+                    direccionInput.value = empleado.direccion || '';
+                    direccionInput.size = 15;
+                    const direccionForm = document.createElement('form');
+                    direccionForm.addEventListener('submit', (event) => editarEmpleado(event, empleado.idUsuario));
+                    direccionForm.appendChild(direccionInput);
+                    direccionForm.innerHTML += `<input type="hidden" name="action" value="empleado-editar-json">
+                                                 <input type="hidden" name="id" value="${empleado.idUsuario}">`;
+                    direccionTd.appendChild(direccionForm);
+                    row.appendChild(direccionTd);
 
-            try {
-                const response = await fetch('/webapp-1.0-SNAPSHOT/control', {
-                    method: 'POST',
-                    body: formData
+                    const fechaRegistroTd = document.createElement('td');
+                    fechaRegistroTd.textContent = empleado.fechaRegistro;
+                    row.appendChild(fechaRegistroTd);
+
+                    const accionesTd = document.createElement('td');
+                    const guardarBtn = document.createElement('button');
+                    guardarBtn.type = 'submit';
+                    guardarBtn.textContent = 'Guardar';
+                    const bajaBtn = document.createElement('button');
+                    bajaBtn.type = 'button';
+                    bajaBtn.textContent = 'Dar de baja';
+                    bajaBtn.onclick = () => darDeBajaEmpleado(empleado.idUsuario);
+
+                    const formAcciones = document.createElement('form');
+                    formAcciones.appendChild(guardarBtn);
+                    accionesTd.appendChild(formAcciones);
+                    accionesTd.appendChild(bajaBtn);
+                    row.appendChild(accionesTd);
+
+                    tbody.appendChild(row);
                 });
-                const data = await response.json();
-                const mensajeDiv = document.getElementById('registroMensaje');
-                if (data.status === 'ok') {
-                    mensajeDiv.innerHTML = '<p class="success">✅ Datos actualizados correctamente</p>';
-                    cargarEmpleados(); // Recargar la lista de empleados
+                table.appendChild(tbody);
+                empleadosListaDiv.appendChild(table);
+            } else {
+                empleadosListaDiv.innerHTML = '<p>No hay empleados registrados todavía.</p>';
+            }
+
+        } catch (error) {
+            console.error('Error al cargar empleados:', error);
+            document.getElementById('empleadosLista').innerHTML = '<p class="error">Error al cargar la lista de empleados.</p>';
+        }
+    }
+
+    async function editarEmpleado(event, idUsuario) {
+        event.preventDefault(); // Evitar la recarga de la página
+        const form = event.target;
+        const formData = new FormData(form);
+        formData.append('id', idUsuario.toString());
+
+        try {
+            const response = await fetch('/webapp-1.0-SNAPSHOT/control', {
+                method: 'POST',
+                body: new URLSearchParams(formData)
+            });
+            if (response.ok) {
+                alert('Datos del empleado actualizados correctamente.');
+                cargarEmpleados(); // Recargar la lista para mostrar los cambios
+            } else {
+                alert('Error al actualizar los datos del empleado.');
+            }
+        } catch (error) {
+            console.error('Error al enviar la petición de actualización:', error);
+            alert('Error de conexión al intentar actualizar los datos.');
+        }
+    }
+
+    async function darDeBajaEmpleado(idUsuario) {
+        if (confirm('¿Estás seguro de que quieres dar de baja a este empleado?')) {
+            try {
+                const response = await fetch(`/webapp-1.0-SNAPSHOT/control?action=empleado-dar-baja-json&id=${idUsuario}`, {
+                    method: 'POST'
+                });
+                if (response.ok) {
+                    alert('Empleado dado de baja correctamente.');
+                    cargarEmpleados(); // Recargar la lista para mostrar los cambios
                 } else {
-                    mensajeDiv.innerHTML = `<p class="error">❌ Error al actualizar los datos: ${data.message || 'Error desconocido'}</p>`;
+                    alert('Error al dar de baja al empleado.');
                 }
             } catch (error) {
-                console.error('Error al editar empleado:', error);
-                document.getElementById('registroMensaje').innerHTML = '<p class="error">❌ Error de conexión al actualizar.</p>';
+                console.error('Error al enviar la petición de baja:', error);
+                alert('Error de conexión al intentar dar de baja al empleado.');
             }
         }
+    }
 
-        document.getElementById('registroForm').addEventListener('submit', (event) => {
-            event.preventDefault();
-            registrarEmpleado();
-        });
-
-        cargarEmpleados(); // Cargar la lista de empleados al cargar la página
-    </script>
+    cargarEmpleados();
+</script>
 
 </body>
+
 </html>
