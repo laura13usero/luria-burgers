@@ -97,8 +97,12 @@
 
     async function eliminarProducto(index) {
     try {
-        const res = await fetch(`/webapp-1.0-SNAPSHOT/control?action=eliminarProductoCarrito&index=${index}`, {
-            method: 'DELETE'  // Usar el método DELETE
+        const res = await fetch(`/webapp-1.0-SNAPSHOT/control?action=eliminarProductoCarrito`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded' // Importante para enviar datos como formulario
+            },
+            body: `index=${index}` // Enviar el índice en el cuerpo de la petición
         });
         if (res.ok) {
             cargarCarrito(); // refrescar vista
