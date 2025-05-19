@@ -23,7 +23,6 @@ public class EliminarProductoCarritoAction implements Action {
 
         if (usuario == null) {
             // Si no está logueado, redirigimos a la página de login
-            //si sjsjsjsjjs
             response.sendRedirect(request.getContextPath() + "/necesitalogin.html");
             return;
         }
@@ -38,15 +37,19 @@ public class EliminarProductoCarritoAction implements Action {
                 CompraDAO compraDAO = new CompraDAO();
                 boolean eliminadoDeBBDD = compraDAO.eliminarLineaCompra(usuario, producto.getId());
 
-
-                Compra compra = compraDAO.getCompraActivaPorUsuario(usuario);
-                BigDecimal nuevoTotal = compra.getTotal().subtract(BigDecimal.valueOf(producto.getPrecio()));
-                boolean totalActualizado = compraDAO.actualizarTotalCompra(compra.getIdCompra(), nuevoTotal);
-
                 if (eliminadoDeBBDD) {
                     // Eliminamos el producto del carrito en la sesión
                     carrito.remove(index);
                     session.setAttribute("carrito", carrito);  // Actualizamos el carrito en la sesión
+
+                    // **** CORRECCIÓN CRUCIAL: ****
+                    // Ya no manipulamos el total en el Action.  CompraDAO.eliminarLineaCompra
+                    // ya se encarga de actualizar el total correctamente.
+                    // No necesitamos estas líneas:
+                    // Compra compra = compraDAO.getCompraActivaPorUsuario(usuario);
+                    // BigDecimal nuevoTotal = compra.getTotal().subtract(BigDecimal.valueOf(producto.getPrecio()));
+                    // boolean totalActualizado = compraDAO.actualizarTotalCompra(compra.getIdCompra(), nuevoTotal);
+
                 } else {
                     // Si no se pudo eliminar de la base de datos, mostramos un error
                     request.setAttribute("error", "No se pudo eliminar el producto de la base de datos.");
@@ -58,6 +61,3 @@ public class EliminarProductoCarritoAction implements Action {
         response.sendRedirect(request.getContextPath() + "/control?action=verCarrito");
     }
 }
-
-//lalalalalal
-//lalallaa
