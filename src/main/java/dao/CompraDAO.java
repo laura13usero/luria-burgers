@@ -303,7 +303,7 @@ public class CompraDAO {
         return productos;
     }
 
-    private BigDecimal calcularTotalCompra(int idCompra) {
+    public BigDecimal calcularTotalCompra(int idCompra) {
         String query = "SELECT SUM(subtotal) FROM lineacompra WHERE id_compra = ?";
         try (Connection conn = MotorSQL.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {

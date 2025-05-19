@@ -64,7 +64,8 @@ public class AddToCartAction implements Action {
                         return;
                     }
 
-                    BigDecimal nuevoTotal = compra.getTotal().add(subtotal);
+                    // Obtener el total actualizado de la base de datos y actualizar la compra
+                    BigDecimal nuevoTotal = compraDAO.calcularTotalCompra(compra.getIdCompra());
                     compraDAO.actualizarTotalCompra(compra.getIdCompra(), nuevoTotal);
 
                     List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
