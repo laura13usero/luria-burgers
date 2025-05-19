@@ -1,14 +1,13 @@
 package dao;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import model.Usuario;
-import util.CryptoUtils;
 import util.MotorSQL;
+import util.CryptoUtils;  // Asegúrate de que esta clase esté definida para encriptar las contraseñas
+
+import java.sql.*;
+import java.util.*;
 
 public class UsuarioDAO {
-
     private Connection connection;
 
     public UsuarioDAO() {
@@ -21,25 +20,28 @@ public class UsuarioDAO {
     }
 
     public void agregarUsuario(Usuario usuario) throws SQLException {
-        String queryUsuario = "INSERT INTO usuario (nombre, email, \"contraseña\", telefono, direccion, fecha_registro) VALUES (?, ?, ?, ?, ?, ?) RETURNING id_usuario";
+        String queryUsuario = "INSERT INTO Usuario (nombre, email, contraseña, telefono, direccion, fecha_registro) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(queryUsuario)) {
+        // 1. Insertar el usuario y obtener el ID generado
+        try (PreparedStatement stmt = connection.prepareStatement(queryUsuario, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, usuario.getNombre());
             stmt.setString(2, usuario.getEmail());
-            stmt.setString(3, usuario.getContrasena());
+            stmt.setString(3, usuario.getContrasena()); // Contraseña ya encriptada
             stmt.setString(4, usuario.getTelefono());
             stmt.setString(5, usuario.getDireccion());
             stmt.setTimestamp(6, Timestamp.valueOf(usuario.getFechaRegistro()));
             stmt.executeUpdate();
 
-            try (ResultSet generatedKeys = stmt.getResultSet()) {
+            // 2. Obtener el ID autogenerado
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     int idUsuario = generatedKeys.getInt(1);
 
+                    // 3. Insertar en la tabla usuariorol (Asumimos que el rol predeterminado es 1 para "cliente")
                     String queryRol = "INSERT INTO usuariorol (id_usuario, id_rol) VALUES (?, ?)";
                     try (PreparedStatement stmtRol = connection.prepareStatement(queryRol)) {
                         stmtRol.setInt(1, idUsuario);
-                        stmtRol.setInt(2, 3);  // Rol de empleado
+                        stmtRol.setInt(2, 1);  // Asignamos rol 1 por defecto (puedes cambiarlo según corresponda)
                         stmtRol.executeUpdate();
                     }
                 } else {
@@ -50,25 +52,28 @@ public class UsuarioDAO {
     }
 
     public void agregarEmpleado(Usuario usuario) throws SQLException {
-        String queryUsuario = "INSERT INTO usuario (nombre, email, \"contraseña\", telefono, direccion, fecha_registro) VALUES (?, ?, ?, ?, ?, ?) RETURNING id_usuario";
+        String queryUsuario = "INSERT INTO Usuario (nombre, email, contraseña, telefono, direccion, fecha_registro) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(queryUsuario)) {
+        // 1. Insertar el usuario y obtener el ID generado
+        try (PreparedStatement stmt = connection.prepareStatement(queryUsuario, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, usuario.getNombre());
             stmt.setString(2, usuario.getEmail());
-            stmt.setString(3, usuario.getContrasena());
+            stmt.setString(3, usuario.getContrasena()); // Contraseña ya encriptada
             stmt.setString(4, usuario.getTelefono());
             stmt.setString(5, usuario.getDireccion());
             stmt.setTimestamp(6, Timestamp.valueOf(usuario.getFechaRegistro()));
             stmt.executeUpdate();
 
-            try (ResultSet generatedKeys = stmt.getResultSet()) {
+            // 2. Obtener el ID autogenerado
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     int idUsuario = generatedKeys.getInt(1);
 
+                    // 3. Insertar en la tabla usuariorol (Asumimos que el rol predeterminado es 1 para "cliente")
                     String queryRol = "INSERT INTO usuariorol (id_usuario, id_rol) VALUES (?, ?)";
                     try (PreparedStatement stmtRol = connection.prepareStatement(queryRol)) {
                         stmtRol.setInt(1, idUsuario);
-                        stmtRol.setInt(2, 3);  // Rol de empleado
+                        stmtRol.setInt(2, 3);  // Asignamos rol 3 por defecto
                         stmtRol.executeUpdate();
                     }
                 } else {
@@ -78,7 +83,9 @@ public class UsuarioDAO {
         }
     }
 
+
     public List<Usuario> obtenerEmpleadosActivos() throws SQLException {
+        // Aquí asumimos que el rol 3 es el de EMPLEADO, como indicaste antes.
         return obtenerUsuariosPorRol(3);
     }
 
@@ -92,12 +99,15 @@ public class UsuarioDAO {
         }
     }
 
+
+
     public List<Usuario> obtenerUsuariosPorRol(int rolId) throws SQLException {
         List<Usuario> empleados = new ArrayList<>();
 
         String query = "SELECT u.* FROM usuario u " +
                 "JOIN usuariorol ur ON u.id_usuario = ur.id_usuario " +
-                "WHERE ur.id_rol = ?";
+                "WHERE ur.id_rol = ? AND u.activo = TRUE";
+
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, rolId);
@@ -119,18 +129,20 @@ public class UsuarioDAO {
     }
 
     public boolean darDeBajaEmpleado(int idUsuario) throws SQLException {
-        String query = "DELETE FROM usuario WHERE id_usuario = ?";  // Cambiado a DELETE
+        String query = "UPDATE usuario SET activo = FALSE WHERE id_usuario = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, idUsuario);
             stmt.executeUpdate();
         }
-        return true; // Devuelve true si la eliminación fue exitosa
+        return false;
     }
+
+
 
     public Usuario buscarPorEmailYContrasena(String email, String contrasena) {
         Usuario u = null;
-        String sql = "SELECT u.id_usuario, u.nombre, u.email, u.\"contraseña\", u.telefono, u.direccion, u.fecha_registro, r.id_rol " +
-                "FROM usuario u JOIN usuariorol r ON u.id_usuario = r.id_usuario WHERE u.email = ? AND u.\"contraseña\" = ?";
+        String sql = "SELECT u.id_usuario, u.nombre, u.email, u.contraseña, u.telefono, u.direccion, u.fecha_registro, r.id_rol " +
+                "FROM usuario u JOIN usuariorol r ON u.id_usuario = r.id_usuario WHERE u.email = ? AND u.contraseña = ?";
 
         // Encriptar la contraseña antes de hacer la consulta
         String contrasenaEncriptada = CryptoUtils.encriptarContrasena(contrasena);
@@ -152,6 +164,7 @@ public class UsuarioDAO {
                     u.setDireccion(rs.getString("direccion"));
                     u.setFechaRegistro(rs.getTimestamp("fecha_registro").toLocalDateTime());
 
+                    // Asignamos el rol al usuario
                     String rol = getRolById(rs.getInt("id_rol"));
                     u.setRol(rol);
                 }
@@ -166,7 +179,7 @@ public class UsuarioDAO {
 
     public Usuario buscarPorEmail(String email) {
         Usuario u = null;
-        String sql = "SELECT u.id_usuario, u.nombre, u.email, u.\"contraseña\", u.telefono, u.direccion, u.fecha_registro, r.id_rol " +
+        String sql = "SELECT u.id_usuario, u.nombre, u.email, u.contraseña, u.telefono, u.direccion, u.fecha_registro, r.id_rol " +
                 "FROM usuario u JOIN usuariorol r ON u.id_usuario = r.id_usuario WHERE u.email = ?";
 
         try (Connection con = MotorSQL.getConnection();
@@ -185,6 +198,7 @@ public class UsuarioDAO {
                     u.setDireccion(rs.getString("direccion"));
                     u.setFechaRegistro(rs.getTimestamp("fecha_registro").toLocalDateTime());
 
+                    // Asignamos el rol al usuario
                     String rol = getRolById(rs.getInt("id_rol"));
                     u.setRol(rol);
                 }
@@ -197,6 +211,7 @@ public class UsuarioDAO {
         return u;
     }
 
+    // Método para obtener el rol por ID de rol
     private String getRolById(int idRol) {
         String rol = "";
         String sql = "SELECT nombre FROM rol WHERE id_rol = ?";
@@ -217,9 +232,11 @@ public class UsuarioDAO {
         return rol;
     }
 
+
+    // Método para obtener todos los usuarios
     public List<Usuario> obtenerTodos() {
         List<Usuario> usuarios = new ArrayList<>();
-        String query = "SELECT u.id_usuario, u.nombre, u.email, u.\"contraseña\", u.telefono, u.direccion, u.fecha_registro, r.id_rol " +
+        String query = "SELECT u.id_usuario, u.nombre, u.email, u.contraseña, u.telefono, u.direccion, u.fecha_registro, r.id_rol " +
                 "FROM usuario u JOIN usuariorol r ON u.id_usuario = r.id_usuario";
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
@@ -233,7 +250,7 @@ public class UsuarioDAO {
                         rs.getString("telefono"),
                         rs.getString("direccion"),
                         rs.getTimestamp("fecha_registro").toLocalDateTime(),
-                        getRolById(rs.getInt("id_rol"))
+                        getRolById(rs.getInt("id_rol"))  // Agregar el rol
                 );
                 usuarios.add(usuario);
             }
