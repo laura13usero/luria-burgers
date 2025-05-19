@@ -39,11 +39,12 @@ public class UserLoginAction implements Action {
             if (CryptoUtils.compararContrasena(contrasena, usuario.getContrasena())) {
                 HttpSession session = request.getSession();
                 session.setAttribute("usuarioLogueado", usuario);
+                session.setAttribute("usuarioLogueadoNombre", usuario.getNombre()); // Guardar el nombre
                 session.setAttribute("rol", usuario.getRol());
                 session.setMaxInactiveInterval(30 * 60);
 
                 resultado.put("status", "ok");
-                resultado.put("rol", usuario.getRol());
+                resultado.put("nombre", usuario.getNombre()); // Send the name for potential display
             } else {
                 resultado.put("status", "error");
                 resultado.put("message", "Contraseña incorrecta");

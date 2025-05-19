@@ -17,7 +17,7 @@
 
 <div id="mensaje"></div>
 
-<h1>Bienvenido, <span id="nombreUsuario"></span>!</h1>
+<h1 id="tituloBienvenida"></h1>
 <h2>Panel de Administrador</h2>
 
 <p>Accede a las funcionalidades administrativas:</p>
@@ -46,22 +46,18 @@
         try {
             const response = await fetch('/webapp-1.0-SNAPSHOT/control?action=getUsuarioLogueado');
             if (!response.ok) {
-                window.location.href = 'loginintranet.html'; // Redirigir si no hay sesión
+                window.location.href = 'accesoDenegado.html';
                 return;
             }
             const data = await response.json();
             if (data.status === 'ok' && data.rol === 'admin') {
-                document.getElementById('nombreUsuario').textContent = data.nombre;
-                const loginParam = new URLSearchParams(window.location.search).get('login');
-                if (loginParam === 'ok') {
-                    document.getElementById('mensaje').innerHTML = '<p class="success">✅ Has iniciado sesión con éxito.</p>';
-                }
+                document.getElementById('tituloBienvenida').textContent = `Bienvenido, ${data.nombre}!`;
             } else {
-                window.location.href = 'accesoDenegado.html'; // Redirigir si no es admin
+                window.location.href = 'accesoDenegado.html';
             }
         } catch (error) {
             console.error('Error al verificar la sesión:', error);
-            window.location.href = 'loginintranet.html'; // Redirigir en caso de error
+            window.location.href = 'accesoDenegado.html';
         }
     }
 
@@ -89,7 +85,7 @@
         }
     });
 
-    verificarSesion();
+    verificarSesion(); // MUST be the first thing!
 </script>
 
 </body>
