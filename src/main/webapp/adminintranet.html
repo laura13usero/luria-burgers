@@ -1,58 +1,96 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page session="true" %>
-<%
-    String rol = (String) session.getAttribute("rol");
-    if (!"admin".equals(rol)) {
-        response.sendRedirect(request.getContextPath() + "/jsp/accesoDenegado.jsp");
-        return;
-    }
-%>
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
     <title>Intranet - Administrador</title>
+    <style>
+        body { font-family: sans-serif; }
+        h1, h2 { text-align: center; }
+        p.success { color: green; font-weight: bold; }
+        ul { list-style: none; padding: 0; text-align: center; }
+        li { margin-bottom: 10px; }
+        button { padding: 8px 15px; cursor: pointer; }
+        form { text-align: center; margin-top: 20px; }
+    </style>
 </head>
 <body>
 
-<% if ("ok".equals(request.getParameter("login"))) { %>
-    <p style="color: green;">✅ Has iniciado sesión con éxito.</p>
-<% } %>
+<div id="mensaje"></div>
 
-<h1>Bienvenido, ${usuario.nombre}!</h1>
+<h1>Bienvenido, <span id="nombreUsuario"></span>!</h1>
 <h2>Panel de Administrador</h2>
 
 <p>Accede a las funcionalidades administrativas:</p>
-<ul>
+<ul id="adminFuncionalidades">
     <li>
-        <form action="<%= request.getContextPath() %>/control" method="get">
-             <input type="hidden" name="action" value="usuario-listado">
-             <button type="submit">Gestionar Plantilla</button>
-         </form>
+        <button onclick="enviarAccion('usuario-listado')">Gestionar Plantilla</button>
     </li>
-
     <li>
-        <form action="<%= request.getContextPath() %>/control" method="get">
-             <input type="hidden" name="action" value="pedidos-completados">
-             <button type="submit">Ver Pedidos Completados</button>
-         </form>
+        <button onclick="enviarAccion('pedidos-completados')">Ver Pedidos Completados</button>
     </li>
-
     <li>
-        <form action="<%= request.getContextPath() %>/control" method="get">
-             <input type="hidden" name="action" value="ver-buzon">
-             <button type="submit">Ver Mensajes del Buzón</button>
-         </form>
+        <button onclick="enviarAccion('ver-buzon')">Ver Mensajes del Buzón</button>
     </li>
-
-
+    <li>
+        <a href="agregarHamburguesa.html">Añadir Nueva Hamburguesa</a>
+    </li>
 </ul>
 
+<form id="logoutForm">
+    <input type="hidden" name="action" value="logout">
+    <button type="submit">Cerrar sesión</button>
+</form>
 
+<script>
+    async function verificarSesion() {
+        try {
+            const response = await fetch('/webapp-1.0-SNAPSHOT/control?action=getUsuarioLogueado');
+            if (!response.ok) {
+                window.location.href = 'loginintranet.html'; // Redirigir si no hay sesión
+                return;
+            }
+            const data = await response.json();
+            if (data.status === 'ok' && data.rol === 'admin') {
+                document.getElementById('nombreUsuario').textContent = data.nombre;
+                const loginParam = new URLSearchParams(window.location.search).get('login');
+                if (loginParam === 'ok') {
+                    document.getElementById('mensaje').innerHTML = '<p class="success">✅ Has iniciado sesión con éxito.</p>';
+                }
+            } else {
+                window.location.href = 'accesoDenegado.html'; // Redirigir si no es admin
+            }
+        } catch (error) {
+            console.error('Error al verificar la sesión:', error);
+            window.location.href = 'loginintranet.html'; // Redirigir en caso de error
+        }
+    }
 
-        <!-- Botón de cerrar sesión -->
-        <form action="<%= request.getContextPath() %>/control" method="post" style="margin-top: 20px;">
-            <input type="hidden" name="action" value="logout">
-            <button type="submit">Cerrar sesión</button>
-        </form>
+    function enviarAccion(action) {
+        window.location.href = `/webapp-1.0-SNAPSHOT/control?action=${action}`;
+    }
+
+    document.getElementById('logoutForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        try {
+            const response = await fetch('/webapp-1.0-SNAPSHOT/control', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'action=logout'
+            });
+            if (response.ok) {
+                window.location.href = 'loginintranet.html';
+            } else {
+                console.error('Error al cerrar sesión');
+                document.getElementById('mensaje').textContent = 'Error al cerrar sesión.';
+            }
+        } catch (error) {
+            console.error('Error al enviar la solicitud de cierre de sesión:', error);
+            document.getElementById('mensaje').textContent = 'Error de conexión al cerrar sesión.';
+        }
+    });
+
+    verificarSesion();
+</script>
 
 </body>
 </html>

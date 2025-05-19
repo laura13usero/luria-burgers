@@ -128,12 +128,13 @@ public class UsuarioDAO {
         return empleados;
     }
 
-    public void darDeBajaEmpleado(int idUsuario) throws SQLException {
+    public boolean darDeBajaEmpleado(int idUsuario) throws SQLException {
         String query = "UPDATE usuario SET activo = FALSE WHERE id_usuario = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, idUsuario);
             stmt.executeUpdate();
         }
+        return false;
     }
 
 
