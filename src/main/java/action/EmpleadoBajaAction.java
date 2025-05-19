@@ -18,8 +18,21 @@ public class EmpleadoBajaAction implements Action {
         PrintWriter out = response.getWriter();
         JsonObject jsonResponse = new JsonObject();
 
-        int idEmpleado = Integer.parseInt(request.getParameter("id"));
+        // Log parameter
+        System.out.println("EmpleadoBajaAction - Parameter:");
+        System.out.println("  id: " + request.getParameter("id"));
+
+        int idEmpleado;
         try {
+            if (request.getParameter("id") == null) {
+                response.setStatus(400); // Bad Request
+                jsonResponse.addProperty("status", "error");
+                jsonResponse.addProperty("message", "Se requiere el ID del empleado.");
+                out.print(jsonResponse.toString());
+                out.flush();
+                return;
+            }
+            idEmpleado = Integer.parseInt(request.getParameter("id"));
             UsuarioDAO dao = new UsuarioDAO();
             boolean bajaExitosa = dao.darDeBajaEmpleado(idEmpleado);
 
@@ -28,22 +41,28 @@ public class EmpleadoBajaAction implements Action {
                 jsonResponse.addProperty("message", "Empleado dado de baja correctamente");
                 response.setStatus(200); // OK
             } else {
+                response.setStatus(500); // Internal Server Error
                 jsonResponse.addProperty("status", "error");
                 jsonResponse.addProperty("message", "Error al dar de baja al empleado");
-                response.setStatus(500); // Internal Server Error
             }
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            response.setStatus(400); // Bad Request
+            jsonResponse.addProperty("status", "error");
+            jsonResponse.addProperty("message", "ID de empleado inválido.");
 
         } catch (SQLException e) {
             e.printStackTrace();
             response.setStatus(500); // Internal Server Error
             jsonResponse.addProperty("status", "error");
-            jsonResponse.addProperty("message", "Error al dar de baja al empleado: " + e.getMessage());
+            jsonResponse.addProperty("message", "Error de base de datos: " + e.getMessage());
 
         } catch (Exception e) {
             e.printStackTrace();
             response.setStatus(500); // Internal Server Error
             jsonResponse.addProperty("status", "error");
-            jsonResponse.addProperty("message", "Error al dar de baja al empleado: " + e.getMessage());
+            jsonResponse.addProperty("message", "Error inesperado: " + e.getMessage());
 
         } finally {
             out.print(jsonResponse.toString());

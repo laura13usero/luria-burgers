@@ -17,15 +17,36 @@ public class EmpleadoRegisterAction implements Action {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8"); // Important for UTF-8 compatibility
+        response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         JsonObject jsonResponse = new JsonObject();
+
+        // Log parameters (CRUCIAL for debugging)
+        System.out.println("EmpleadoRegisterAction - Parameters:");
+        System.out.println("  nombre: " + request.getParameter("nombre"));
+        System.out.println("  email: " + request.getParameter("email"));
+        System.out.println("  contrasena: " + request.getParameter("contrasena"));
+        System.out.println("  telefono: " + request.getParameter("telefono"));
+        System.out.println("  direccion: " + request.getParameter("direccion"));
 
         String nombre = request.getParameter("nombre");
         String email = request.getParameter("email");
         String contrasena = request.getParameter("contrasena");
         String telefono = request.getParameter("telefono");
         String direccion = request.getParameter("direccion");
+
+        // Validation (Basic - Expand as needed)
+        if (nombre == null || nombre.trim().isEmpty() ||
+                email == null || email.trim().isEmpty() ||
+                contrasena == null || contrasena.trim().isEmpty()) {
+            response.setStatus(400);  // Bad Request
+            jsonResponse.addProperty("status", "error");
+            jsonResponse.addProperty("message", "Nombre, email, y contraseña son obligatorios.");
+            out.print(jsonResponse.toString());
+            out.flush();
+            return;  // Important: Stop further processing
+        }
+
 
         try {
             String contrasenaEncriptada = CryptoUtils.encriptarContrasena(contrasena);
@@ -46,13 +67,13 @@ public class EmpleadoRegisterAction implements Action {
             response.setStatus(200); // OK
 
         } catch (SQLException e) {
-            e.printStackTrace(); // Log the error!
+            e.printStackTrace();
             response.setStatus(500); // Internal Server Error
             jsonResponse.addProperty("status", "error");
             jsonResponse.addProperty("message", "Error de base de datos: " + e.getMessage());
 
         } catch (Exception e) {
-            e.printStackTrace(); // Log the error!
+            e.printStackTrace();
             response.setStatus(500); // Internal Server Error
             jsonResponse.addProperty("status", "error");
             jsonResponse.addProperty("message", "Error inesperado: " + e.getMessage());

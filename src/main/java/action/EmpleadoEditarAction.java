@@ -18,11 +18,28 @@ public class EmpleadoEditarAction implements Action {
         PrintWriter out = response.getWriter();
         JsonObject jsonResponse = new JsonObject();
 
-        int id = Integer.parseInt(request.getParameter("id"));
+        // Log parameters
+        System.out.println("EmpleadoEditarAction - Parameters:");
+        System.out.println("  id: " + request.getParameter("id"));
+        System.out.println("  telefono: " + request.getParameter("telefono"));
+        System.out.println("  direccion: " + request.getParameter("direccion"));
+
+        int id;
         String telefono = request.getParameter("telefono");
         String direccion = request.getParameter("direccion");
 
+        // Validation
+        if (telefono == null || direccion == null || request.getParameter("id") == null) {
+            response.setStatus(400); // Bad Request
+            jsonResponse.addProperty("status", "error");
+            jsonResponse.addProperty("message", "Faltan datos para la actualización.");
+            out.print(jsonResponse.toString());
+            out.flush();
+            return;
+        }
+
         try {
+            id = Integer.parseInt(request.getParameter("id"));  // Parse inside try-catch
             UsuarioDAO dao = new UsuarioDAO();
             boolean ok = dao.actualizarTelefonoYDireccion(id, telefono, direccion);
 
@@ -31,10 +48,16 @@ public class EmpleadoEditarAction implements Action {
                 jsonResponse.addProperty("message", "Datos actualizados correctamente");
                 response.setStatus(200); // OK
             } else {
+                response.setStatus(500); // Internal Server Error (or could be 404 if ID not found)
                 jsonResponse.addProperty("status", "error");
                 jsonResponse.addProperty("message", "Error al actualizar los datos");
-                response.setStatus(500); // Internal Server Error
             }
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            response.setStatus(400); // Bad Request
+            jsonResponse.addProperty("status", "error");
+            jsonResponse.addProperty("message", "ID de usuario inválido.");
 
         } catch (SQLException e) {
             e.printStackTrace();
