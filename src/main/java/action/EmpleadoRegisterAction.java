@@ -25,20 +25,20 @@ public class EmpleadoRegisterAction implements Action {
         System.out.println("EmpleadoRegisterAction - Parameters:");
         System.out.println("  nombre: " + request.getParameter("nombre"));
         System.out.println("  email: " + request.getParameter("email"));
-        System.out.println("  contrasena: " + request.getParameter("contrasena"));
+        System.out.println("  contraseña: " + request.getParameter("contraseña"));
         System.out.println("  telefono: " + request.getParameter("telefono"));
         System.out.println("  direccion: " + request.getParameter("direccion"));
 
         String nombre = request.getParameter("nombre");
         String email = request.getParameter("email");
-        String contrasena = request.getParameter("contrasena");
+        String contraseña = request.getParameter("contraseña");
         String telefono = request.getParameter("telefono");
         String direccion = request.getParameter("direccion");
 
         // Validation (Basic - Expand as needed)
         if (nombre == null || nombre.trim().isEmpty() ||
                 email == null || email.trim().isEmpty() ||
-                contrasena == null || contrasena.trim().isEmpty()) {
+                contraseña == null || contraseña.trim().isEmpty()) {
             response.setStatus(400);  // Bad Request
             jsonResponse.addProperty("status", "error");
             jsonResponse.addProperty("message", "Nombre, email, y contraseña son obligatorios.");
@@ -49,12 +49,12 @@ public class EmpleadoRegisterAction implements Action {
 
 
         try {
-            String contrasenaEncriptada = CryptoUtils.encriptarContrasena(contrasena);
+            String contraseñaEncriptada = CryptoUtils.encriptarContrasena(contraseña);
 
             Usuario usuario = new Usuario();
             usuario.setNombre(nombre);
             usuario.setEmail(email);
-            usuario.setContrasena(contrasenaEncriptada);
+            usuario.setContrasena(contraseñaEncriptada);
             usuario.setTelefono(telefono);
             usuario.setDireccion(direccion);
             usuario.setFechaRegistro(LocalDateTime.now());
