@@ -54,6 +54,39 @@
             }
         }
 
+        // **AÑADIENDO LA FUNCIÓN agregarAlCarrito AQUÍ**
+        async function agregarAlCarrito(idProducto, categoria) {
+            try {
+                const response = await fetch("control?action=isUserLoggedIn");
+                const data = await response.json();
+
+                if (data.loggedIn) {
+                    const addToCartResponse = await fetch("control?action=addToCart", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        },
+                        body: `idProducto=${idProducto}&categoria=${categoria}`,
+                    });
+
+                    const addToCartResult = await addToCartResponse.json();
+
+                    if (addToCartResult.status === "ok") {
+                        window.location.href = addToCartResult.redirect;
+                    } else if (addToCartResult.status === "login_required") { // Manejar si AddToCartAction devuelve esto
+                        window.location.href = addToCartResult.redirect;
+                    } else {
+                        alert("Error al añadir al carrito: " + addToCartResult.message);
+                    }
+                } else {
+                    window.location.href = data.redirect;
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Error al procesar la solicitud.");
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', obtenerGuarniciones);
     </script>
 </head>

@@ -192,3 +192,33 @@ function actualizarRankingVisual(hamburguesa, usuarioActual, currentRating, rank
         if (sendButton) sendButton.disabled = false;
     }
 }
+
+// **AÑADE ESTA FUNCIÓN AQUÍ (o en un archivo JS común si la usas en otras páginas)**
+async function agregarAlCarrito(idProducto, tipo) {
+    try {
+        const response = await fetch('control?action=addToCart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                idProducto: idProducto,
+                tipo: tipo // Puedes usar esto si lo necesitas en el servidor
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'ok') {
+            alert('Producto añadido al carrito.');
+            window.location.href = data.redirect; // Redirige al carrito
+        } else if (data.status === 'login_required') {
+            window.location.href = data.redirect; // Redirige a la página de login
+        } else {
+            alert('Error al añadir el producto al carrito: ' + (data.message || ''));
+        }
+    } catch (error) {
+        console.error('Error al añadir al carrito:', error);
+        alert('Error inesperado al añadir al carrito.');
+    }
+}
