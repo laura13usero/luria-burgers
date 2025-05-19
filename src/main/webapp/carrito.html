@@ -62,11 +62,24 @@
     async function actualizarCantidad(index, cambio) {
         try {
             const res = await fetch(`/webapp-1.0-SNAPSHOT/control?action=actualizarCantidadCarrito&index=${index}&cambio=${cambio}`, {
-                method: 'POST'  // Usamos POST para modificar datos
+                method: 'POST'
             });
             if (!res.ok) throw new Error('Error al actualizar cantidad');
             const data = await res.json();
             if (data.status === 'ok') {
+                // Actualizar la cantidad en el HTML
+                const cantidadElement = document.getElementById(`cantidad-${index}`);
+                if (cantidadElement) {
+                    // Obtener la cantidad actual del elemento HTML
+                    let cantidadActual = parseInt(cantidadElement.textContent, 10);
+                    // Calcular la nueva cantidad
+                    let nuevaCantidad = cantidadActual + cambio;
+                    // Asegurarse de que la cantidad no sea menor que 1
+                    if (nuevaCantidad < 1) {
+                        nuevaCantidad = 1;
+                    }
+                    cantidadElement.textContent = nuevaCantidad;
+                }
                 cargarCarrito(); // Recargar el carrito para reflejar los cambios
             } else {
                 alert(data.message || 'Error desconocido al actualizar la cantidad.');
@@ -76,6 +89,7 @@
             alert('Error al comunicarse con el servidor.');
         }
     }
+
 
     async function eliminarProducto(index) {
         const res = await fetch(`/webapp-1.0-SNAPSHOT/control?action=eliminarProductoCarrito&index=${index}`);

@@ -11,8 +11,8 @@ import model.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.List;
+import java.sql.SQLException;
 
 public class ActualizarCantidadCarritoAction implements Action {
 
@@ -47,11 +47,13 @@ public class ActualizarCantidadCarritoAction implements Action {
             Producto producto = carrito.get(index);
             CompraDAO compraDAO = new CompraDAO();
 
-            boolean actualizado = compraDAO.actualizarCantidadProductoEnCarrito(usuario, producto.getId(), cambio);
+            // Pasar la HttpSession al método del DAO
+            boolean actualizado = compraDAO.actualizarCantidadProductoEnCarrito(usuario, producto.getId(), cambio, session);
 
             if (actualizado) {
                 json.addProperty("status", "ok");
                 json.addProperty("message", "Cantidad actualizada correctamente.");
+                json.addProperty("nuevaCantidad", producto.getCantidad());
                 out.print(json);
             } else {
                 json.addProperty("status", "error");

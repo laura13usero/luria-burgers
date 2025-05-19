@@ -1,10 +1,12 @@
 package dao;
 
+import jakarta.servlet.http.HttpSession;
 import model.Compra;
 import model.Producto;
 import model.Usuario;
 import util.MotorSQL;
 
+import javax.net.ssl.HandshakeCompletedEvent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
@@ -27,7 +29,7 @@ public class CompraDAO {
 
 
 
-    public boolean actualizarCantidadProductoEnCarrito(Usuario usuario, int idProducto, int cambio) throws SQLException {
+    public boolean actualizarCantidadProductoEnCarrito(Usuario usuario, int idProducto, int cambio, HttpSession session) throws SQLException {
         Compra compra = getCompraActivaPorUsuario(usuario);
         if (compra == null) {
             return false; // No hay compra activa
@@ -46,6 +48,18 @@ public class CompraDAO {
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
                 actualizarTotalCompra(compra.getIdCompra(), calcularTotalCompra(compra.getIdCompra())); // Recalcular total
+
+                // Actualizar la cantidad en la sesión
+                List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
+                if (carrito != null) {
+                    for (Producto p : carrito) {
+                        if (p.getId() == idProducto) {
+                            p.setCantidad(p.getCantidad() + cambio);
+                            break; // No es necesario seguir buscando
+                        }
+                    }
+                }
+
                 return true;
             } else {
                 return false;
