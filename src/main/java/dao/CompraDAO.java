@@ -333,14 +333,16 @@ public class CompraDAO {
                 producto.setNombre(rs.getString("nombre"));
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecio(rs.getDouble("precio"));
-                // Si la cantidad está en la tabla línea de compra
                 int cantidad = rs.getInt("cantidad");
-                producto.setCantidad(cantidad); // **Add this line!**
-                productos.add(producto);
-
+                producto.setCantidad(cantidad);
+                // Lógica INCORRECTA para agregar los productos al carrito
+                //for (int i = 0; i < cantidad; i++) {
+                //    productos.add(producto);
+                //}
+                productos.add(producto); // CORRECTO: Agregar el producto una vez
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Aquí debería usar un sistema de logging adecuado
+            e.printStackTrace();
         }
         return productos;
     }

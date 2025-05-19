@@ -26,38 +26,24 @@
 
 <script>
     async function cargarCarrito() {
-        try {
-            const res = await fetch('/webapp-1.0-SNAPSHOT/control?action=verCarrito');
-            if (!res.ok) throw new Error('No logueado');
+    try {
+        const res = await fetch('/webapp-1.0-SNAPSHOT/control?action=verCarrito');
+        if (!res.ok) throw new Error('No logueado');
 
-            const data = await res.json();
-            const lista = document.getElementById('listaCarrito');
-            lista.innerHTML = '';
+        const data = await res.json();
+        const lista = document.getElementById('listaCarrito');
+        lista.innerHTML = '';
 
-            if (!data.carrito || data.carrito.length === 0) {
-                lista.innerHTML = '<li>El carrito está vacío.</li>';
-                document.getElementById('total').textContent = '0.00';
-                return;
-            }
-
-            data.carrito.forEach((producto, index) => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <strong>${producto.nombre}</strong> - ${producto.precio.toFixed(2)} €
-                    <div class="quantity-controls">
-                        <button class="quantity-button" onclick="actualizarCantidad(${index}, -1)">-</button>
-                        <span id="cantidad-${index}">1</span>  <button class="quantity-button" onclick="actualizarCantidad(${index}, 1)">+</button>
-                    </div>
-                    <button onclick="eliminarProducto(${index})">Eliminar</button>
-                `;
-                lista.appendChild(li);
-            });
-
-            document.getElementById('total').textContent = data.total.toFixed(2);
-        } catch (err) {
-            window.location.href = 'necesitalogin.html';
+        if (!data.carrito || data.carrito.length === 0) {
+            lista.innerHTML = '<li>El carrito está vacío.</li>';
+            document.getElementById('total').textContent = '0.00';
+            return;
         }
-    }
+
+        data.carrito.forEach((producto, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <strong>${producto.nombre}</strong> - <span class="math-inline">\{producto\.precio\.toFixed\(2\)\} €
 
     async function actualizarCantidad(index, cambio) {
         try {

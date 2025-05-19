@@ -12,60 +12,51 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.math.BigDecimal; // Importa BigDecimal
 
 public class ViewCartAction implements Action {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
 
-        // Map para la respuesta JSON (lo usaremos si no redirigimos)
+        // Map para la respuesta JSON
         Map<String, Object> result = new HashMap<>();
 
         if (session == null || session.getAttribute("usuarioLogueado") == null) {
-            // Usuario no logueado:  ¡Redirigir!
             response.sendRedirect(request.getContextPath() + "/necesitalogin.html");
-            return; // Importante: detener la ejecución aquí
-
-            // Si por alguna razón *no* quieres redirigir, sino enviar JSON:
-            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            // result.put("error", "Usuario no logueado");
-            // String json = new Gson().toJson(result);
-            // response.setContentType("application/json");
-            // response.getWriter().write(json);
-            // return;
-
+            return;
         } else {
-            // Usuario logueado:  Mostrar el carrito (como antes)
             Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
             CompraDAO compraDAO = new CompraDAO();
             Compra compraActiva = compraDAO.getCompraActivaPorUsuario(usuario);
 
             List<Producto> carrito = null;
-            double total = 0.0;
+            BigDecimal total = BigDecimal.ZERO; // Usar BigDecimal para precisión
 
             if (compraActiva != null) {
                 carrito = compraDAO.obtenerProductosDeCompra(compraActiva.getIdCompra());
 
                 if (carrito != null) {
                     for (Producto p : carrito) {
-                        if (p != null) total += p.getPrecio();
+                        if (p != null) {
+                            total = total.add(BigDecimal.valueOf(p.getPrecio()).multiply(BigDecimal.valueOf(p.getCantidad()))); // Calcular total con cantidad
+                        }
                     }
                 }
 
                 session.setAttribute("carrito", carrito);
                 result.put("carrito", carrito);
-                result.put("total", total);
+                result.put("total", total.doubleValue()); // Convertir a double para la respuesta JSON
 
             } else {
-                carrito = List.of(); // Asegurarse de que no sea nulo
-                total = 0.0;
+                carrito = List.of();
                 result.put("carrito", carrito);
-                result.put("total", total);
+                result.put("total", total.doubleValue());
                 result.put("mensaje", "No hay compra activa");
             }
 
             String json = new Gson().toJson(result);
-            response.setContentType("application/json"); // Establecer el tipo de contenido antes de escribir
+            response.setContentType("application/json");
             response.getWriter().write(json);
         }
     }
