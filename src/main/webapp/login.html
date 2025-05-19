@@ -86,19 +86,13 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email, contrasena })
+                body: JSON.stringify({ email, contrasena, origen: "cliente" }) // Enviar el origen como "cliente"
             });
 
             const result = await response.json();
 
             if (result.status === 'ok') {
-                if (result.rol === 'admin') {
-                    window.location.href = '/webapp-1.0-SNAPSHOT/jsp/adminintranet.jsp';
-                } else if (result.rol === 'empleado') {
-                    window.location.href = '/webapp-1.0-SNAPSHOT/jsp/empleadointranet.jsp';
-                } else {
-                    window.location.href = '/webapp-1.0-SNAPSHOT/index.html'; // Redirigir a la página principal
-                }
+                window.location.href = '/webapp-1.0-SNAPSHOT/index.html'; // Redirigir a la página principal de clientes
             } else {
                 loginError.textContent = result.message;
                 loginError.style.display = 'block';
