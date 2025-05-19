@@ -56,11 +56,12 @@ public class EmpleadoRegisterAction implements Action {
             usuario.setEmail(email);
             usuario.setContrasena(contrasenaEncriptada);
             usuario.setTelefono(telefono);
+            usuario.setDireccion(direccion);
             usuario.setFechaRegistro(LocalDateTime.now());
             usuario.setRol("empleado");
 
             UsuarioDAO usuarioDAO = new UsuarioDAO();
-            usuarioDAO.agregarEmpleado(usuario);
+            usuarioDAO.agregarUsuario(usuario);  // Use agregarUsuario
 
             jsonResponse.addProperty("status", "ok");
             jsonResponse.addProperty("message", "Registro de empleado completado");

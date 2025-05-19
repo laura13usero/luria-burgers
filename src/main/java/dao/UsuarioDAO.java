@@ -39,7 +39,7 @@ public class UsuarioDAO {
                     String queryRol = "INSERT INTO usuariorol (id_usuario, id_rol) VALUES (?, ?)";
                     try (PreparedStatement stmtRol = connection.prepareStatement(queryRol)) {
                         stmtRol.setInt(1, idUsuario);
-                        stmtRol.setInt(2, 1);
+                        stmtRol.setInt(2, 3);  // Rol de empleado
                         stmtRol.executeUpdate();
                     }
                 } else {
@@ -68,7 +68,7 @@ public class UsuarioDAO {
                     String queryRol = "INSERT INTO usuariorol (id_usuario, id_rol) VALUES (?, ?)";
                     try (PreparedStatement stmtRol = connection.prepareStatement(queryRol)) {
                         stmtRol.setInt(1, idUsuario);
-                        stmtRol.setInt(2, 3);
+                        stmtRol.setInt(2, 3);  // Rol de empleado
                         stmtRol.executeUpdate();
                     }
                 } else {
@@ -97,7 +97,7 @@ public class UsuarioDAO {
 
         String query = "SELECT u.* FROM usuario u " +
                 "JOIN usuariorol ur ON u.id_usuario = ur.id_usuario " +
-                "WHERE ur.id_rol = ? AND u.activo = TRUE";
+                "WHERE ur.id_rol = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, rolId);
@@ -119,18 +119,18 @@ public class UsuarioDAO {
     }
 
     public boolean darDeBajaEmpleado(int idUsuario) throws SQLException {
-        String query = "UPDATE usuario SET activo = FALSE WHERE id_usuario = ?";
+        String query = "DELETE FROM usuario WHERE id_usuario = ?";  // Cambiado a DELETE
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, idUsuario);
             stmt.executeUpdate();
         }
-        return false;
+        return true; // Devuelve true si la eliminación fue exitosa
     }
 
     public Usuario buscarPorEmailYContrasena(String email, String contrasena) {
         Usuario u = null;
         String sql = "SELECT u.id_usuario, u.nombre, u.email, u.\"contraseña\", u.telefono, u.direccion, u.fecha_registro, r.id_rol " +
-                "FROM usuario u JOIN usuariorol r ON u.id_usuario = r.id_usuario WHERE u.email = ? AND u.\"contraseña\" = ?"; // Corregido
+                "FROM usuario u JOIN usuariorol r ON u.id_usuario = r.id_usuario WHERE u.email = ? AND u.\"contraseña\" = ?";
 
         // Encriptar la contraseña antes de hacer la consulta
         String contrasenaEncriptada = CryptoUtils.encriptarContrasena(contrasena);
@@ -167,7 +167,7 @@ public class UsuarioDAO {
     public Usuario buscarPorEmail(String email) {
         Usuario u = null;
         String sql = "SELECT u.id_usuario, u.nombre, u.email, u.\"contraseña\", u.telefono, u.direccion, u.fecha_registro, r.id_rol " +
-                "FROM usuario u JOIN usuariorol r ON u.id_usuario = r.id_usuario WHERE u.email = ?"; // Corregido
+                "FROM usuario u JOIN usuariorol r ON u.id_usuario = r.id_usuario WHERE u.email = ?";
 
         try (Connection con = MotorSQL.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -220,7 +220,7 @@ public class UsuarioDAO {
     public List<Usuario> obtenerTodos() {
         List<Usuario> usuarios = new ArrayList<>();
         String query = "SELECT u.id_usuario, u.nombre, u.email, u.\"contraseña\", u.telefono, u.direccion, u.fecha_registro, r.id_rol " +
-                "FROM usuario u JOIN usuariorol r ON u.id_usuario = r.id_usuario"; // Corregido
+                "FROM usuario u JOIN usuariorol r ON u.id_usuario = r.id_usuario";
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
