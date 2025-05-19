@@ -1,10 +1,33 @@
-<!-- src/main/webapp/index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Home Page</title>
+  <style>
+    body {
+      background-image: url('https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/index.png');
+      background-size: cover; /* Para que la imagen cubra todo el fondo */
+      background-repeat: no-repeat; /* Para evitar que la imagen se repita */
+      /* Opcional: Ajustar el color del texto si la imagen de fondo dificulta la lectura */
+      color: white; /* Por ejemplo, blanco */
+    }
+    /* Opcional: Puedes añadir estilos para otros elementos si es necesario para mejorar la legibilidad con el fondo */
+    h1 {
+      background-color: rgba(0, 0, 0, 0.5); /* Añade un fondo semitransparente al título */
+      padding: 10px;
+    }
+    button {
+      /* Puedes ajustar el estilo de los botones para que se vean bien con el fondo */
+      padding: 8px 15px;
+      margin-right: 5px;
+      border: none;
+      cursor: pointer;
+    }
+    button[style*="background-color: #333; color: #fff;"] {
+      /* Mantener el estilo específico del botón de Login Intranet */
+    }
+  </style>
 </head>
 <body>
 <h1>Welcome to the Home Page</h1>
