@@ -223,45 +223,18 @@ public class CompraDAO {
         Compra compra = getCompraActivaPorUsuario(usuario);
         if (compra == null) return false;
 
-        String selectQuery = "SELECT cantidad, subtotal FROM lineacompra WHERE id_compra = ? AND id_producto = ?";
+        String deleteQuery = "DELETE FROM lineacompra WHERE id_compra = ? AND id_producto = ?";
         try (Connection conn = MotorSQL.getConnection();
-             PreparedStatement stmtSelect = conn.prepareStatement(selectQuery)) {
+             PreparedStatement stmtDelete = conn.prepareStatement(deleteQuery)) {
 
-            stmtSelect.setInt(1, compra.getIdCompra());
-            stmtSelect.setInt(2, idProducto);
-            ResultSet rs = stmtSelect.executeQuery();
+            stmtDelete.setInt(1, compra.getIdCompra());
+            stmtDelete.setInt(2, idProducto);
+            stmtDelete.executeUpdate();
 
-            if (rs.next()) {
-                int cantidadActual = rs.getInt("cantidad");
-                BigDecimal subtotalActual = rs.getBigDecimal("subtotal");
-                BigDecimal precioUnitario = subtotalActual.divide(BigDecimal.valueOf(cantidadActual), 2, RoundingMode.HALF_UP);
+            // Actualizar el total de la compra tras eliminar
+            actualizarTotalCompra(compra.getIdCompra(), calcularTotalCompra(compra.getIdCompra()));
+            return true;
 
-
-                if (cantidadActual > 1) {
-                    int nuevaCantidad = cantidadActual - 1;
-                    BigDecimal nuevoSubtotal = subtotalActual.subtract(precioUnitario);
-
-                    String updateQuery = "UPDATE lineacompra SET cantidad = ?, subtotal = ? WHERE id_compra = ? AND id_producto = ?";
-                    try (PreparedStatement stmtUpdate = conn.prepareStatement(updateQuery)) {
-                        stmtUpdate.setInt(1, nuevaCantidad);
-                        stmtUpdate.setBigDecimal(2, nuevoSubtotal);
-                        stmtUpdate.setInt(3, compra.getIdCompra());
-                        stmtUpdate.setInt(4, idProducto);
-                        stmtUpdate.executeUpdate();
-                    }
-                } else {
-                    String deleteQuery = "DELETE FROM lineacompra WHERE id_compra = ? AND id_producto = ?";
-                    try (PreparedStatement stmtDelete = conn.prepareStatement(deleteQuery)) {
-                        stmtDelete.setInt(1, compra.getIdCompra());
-                        stmtDelete.setInt(2, idProducto);
-                        stmtDelete.executeUpdate();
-                    }
-                }
-
-                // Actualizar el total de la compra tras eliminar
-                actualizarTotalCompra(compra.getIdCompra(), calcularTotalCompra(compra.getIdCompra()));
-                return true;
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
