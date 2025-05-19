@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Acceso Denegado</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+        .container { background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); text-align: center; }
+        h1 { color: #dc3545; margin-bottom: 20px; }
+        p { color: #6c757d; margin-bottom: 30px; }
+        button { background-color: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; text-decoration: none; }
+        button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚫 Acceso Denegado</h1>
+        <p>No tienes permisos para acceder a esta página.</p>
+        <button id="volverInicio">Volver al inicio</button>
+    </div>
+
+    <script>
+        document.getElementById('volverInicio').addEventListener('click', () => {
+            window.location.href = '/webapp-1.0-SNAPSHOT/loginintranet.html'; // Ajusta la ruta si es diferente
+        });
+    </script>
+</body>
+</html>
