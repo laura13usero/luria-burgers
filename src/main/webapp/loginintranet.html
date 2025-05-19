@@ -31,7 +31,13 @@
         const result = await response.json();
 
         if (result.status === "ok") {
-            window.location.href = "/webapp-1.0-SNAPSHOT/adminintranet.html"; // Always redirect to admin
+            if (result.rol === "admin") {
+                window.location.href = "/webapp-1.0-SNAPSHOT/adminintranet.html";
+            } else if (result.rol === "empleado") {
+                window.location.href = "/webapp-1.0-SNAPSHOT/empleadointranet.html";
+            } else {
+                window.location.href = "/webapp-1.0-SNAPSHOT/accesoDenegado.html";
+            }
         } else {
             errorElem.textContent = result.message;
         }
