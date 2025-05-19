@@ -69,10 +69,10 @@
             background-color: #f2f2f2;
         }
         td form {
-            display: inline; /* Para que los botones estén en la misma línea */
+            display: inline;
         }
         td input[type="text"] {
-            width: 80px; /* Ajusta el ancho según necesites */
+            width: 80px;
         }
         .button-small {
             padding: 5px 10px;
@@ -148,7 +148,7 @@
             tablaMensajeDiv.style.display = 'block';
             setTimeout(() => {
                 tablaMensajeDiv.style.display = 'none';
-            }, 3000); // Ocultar después de 3 segundos
+            }, 3000);
         }
 
         // Evento para el formulario de registro
@@ -157,17 +157,22 @@
             const formData = new FormData(registroForm);
             formData.append('action', 'empleado-register');
 
-            fetch('control', { // Asegúrate de que tu Servlet "control" mapea a esta URL
+            fetch('control', {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 registroMensajeDiv.textContent = data.message || (data.status === 'ok' ? '✅ Registro completado' : '❌ Error al registrar');
                 registroMensajeDiv.className = `message ${data.status === 'ok' ? 'success' : 'error'}`;
                 if (data.status === 'ok') {
                     registroForm.reset();
-                    cargarEmpleados(); // Recargar la tabla después del registro
+                    cargarEmpleados();
                 }
             })
             .catch(error => {
@@ -179,10 +184,15 @@
 
         // Función para cargar la lista de empleados
         function cargarEmpleados() {
-            fetch('control?action=empleado-listado-json') // Utiliza la action que devuelve el JSON
-                .then(response => response.json())
+            fetch('control?action=empleado-listado-json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    employeeTableBody.innerHTML = ''; // Limpiar la tabla
+                    employeeTableBody.innerHTML = '';
                     if (data.status === 'ok' && data.empleados && data.empleados.length > 0) {
                         data.empleados.forEach(empleado => {
                             let row = employeeTableBody.insertRow();
@@ -217,7 +227,6 @@
 
                             let accionesCell = row.insertCell();
 
-                            // Formulario para editar
                             let editarForm = document.createElement('form');
                             editarForm.action = 'control';
                             editarForm.method = 'post';
@@ -239,22 +248,28 @@
 
                             editarForm.appendChild(inputActionEditar);
                             editarForm.appendChild(inputIdEditar);
-                            editarForm.appendChild(telefonoInput); // Incluir los campos editables en el formulario
+                            editarForm.appendChild(telefonoInput);
                             editarForm.appendChild(direccionInput);
                             editarForm.appendChild(editarButton);
 
                             editarForm.addEventListener('submit', function(e) {
                                 e.preventDefault();
                                 const formDataEditar = new FormData(editarForm);
+                                formDataEditar.append('id', empleado.idUsuario); // Ensure ID is sent
                                 fetch('control', {
                                     method: 'POST',
                                     body: formDataEditar
                                 })
-                                .then(response => response.json())
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error(`HTTP error! status: ${response.status}`);
+                                    }
+                                    return response.json();
+                                })
                                 .then(data => {
-                                    mostrarMensajeTabla(data.message || (data.status === 'editar-ok' ? '✅ Datos actualizados' : '❌ Error al editar'), data.status === 'editar-ok' ? 'success' : 'error');
-                                    if (data.status === 'editar-ok') {
-                                        cargarEmpleados(); // Recargar la tabla
+                                    mostrarMensajeTabla(data.message || (data.status === 'ok' ? '✅ Datos actualizados' : '❌ Error al editar'), data.status === 'ok' ? 'success' : 'error');
+                                    if (data.status === 'ok') {
+                                        cargarEmpleados();
                                     }
                                 })
                                 .catch(error => {
@@ -265,7 +280,6 @@
 
                             accionesCell.appendChild(editarForm);
 
-                            // Enlace para dar de baja
                             let bajaLink = document.createElement('a');
                             bajaLink.href = `control?action=empleado-baja&id=${empleado.idUsuario}`;
                             bajaLink.textContent = 'Dar de baja';
@@ -275,13 +289,18 @@
                             bajaLink.addEventListener('click', function(e) {
                                 e.preventDefault();
                                 fetch(bajaLink.href, {
-                                    method: 'POST' // O DELETE, según tu preferencia en el Servlet
+                                    method: 'POST' // Or DELETE, depending on your preference
                                 })
-                                .then(response => response.json())
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error(`HTTP error! status: ${response.status}`);
+                                    }
+                                    return response.json();
+                                })
                                 .then(data => {
-                                    mostrarMensajeTabla(data.message || (data.status === 'baja-ok' ? '✅ Empleado dado de baja' : '❌ Error al dar de baja'), data.status === 'baja-ok' ? 'success' : 'error');
-                                    if (data.status === 'baja-ok') {
-                                        cargarEmpleados(); // Recargar la tabla
+                                    mostrarMensajeTabla(data.message || (data.status === 'ok' ? '✅ Empleado dado de baja' : '❌ Error al dar de baja'), data.status === 'ok' ? 'success' : 'error');
+                                    if (data.status === 'ok') {
+                                        cargarEmpleados();
                                     }
                                 })
                                 .catch(error => {
@@ -299,10 +318,7 @@
                         cell.textContent = 'No hay empleados registrados todavía.';
                     }
                 })
-                .catch(error => {
-                    console.error('Error al cargar empleados:', error);
-                    mostrarMensajeTabla('❌ Error al cargar la lista de empleados', 'error');
-                });
+                .catch(error => console.error('Error al cargar empleados:', error));
         }
 
         // Cargar la lista de empleados al cargar la página

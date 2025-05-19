@@ -14,6 +14,7 @@ public class EmpleadoBajaAction implements Action {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         JsonObject jsonResponse = new JsonObject();
 
@@ -25,6 +26,7 @@ public class EmpleadoBajaAction implements Action {
             if (bajaExitosa) {
                 jsonResponse.addProperty("status", "ok");
                 jsonResponse.addProperty("message", "Empleado dado de baja correctamente");
+                response.setStatus(200); // OK
             } else {
                 jsonResponse.addProperty("status", "error");
                 jsonResponse.addProperty("message", "Error al dar de baja al empleado");
@@ -33,17 +35,19 @@ public class EmpleadoBajaAction implements Action {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            response.setStatus(500); // Internal Server Error
             jsonResponse.addProperty("status", "error");
             jsonResponse.addProperty("message", "Error al dar de baja al empleado: " + e.getMessage());
-            response.setStatus(500); // Internal Server Error
+
         } catch (Exception e) {
             e.printStackTrace();
+            response.setStatus(500); // Internal Server Error
             jsonResponse.addProperty("status", "error");
             jsonResponse.addProperty("message", "Error al dar de baja al empleado: " + e.getMessage());
-            response.setStatus(500); // Internal Server Error
-        }
 
-        out.print(jsonResponse.toString());
-        out.flush();
+        } finally {
+            out.print(jsonResponse.toString());
+            out.flush();
+        }
     }
 }

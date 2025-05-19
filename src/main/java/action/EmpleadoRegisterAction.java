@@ -17,10 +17,10 @@ public class EmpleadoRegisterAction implements Action {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8"); // Important for UTF-8 compatibility
         PrintWriter out = response.getWriter();
         JsonObject jsonResponse = new JsonObject();
 
-        // Obtener los datos del formulario
         String nombre = request.getParameter("nombre");
         String email = request.getParameter("email");
         String contrasena = request.getParameter("contrasena");
@@ -28,33 +28,38 @@ public class EmpleadoRegisterAction implements Action {
         String direccion = request.getParameter("direccion");
 
         try {
-            // Encriptar la contraseña
             String contrasenaEncriptada = CryptoUtils.encriptarContrasena(contrasena);
 
-            // Crear el usuario
             Usuario usuario = new Usuario();
             usuario.setNombre(nombre);
             usuario.setEmail(email);
             usuario.setContrasena(contrasenaEncriptada);
             usuario.setTelefono(telefono);
             usuario.setFechaRegistro(LocalDateTime.now());
-            usuario.setRol("empleado");  // Esto es solo informativo, no se usa en la inserción
+            usuario.setRol("empleado");
 
-            // Guardar en la base de datos
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             usuarioDAO.agregarEmpleado(usuario);
 
             jsonResponse.addProperty("status", "ok");
             jsonResponse.addProperty("message", "Registro de empleado completado");
+            response.setStatus(200); // OK
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            jsonResponse.addProperty("status", "error");
-            jsonResponse.addProperty("message", "Error al registrar el empleado: " + e.getMessage());
+            e.printStackTrace(); // Log the error!
             response.setStatus(500); // Internal Server Error
-        }
+            jsonResponse.addProperty("status", "error");
+            jsonResponse.addProperty("message", "Error de base de datos: " + e.getMessage());
 
-        out.print(jsonResponse.toString());
-        out.flush();
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the error!
+            response.setStatus(500); // Internal Server Error
+            jsonResponse.addProperty("status", "error");
+            jsonResponse.addProperty("message", "Error inesperado: " + e.getMessage());
+
+        } finally {
+            out.print(jsonResponse.toString());
+            out.flush();
+        }
     }
 }
