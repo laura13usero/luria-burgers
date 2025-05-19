@@ -9,6 +9,7 @@ public class ActionFactory {
             case "login" -> new UserLoginAction();
             case "logout" -> new UserLogoutAction();
             case "usuario-listado" -> new UsuarioListadoAction();
+            case "empleado-listado-json" -> new UsuarioListadoAction();
             case "hamburguesas" -> new HamburguesasAction();
             case "bebidas" -> new BebidasAction();
             case "postres" -> new PostreAction();
