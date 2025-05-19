@@ -6,7 +6,6 @@ import model.Producto;
 import model.Usuario;
 import util.MotorSQL;
 
-import javax.net.ssl.HandshakeCompletedEvent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
@@ -24,47 +23,6 @@ public class CompraDAO {
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, idUsuario);
             return ps.executeUpdate() > 0;
-        }
-    }
-
-
-
-    public boolean actualizarCantidadProductoEnCarrito(Usuario usuario, int idProducto, int cambio, HttpSession session) throws SQLException {
-        Compra compra = getCompraActivaPorUsuario(usuario);
-        if (compra == null) {
-            return false; // No hay compra activa
-        }
-
-        String sql = "UPDATE lineacompra SET cantidad = cantidad + ?, subtotal = subtotal + (? * (subtotal / cantidad)) WHERE id_compra = ? AND id_producto = ?";
-
-        try (Connection conn = MotorSQL.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, cambio);
-            stmt.setBigDecimal(2, BigDecimal.valueOf(cambio));
-            stmt.setInt(3, compra.getIdCompra());
-            stmt.setInt(4, idProducto);
-
-            int rowsUpdated = stmt.executeUpdate();
-            if (rowsUpdated > 0) {
-                actualizarTotalCompra(compra.getIdCompra(), calcularTotalCompra(compra.getIdCompra())); // Recalcular total
-
-                // Actualizar la cantidad en la sesión
-                List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
-                if (carrito != null) {
-                    for (Producto p : carrito) {
-                        if (p.getId() == idProducto) {
-                            p.setCantidad(p.getCantidad() + cambio);
-                            break; // No es necesario seguir buscando
-                        }
-                    }
-                }
-
-                return true;
-            } else {
-                return false;
-            }
-
         }
     }
 
@@ -118,8 +76,6 @@ public class CompraDAO {
 
         return compras;
     }
-
-
 
 
     // Método para crear una nueva compra pendiente
@@ -231,7 +187,6 @@ public class CompraDAO {
     }
 
 
-
     // Método para añadir una línea de compra (producto) al carrito
     /*public boolean agregarLineaCompra(Usuario usuario, int idProducto, String tipo_producto, int cantidad, BigDecimal subtotal) {
         // Primero, obtenemos la compra pendiente del usuario
@@ -315,7 +270,6 @@ public class CompraDAO {
     }
 
 
-
     public List<Producto> obtenerProductosDeCompra(int idCompra) {
         List<Producto> productos = new ArrayList<>();
         String query = "SELECT p.id_producto, p.nombre, p.descripcion, p.precio, lc.cantidad " +
@@ -335,10 +289,6 @@ public class CompraDAO {
                 producto.setPrecio(rs.getDouble("precio"));
                 int cantidad = rs.getInt("cantidad");
                 producto.setCantidad(cantidad);
-                // Lógica INCORRECTA para agregar los productos al carrito
-                //for (int i = 0; i < cantidad; i++) {
-                //    productos.add(producto);
-                //}
                 productos.add(producto); // CORRECTO: Agregar el producto una vez
             }
         } catch (SQLException e) {
@@ -363,5 +313,42 @@ public class CompraDAO {
     }
 
 
-}
+    public boolean actualizarCantidadProductoEnCarrito(Usuario usuario, int idProducto, int cambio, HttpSession session) throws SQLException {
+        Compra compra = getCompraActivaPorUsuario(usuario);
+        if (compra == null) {
+            return false; // No hay compra activa
+        }
 
+        String sql = "UPDATE lineacompra SET cantidad = cantidad + ?, subtotal = subtotal + (? * (subtotal / cantidad)) WHERE id_compra = ? AND id_producto = ?";
+
+        try (Connection conn = MotorSQL.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, cambio);
+            stmt.setBigDecimal(2, BigDecimal.valueOf(cambio));
+            stmt.setInt(3, compra.getIdCompra());
+            stmt.setInt(4, idProducto);
+
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                actualizarTotalCompra(compra.getIdCompra(), calcularTotalCompra(compra.getIdCompra())); // Recalcular total
+
+                // Actualizar la cantidad en la sesión
+                List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
+                if (carrito != null) {
+                    for (Producto p : carrito) {
+                        if (p.getId() == idProducto) {
+                            p.setCantidad(p.getCantidad() + cambio);
+                            break; // No es necesario seguir buscando
+                        }
+                    }
+                }
+
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+    }
+}
