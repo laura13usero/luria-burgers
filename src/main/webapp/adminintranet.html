@@ -23,7 +23,7 @@
 <p>Accede a las funcionalidades administrativas:</p>
 <ul id="adminFuncionalidades">
     <li>
-        <button onclick="enviarAccion('usuario-listado')">Gestionar Plantilla</button>
+        <button onclick="redirigirRegistrarEmpleado()">Gestionar Plantilla</button>
     </li>
     <li>
         <button onclick="enviarAccion('pedidos-completados')">Ver Pedidos Completados</button>
@@ -63,6 +63,10 @@
 
     function enviarAccion(action) {
         window.location.href = `/webapp-1.0-SNAPSHOT/control?action=${action}`;
+    }
+
+    function redirigirRegistrarEmpleado() {
+        window.location.href = 'registrarEmpleado.html';
     }
 
     document.getElementById('logoutForm').addEventListener('submit', async (event) => {
