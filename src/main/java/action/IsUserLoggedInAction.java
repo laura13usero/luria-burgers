@@ -21,6 +21,7 @@ public class IsUserLoggedInAction implements Action {
             json.addProperty("loggedIn", true);
         } else {
             json.addProperty("loggedIn", false);
+            json.addProperty("redirect", request.getContextPath() + "/necesitalogin.html");
         }
 
         out.print(json);
