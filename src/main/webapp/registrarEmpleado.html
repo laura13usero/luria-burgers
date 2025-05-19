@@ -3,74 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Empleado</title>
+    <title>Registro y Gestión de Empleados</title>
     <style>
         body {
-        font-family: Arial, sans-serif;
+            font-family: Arial, sans-serif;
         }
-        form {
-        width: 400px;
-        margin: 20px auto;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+        form#registroForm {
+            width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
         label {
-        display: block;
-        margin-bottom: 5px;
+            display: block;
+            margin-bottom: 5px;
         }
         input[type="text"],
         input[type="email"],
         input[type="password"] {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        box-sizing: border-box; /* Ensures padding is included in the element's total width */
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
         }
         button {
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
         }
         button:hover {
-        background-color: #3e8e41;
+            background-color: #3e8e41;
         }
         .message {
-        margin-top: 10px;
-        padding: 10px;
-        border-radius: 4px;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
         }
         .success {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
         }
         .error {
-        background-color: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
         table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
         th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
         }
         th {
-        background-color: #f2f2f2;
+            background-color: #f2f2f2;
+        }
+        td form {
+            display: inline; /* Para que los botones estén en la misma línea */
+        }
+        td input[type="text"] {
+            width: 80px; /* Ajusta el ancho según necesites */
+        }
+        .button-small {
+            padding: 5px 10px;
+            font-size: 0.9em;
+            margin-right: 5px;
+        }
+        .baja-button {
+            background-color: #f44336;
+        }
+        .baja-button:hover {
+            background-color: #d32f2f;
         }
     </style>
 </head>
 <body>
+
+<h2>Registrar nuevo empleado</h2>
 
 <form id="registroForm">
     <label for="nombre">Nombre:</label>
@@ -88,79 +107,207 @@
     <label for="direccion">Dirección:</label>
     <input type="text" id="direccion" name="direccion"><br><br>
 
-    <button type="submit">Registrar Empleado</button>
-    <div id="mensaje" class="message"></div>
+    <button type="submit" class="button-small">Registrar Empleado</button>
+    <div id="registroMensaje" class="message"></div>
 </form>
 
 <h2>Lista de Empleados</h2>
 <table id="employeeTable">
     <thead>
     <tr>
+        <th>ID</th>
         <th>Nombre</th>
         <th>Email</th>
         <th>Teléfono</th>
         <th>Dirección</th>
+        <th>Fecha Registro</th>
+        <th>Acciones</th>
     </tr>
     </thead>
     <tbody>
     </tbody>
 </table>
 
+<div id="tablaMensaje" class="message" style="display:none;"></div>
+
+<form action="<%= request.getContextPath() %>/jsp/adminintranet.jsp" method="get" style="margin-top: 20px;">
+    <button type="submit" class="button-small">Volver al panel de administración</button>
+</form>
+
 <script>
-    document.getElementById('registroForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Evita la recarga de la página
+    document.addEventListener('DOMContentLoaded', function() {
+        const registroForm = document.getElementById('registroForm');
+        const employeeTableBody = document.getElementById('employeeTable').getElementsByTagName('tbody')[0];
+        const registroMensajeDiv = document.getElementById('registroMensaje');
+        const tablaMensajeDiv = document.getElementById('tablaMensaje');
 
-    const form = event.target;
-    const formData = new FormData(form);
+        // Función para mostrar mensajes en la tabla
+        function mostrarMensajeTabla(mensaje, tipo) {
+            tablaMensajeDiv.textContent = mensaje;
+            tablaMensajeDiv.className = `message ${tipo}`;
+            tablaMensajeDiv.style.display = 'block';
+            setTimeout(() => {
+                tablaMensajeDiv.style.display = 'none';
+            }, 3000); // Ocultar después de 3 segundos
+        }
 
-    fetch('EmpleadoRegisterAction', { // Asegúrate de que esta URL es correcta
-    method: 'POST',
-    body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-    const mensajeDiv = document.getElementById('mensaje');
-    mensajeDiv.textContent = data.message;
-    mensajeDiv.className = data.status === 'ok' ? 'message success' : 'message error';
+        // Evento para el formulario de registro
+        registroForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(registroForm);
+            formData.append('action', 'empleado-register');
 
-    if (data.status === 'ok') {
-    form.reset(); // Limpia el formulario
-    actualizarTablaEmpleados(); // Llama a la función para actualizar la tabla
-    }
-    })
-    .catch(error => {
-    console.error('Error:', error);
-    const mensajeDiv = document.getElementById('mensaje');
-    mensajeDiv.textContent = 'Error al registrar el empleado.';
-    mensajeDiv.className = 'message error';
+            fetch('control', { // Asegúrate de que tu Servlet "control" mapea a esta URL
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                registroMensajeDiv.textContent = data.message || (data.status === 'ok' ? '✅ Registro completado' : '❌ Error al registrar');
+                registroMensajeDiv.className = `message ${data.status === 'ok' ? 'success' : 'error'}`;
+                if (data.status === 'ok') {
+                    registroForm.reset();
+                    cargarEmpleados(); // Recargar la tabla después del registro
+                }
+            })
+            .catch(error => {
+                console.error('Error al registrar:', error);
+                registroMensajeDiv.textContent = '❌ Error al registrar el empleado.';
+                registroMensajeDiv.className = 'message error';
+            });
+        });
+
+        // Función para cargar la lista de empleados
+        function cargarEmpleados() {
+            fetch('control?action=empleado-listado-json') // Utiliza la action que devuelve el JSON
+                .then(response => response.json())
+                .then(data => {
+                    employeeTableBody.innerHTML = ''; // Limpiar la tabla
+                    if (data.status === 'ok' && data.empleados && data.empleados.length > 0) {
+                        data.empleados.forEach(empleado => {
+                            let row = employeeTableBody.insertRow();
+
+                            let idCell = row.insertCell();
+                            idCell.textContent = empleado.idUsuario;
+
+                            let nombreCell = row.insertCell();
+                            nombreCell.textContent = empleado.nombre;
+
+                            let emailCell = row.insertCell();
+                            emailCell.textContent = empleado.email;
+
+                            let telefonoCell = row.insertCell();
+                            let telefonoInput = document.createElement('input');
+                            telefonoInput.type = 'text';
+                            telefonoInput.name = 'telefono';
+                            telefonoInput.value = empleado.telefono || '';
+                            telefonoInput.size = '10';
+                            telefonoCell.appendChild(telefonoInput);
+
+                            let direccionCell = row.insertCell();
+                            let direccionInput = document.createElement('input');
+                            direccionInput.type = 'text';
+                            direccionInput.name = 'direccion';
+                            direccionInput.value = empleado.direccion || '';
+                            direccionInput.size = '15';
+                            direccionCell.appendChild(direccionInput);
+
+                            let fechaRegistroCell = row.insertCell();
+                            fechaRegistroCell.textContent = empleado.fechaRegistro;
+
+                            let accionesCell = row.insertCell();
+
+                            // Formulario para editar
+                            let editarForm = document.createElement('form');
+                            editarForm.action = 'control';
+                            editarForm.method = 'post';
+
+                            let inputActionEditar = document.createElement('input');
+                            inputActionEditar.type = 'hidden';
+                            inputActionEditar.name = 'action';
+                            inputActionEditar.value = 'empleado-editar';
+
+                            let inputIdEditar = document.createElement('input');
+                            inputIdEditar.type = 'hidden';
+                            inputIdEditar.name = 'id';
+                            inputIdEditar.value = empleado.idUsuario;
+
+                            let editarButton = document.createElement('button');
+                            editarButton.type = 'submit';
+                            editarButton.textContent = 'Guardar';
+                            editarButton.className = 'button-small';
+
+                            editarForm.appendChild(inputActionEditar);
+                            editarForm.appendChild(inputIdEditar);
+                            editarForm.appendChild(telefonoInput); // Incluir los campos editables en el formulario
+                            editarForm.appendChild(direccionInput);
+                            editarForm.appendChild(editarButton);
+
+                            editarForm.addEventListener('submit', function(e) {
+                                e.preventDefault();
+                                const formDataEditar = new FormData(editarForm);
+                                fetch('control', {
+                                    method: 'POST',
+                                    body: formDataEditar
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    mostrarMensajeTabla(data.message || (data.status === 'editar-ok' ? '✅ Datos actualizados' : '❌ Error al editar'), data.status === 'editar-ok' ? 'success' : 'error');
+                                    if (data.status === 'editar-ok') {
+                                        cargarEmpleados(); // Recargar la tabla
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error al editar:', error);
+                                    mostrarMensajeTabla('❌ Error al actualizar los datos', 'error');
+                                });
+                            });
+
+                            accionesCell.appendChild(editarForm);
+
+                            // Enlace para dar de baja
+                            let bajaLink = document.createElement('a');
+                            bajaLink.href = `control?action=empleado-baja&id=${empleado.idUsuario}`;
+                            bajaLink.textContent = 'Dar de baja';
+                            bajaLink.className = 'button-small baja-button';
+                            bajaLink.style.marginLeft = '5px';
+
+                            bajaLink.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                fetch(bajaLink.href, {
+                                    method: 'POST' // O DELETE, según tu preferencia en el Servlet
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    mostrarMensajeTabla(data.message || (data.status === 'baja-ok' ? '✅ Empleado dado de baja' : '❌ Error al dar de baja'), data.status === 'baja-ok' ? 'success' : 'error');
+                                    if (data.status === 'baja-ok') {
+                                        cargarEmpleados(); // Recargar la tabla
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error al dar de baja:', error);
+                                    mostrarMensajeTabla('❌ Error al dar de baja al empleado', 'error');
+                                });
+                            });
+
+                            accionesCell.appendChild(bajaLink);
+                        });
+                    } else {
+                        let row = employeeTableBody.insertRow();
+                        let cell = row.insertCell();
+                        cell.colSpan = 7;
+                        cell.textContent = 'No hay empleados registrados todavía.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al cargar empleados:', error);
+                    mostrarMensajeTabla('❌ Error al cargar la lista de empleados', 'error');
+                });
+        }
+
+        // Cargar la lista de empleados al cargar la página
+        cargarEmpleados();
     });
-    });
-
-    function actualizarTablaEmpleados() {
-    fetch('ObtenerEmpleadosAction') // Reemplaza con la URL correcta para obtener la lista de empleados
-    .then(response => response.json())
-    .then(empleados => {
-    const tabla = document.getElementById('employeeTable').getElementsByTagName('tbody')[0];
-    tabla.innerHTML = ''; // Limpia la tabla antes de añadir nuevos datos
-
-    empleados.forEach(empleado => {
-    let fila = tabla.insertRow();
-    let nombre = fila.insertCell(0);
-    let email = fila.insertCell(1);
-    let telefono = fila.insertCell(2);
-    let direccion = fila.insertCell(3);
-
-    nombre.textContent = empleado.nombre;
-    email.textContent = empleado.email;
-    telefono.textContent = empleado.telefono;
-    direccion.textContent = empleado.direccion;
-    });
-    })
-    .catch(error => console.error('Error al obtener empleados:', error));
-    }
-
-    // Cargar la tabla de empleados al cargar la página
-    window.onload = actualizarTablaEmpleados;
 </script>
 
 </body>
