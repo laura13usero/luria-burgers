@@ -17,12 +17,12 @@ public class ActionFactory {
             case "addToCart" -> new AddToCartAction();
             case "eliminarProductoCarrito" -> new EliminarProductoCarritoAction();
             case "verCarrito" -> new ViewCartAction();
-            case "empleado-register" -> new EmpleadoRegisterAction();
+            //case "empleado-register" -> new EmpleadoRegisterAction();
             case "pedidos-completados" -> new PedidosCompletadosAction();
             case "EnviarMensajeAnonimo" -> new EnviarMensajeAnonimoAction();
             case "ver-buzon" -> new VerBuzonAction();
-            case "empleado-baja" -> new EmpleadoBajaAction();
-            case "empleado-editar" -> new EmpleadoEditarAction();
+            //case "empleado-baja" -> new EmpleadoBajaAction();
+            //case "empleado-editar" -> new EmpleadoEditarAction();
             case "pagarConPaypal" -> new PagarConPaypalAction();
             case "filtrarHamburguesas" -> new FiltrarHamburguesasAction();
             case "getUsuarioLogueado" -> new GetUsuarioLogueadoAction();
