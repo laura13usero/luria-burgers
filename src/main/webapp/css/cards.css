@@ -281,7 +281,7 @@
         }
 
         .popup-content {
-            background: #fff;
+            background: #ffe2abb5;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -320,7 +320,7 @@
         /* Estilo para el botón "Ver Detalles" */
         .details-button {
             font-family: 'Montserrat';
-            background-color: #d05a31; /* Un verde amigable */
+            background-color: #d05a31;
             color: white;
             padding: 8px 12px;
             border: none;
