@@ -25,40 +25,38 @@
   async function cargarResumenCompra() {
       try {
           const response = await fetch('/webapp-1.0-SNAPSHOT/control?action=getResumenCompra');
-          if (!response.ok) throw new Error('Failed in loading cart details.');
+          if (!response.ok) throw new Error('Error al obtener el resumen.');
 
           const data = await response.json();
           const contenedor = document.getElementById('contenido-resumen');
 
           if (!data.carrito || data.carrito.length === 0) {
-              contenedor.innerHTML = '<p>Your cart is empty.</p>';
+              contenedor.innerHTML = '<p>El carrito está vacío.</p>';
               return;
           }
 
-          // Crear tabla de productos
-          let tablaHTML = `
-              <table border="1" cellpadding="5">
-                  <tr><th>Producto</th><th>Price</th></tr>
-          `;
+          let htmlContenido = ''; // Usaremos esta variable para construir el HTML
+          htmlContenido += '<h2>Detalles del Pedido</h2>'; // Puedes añadir un título si lo deseas
 
-          data.carrito.forEach(producto => {
-              tablaHTML += `
-                  <tr>
-                      <td>${producto.nombre}</td>
-                      <td>$${producto.precio.toFixed(2)}</td>
-                  </tr>
+          data.carrito.forEach(item => {
+              // Generamos cada línea del producto como un div con spans
+              htmlContenido += `
+                <div class="item">
+                  <span class="name">${item.nombre} x ${item.cantidad}</span>
+                  <span class="price">${item.precio.toFixed(2)} €</span>
+                </div>
               `;
           });
 
-          tablaHTML += `
-              <tr>
-                  <td><strong>Total</strong></td>
-                  <td><strong>$${data.total.toFixed(2)}</strong></td>
-              </tr>
-              </table>
+          // Añadimos el total al final
+          htmlContenido += `
+            <div class="item total">
+              <span class="name">Total a pagar</span>
+              <span class="price">${data.total.toFixed(2)} €</span>
+            </div>
           `;
 
-          contenedor.innerHTML = tablaHTML;
+          contenedor.innerHTML = htmlContenido; // Asignamos el HTML construido al contenedor
 
           // Generar botón PayPal dinámicamente con el total
           paypal.Buttons({
