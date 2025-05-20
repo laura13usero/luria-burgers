@@ -154,11 +154,10 @@ h1, h2 {
 }
 
 .quantity-button {
-    background-color: #f0f0f0;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    color: #333;
-    font-weight: bold;
+       background-color: #D05A31;
+       border-radius: 20px;
+       color: #333;
+       font-weight: bold;
 }
 
 .quantity-button:hover {
