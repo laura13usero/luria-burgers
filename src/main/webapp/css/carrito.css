@@ -187,7 +187,7 @@ hr {
 }
 
 .buttons-footer button {
-    background-color: #007bff;
+    background-color: #D05A31;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -198,13 +198,13 @@ hr {
 }
 
 .buttons-footer button:hover {
-    background-color: #0056b3;
+    background-color: #D05A31;
 }
 
 .buttons-footer button:last-child {
-    background-color: #6c757d;
+    background-color: #D05A31;
 }
 
 .buttons-footer button:last-child:hover {
-    background-color: #5a6268;
+    background-color: #D05A31;
 }
