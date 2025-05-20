@@ -131,14 +131,18 @@
 
                         // Construye la URL de la imagen de la card principal
                         const cardImagenSrc = `${s3BaseUrlCards}${postre.imagen_png}`;
+                        console.log("[DEBUG] Imagen de card principal:", cardImagenSrc); // DEBUG
 
                         // Normalizar el nombre del postre para la búsqueda en el mapa `detailImageUrls`
                         const normalizedPostreNombre = postre.nombre.toLowerCase().trim();
+                        console.log("[DEBUG] Nombre original del postre:", postre.nombre); // DEBUG
+                        console.log("[DEBUG] Nombre normalizado para búsqueda:", normalizedPostreNombre); // DEBUG
 
                         // Determinar la URL de la imagen de detalle para el popup
                         // Si existe una URL específica en `detailImageUrls` para el nombre normalizado, se usa esa.
-                        // De lo contrario, se usa la misma imagen de la card principal (como fallback).
+                        // De lo contrario, se usa la misma imagen de la card principal.
                         const popupImageSrc = detailImageUrls[normalizedPostreNombre] || cardImagenSrc;
+                        console.log("[DEBUG] URL de popup seleccionada:", popupImageSrc); // DEBUG
 
                         card.innerHTML = `
                             <img src="${cardImagenSrc}" alt="${postre.nombre}">
