@@ -87,23 +87,13 @@
     </style>
 
     <script>
-        // Mapeo de nombres de postres a URLs de imágenes de detalles en S3
-        // Las claves deben coincidir EXACTAMENTE con el nombre normalizado (toLowerCase().trim())
-        // que viene de tu backend.
-        // Las URLs son las imágenes de DETALLE que quieres mostrar en el popup.
-        const detailImageUrls = {
-            "caja mochi": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/caja_mochi.png",
-            "mochis": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/caja_mochi.png", // Added this line to handle "mochis" as a key
-            "cheesecake": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/cheesecake.png",
-            "dorayaki": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/dorayaki.png"
-        };
-
+        // Si quieres una URL fija para el popup, ya no necesitas este mapeo
+        // const detailImageUrls = { ... };
 
         // Función para abrir el popup
-        function openPopup(imageSrc) {
+        function openPopup() { // Ya no necesita un parámetro 'imageSrc'
             const popupOverlay = document.getElementById('popupOverlay');
-            const popupImage = document.getElementById('popupImage');
-            popupImage.src = imageSrc; // Establece la imagen correcta
+            // La imagen del popup ya tiene su src fijo en el HTML, no es necesario cambiarlo aquí
             popupOverlay.style.display = 'flex'; // Mostrar el popup
         }
 
@@ -111,7 +101,7 @@
         function closePopup() {
             const popupOverlay = document.getElementById('popupOverlay');
             popupOverlay.style.display = 'none'; // Ocultar el popup
-            document.getElementById('popupImage').src = ''; // Opcional: limpia la imagen para liberar memoria
+            // document.getElementById('popupImage').src = ''; // No es necesario limpiar si la URL es fija
         }
 
         async function obtenerPostres() {
@@ -122,7 +112,6 @@
                 container.innerHTML = '';
 
                 // URL base para las imágenes de las cards principales.
-                // Esta es la ruta donde se espera que estén las imágenes PNG de las cards (ej. cheesecake.png, mochi.png, etc.)
                 const s3BaseUrlCards = "https://luriaburgers.s3.us-east-1.amazonaws.com/menu/cards_postres_animacion/";
 
                 if (data.length > 0) {
@@ -130,23 +119,13 @@
                         const card = document.createElement('div');
                         card.classList.add('card');
 
-                        // Construye la URL de la imagen de la card principal
-                        // Asumimos que `postre.imagen_png` contiene el nombre del archivo PNG (ej. "cheesecake.png")
                         const cardImagenSrc = `${s3BaseUrlCards}${postre.imagen_png}`;
-
-                        // Normalizar el nombre del postre para la búsqueda en el mapa `detailImageUrls`
-                        const normalizedPostreNombre = postre.nombre.toLowerCase().trim();
-
-                        // Determinar la URL de la imagen de detalle para el popup
-                        // Si existe una URL específica en `detailImageUrls` para el nombre normalizado, se usa esa.
-                        // De lo contrario, se usa la misma imagen de la card principal.
-                        const popupImageSrc = detailImageUrls[normalizedPostreNombre] || cardImagenSrc;
 
                         card.innerHTML = `
                             <img src="${cardImagenSrc}" alt="${postre.nombre}">
                             <div class="card-info">
                                 <h2>${postre.nombre}</h2>
-                                <button class="details-button" onclick="openPopup('${popupImageSrc}')">Ver detalles</button>
+                                <button class="details-button" onclick="openPopup()">Ver detalles</button>
                                 <button class="add-to-cart-button" onclick="agregarAlCarrito(${postre.id}, 'postre')">
                                     Add to cart - S/ ${postre.precio.toFixed(2)}
                                 </button>
@@ -244,7 +223,7 @@
 <div id="popupOverlay" class="popup-overlay" onclick="closePopup()">
     <div class="popup-content" onclick="event.stopPropagation()">
         <button class="popup-close" onclick="closePopup()">✖</button>
-        <img id="popupImage" src="" alt="Detalles del Producto">
+        <img id="popupImage" src="https://luriaburgers.s3.us-east-1.amazonaws.com/menu/cards_postres_animacion/mochis.png" alt="Detalles del Producto">
     </div>
 </div>
 
