@@ -15,7 +15,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap');
 
         /* --- ESTILOS PARA EL POPUP --- */
-        /*.popup-overlay {
+        .popup-overlay {
             display: none; /* Oculto por defecto */
             position: fixed;
             top: 0;
@@ -81,7 +81,7 @@
 
         .details-button:hover {
             background-color: #4cae4c;
-        }*/
+        }
         /* --- FIN ESTILOS PARA EL POPUP --- */
 
     </style>
@@ -134,19 +134,14 @@
                         // Construye la URL de la imagen de la card principal
                         // Asumimos que `postre.imagen_png` contiene el nombre del archivo PNG (ej. "cheesecake.png")
                         const cardImagenSrc = `${s3BaseUrlCards}${postre.imagen_png}`;
-                        // console.log("[DEBUG] Imagen de card principal:", cardImagenSrc); // Para depuración
 
                         // Normalizar el nombre del postre para la búsqueda en el mapa `detailImageUrls`
                         const normalizedPostreNombre = postre.nombre.toLowerCase().trim();
-
-                        // console.log("[DEBUG] Nombre original del postre:", postre.nombre); // Para depuración
-                        // console.log("[DEBUG] Nombre normalizado para búsqueda:", normalizedPostreNombre); // Para depuración
 
                         // Determinar la URL de la imagen de detalle para el popup
                         // Si existe una URL específica en `detailImageUrls` para el nombre normalizado, se usa esa.
                         // De lo contrario, se usa la misma imagen de la card principal.
                         const popupImageSrc = detailImageUrls[normalizedPostreNombre] || cardImagenSrc;
-                        // console.log("[DEBUG] URL de popup seleccionada:", popupImageSrc); // Para depuración
 
                         card.innerHTML = `
                             <img src="${cardImagenSrc}" alt="${postre.nombre}">
