@@ -1,4 +1,4 @@
-// src/action/UserLogoutAction.java
+
 package action;
 
 import jakarta.servlet.ServletException;
@@ -10,23 +10,22 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserLogoutAction implements Action {
+public class CheckSessionAction implements Action {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false); // No crear nueva sesión si no existe
+        HttpSession session = request.getSession(false); // false: no crear nueva sesión si no existe
         Map<String, Object> resultado = new HashMap<>();
         Gson gson = new Gson();
 
-        if (session != null) {
-            session.invalidate(); // Invalida la sesión actual
-            resultado.put("status", "ok");
-            resultado.put("message", "Sesión cerrada exitosamente.");
+        if (session != null && session.getAttribute("usuarioLogueado") != null) {
+            resultado.put("loggedIn", true);
+            // Opcional: Si necesitas el rol en el frontend, asegúrate de que el usuario tenga un método getRol()
+            // resultado.put("rol", ((model.Usuario) session.getAttribute("usuarioLogueado")).getRol());
         } else {
-            resultado.put("status", "error");
-            resultado.put("message", "No hay sesión activa para cerrar.");
+            resultado.put("loggedIn", false);
         }
 
         response.setContentType("application/json");

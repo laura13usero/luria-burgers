@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Usuario</title>
+    <link rel="icon" href="assets/fondos_recursos/flor.png" type="image/png"> <style>
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        box-sizing: border-box;
+    }
+    .container {
+        background-color: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+    }
+    h1 {
+        color: #333;
+        font-family: 'Shippori Mincho B1', serif;
+    }
+    .user-info p {
+        font-size: 1.1em;
+        color: #555;
+        margin: 10px 0;
+        text-align: left;
+    }
+    .user-info p strong {
+        color: #333;
+    }
+    .user-info span {
+        font-weight: normal;
+        color: #666;
+    }
+    .button {
+        background-color: #d9534f;
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: background-color 0.3s;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 20px;
+    }
+    .button:hover {
+        background-color: #c9302c;
+    }
+    .nav-link {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #5cb85c;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+    .nav-link:hover{
+        background-color: #4cae4c;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Perfil de Usuario</h1>
+    <div class="user-info">
+        <p><strong>Nombre:</strong> <span id="userName">Cargando...</span></p>
+        <p><strong>Email:</strong> <span id="userEmail">Cargando...</span></p>
+        <p><strong>Rol:</strong> <span id="userRol">Cargando...</span></p>
+    </div>
+
+    <button id="logoutButton" class="button">Cerrar Sesión</button>
+    <a href="index.html" class="nav-link">Volver al Inicio</a> </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // URL de tu action para obtener datos del usuario
+        // Ajusta el context path si es necesario (ej. '/MiApp/getUserDataAction.do')
+        const userDataUrl = 'getUserDataAction.do';
+        const logoutUrl = 'userLogoutAction.do'; // URL de tu action de logout
+
+        fetch(userDataUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Respuesta de red no fue ok: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'ok') {
+                    document.getElementById('userName').textContent = data.nombre || 'No disponible';
+                    document.getElementById('userEmail').textContent = data.email || 'No disponible';
+                    document.getElementById('userRol').textContent = data.rol || 'No disponible';
+                } else {
+                    // Si no se pueden obtener los datos (ej. no logueado), redirigir a login
+                    console.warn('Error al obtener datos del usuario:', data.message);
+                    alert('No se pudo cargar la información del usuario. Serás redirigido al login.');
+                    window.location.href = 'login.html'; // Redirige a login.html
+                }
+            })
+            .catch(error => {
+                console.error('Error al solicitar datos del usuario:', error);
+                alert('Error de conexión. Serás redirigido al login.');
+                document.getElementById('userName').textContent = 'Error al cargar';
+                document.getElementById('userEmail').textContent = 'Error al cargar';
+                document.getElementById('userRol').textContent = 'Error al cargar';
+                // Podrías redirigir a login.html aquí también si es un error crítico
+                window.location.href = 'login.html';
+            });
+
+        const logoutButton = document.getElementById('logoutButton');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', function() {
+                fetch(logoutUrl, { method: 'POST' }) // Logout suele ser POST
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'ok') {
+                            alert('Sesión cerrada exitosamente.');
+                            window.location.href = 'login.html'; // Redirige a login.html después del logout
+                        } else {
+                            alert('Error al cerrar sesión.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al cerrar sesión:', error);
+                        alert('Error de conexión al cerrar sesión.');
+                    });
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

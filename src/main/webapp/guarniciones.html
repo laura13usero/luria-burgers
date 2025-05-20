@@ -257,6 +257,25 @@
     </div>
 </div>
 
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const response = await fetch('control?action=checkSession');
+            const data = await response.json();
+            if (!data.loggedIn && data.redirect) {
+                window.location.href = data.redirect;
+            } else if (!data.loggedIn) {
+                window.location.href = 'necesitalogin.html';
+            }
+        } catch (error) {
+            console.error('Error al verificar la sesión:', error);
+            window.location.href = 'necesitalogin.html';
+        }
+        obtenerGuarniciones(); // Asegúrate de tener una función similar a 'obtenerHamburguesas' para guarniciones
+    });
+</script>
+
 </body>
 
 </html>
