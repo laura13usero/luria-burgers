@@ -92,7 +92,7 @@
             const result = await response.json();
 
             if (result.status === 'ok') {
-                window.location.href = '/webapp-1.0-SNAPSHOT/index.html'; // Redirigir a la página principal de clientes
+                window.location.href = '/webapp-1.0-SNAPSHOT/hamburguesas.html'; // Redirigir a la página principal de clientes
             } else {
                 loginError.textContent = result.message;
                 loginError.style.display = 'block';
