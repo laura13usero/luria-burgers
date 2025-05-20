@@ -130,7 +130,7 @@ public class CompraDAO {
     }
 
     // Método para añadir o actualizar una línea de compra (producto) en el carrito
-    public boolean agregarLineaCompra(Usuario usuario, int idProducto, String tipo_producto, int cantidad, BigDecimal subtotal) {
+    public boolean agregarLineaCompra(Usuario usuario, int idProducto, String tipo_producto, int cantidad, BigDecimal precioUnitario) { // Changed subtotal to precioUnitario
         Compra compra = getCompraActivaPorUsuario(usuario);
         if (compra == null) {
             compra = crearCompra(usuario);
@@ -138,7 +138,7 @@ public class CompraDAO {
 
         if (compra == null) return false;
 
-        String checkQuery = "SELECT cantidad, subtotal FROM lineacompra WHERE id_compra = ? AND id_producto = ?";
+        String checkQuery = "SELECT cantidad FROM lineacompra WHERE id_compra = ? AND id_producto = ?";
         try (Connection connection = MotorSQL.getConnection();
              PreparedStatement stmtCheck = connection.prepareStatement(checkQuery)) {
 
@@ -148,7 +148,8 @@ public class CompraDAO {
 
             if (rs.next()) {
                 int nuevaCantidad = rs.getInt("cantidad") + cantidad;
-                BigDecimal nuevoSubtotal = rs.getBigDecimal("subtotal").add(subtotal);
+                // Recalculate subtotal based on unit price and new quantity
+                BigDecimal nuevoSubtotal = precioUnitario.multiply(BigDecimal.valueOf(nuevaCantidad));
 
                 String updateQuery = "UPDATE lineacompra SET cantidad = ?, subtotal = ? WHERE id_compra = ? AND id_producto = ?";
                 try (PreparedStatement stmtUpdate = connection.prepareStatement(updateQuery)) {
@@ -164,13 +165,15 @@ public class CompraDAO {
                     }
                 }
             } else {
+                // For new insertions, subtotal is unit price * quantity
+                BigDecimal subtotalInitial = precioUnitario.multiply(BigDecimal.valueOf(cantidad));
                 String insertQuery = "INSERT INTO lineacompra (id_compra, tipo_producto, id_producto, cantidad, subtotal) VALUES (?, ?, ?, ?, ?)";
                 try (PreparedStatement stmtInsert = connection.prepareStatement(insertQuery)) {
                     stmtInsert.setInt(1, compra.getIdCompra());
                     stmtInsert.setString(2, tipo_producto);
                     stmtInsert.setInt(3, idProducto);
                     stmtInsert.setInt(4, cantidad);
-                    stmtInsert.setBigDecimal(5, subtotal);
+                    stmtInsert.setBigDecimal(5, subtotalInitial); // Use calculated subtotal
 
                     int rowsAffected = stmtInsert.executeUpdate();
                     if (rowsAffected > 0) {
@@ -186,38 +189,6 @@ public class CompraDAO {
         return false;
     }
 
-
-    // Método para añadir una línea de compra (producto) al carrito
-    /*public boolean agregarLineaCompra(Usuario usuario, int idProducto, String tipo_producto, int cantidad, BigDecimal subtotal) {
-        // Primero, obtenemos la compra pendiente del usuario
-        Compra compra = getCompraActivaPorUsuario(usuario);
-        if (compra == null) {
-            // Si no existe una compra pendiente, creamos una nueva
-            compra = crearCompra(usuario);
-        }
-
-        if (compra == null) {
-            return false;  // Si no pudimos crear la compra, devolvemos false
-        }
-
-        // Insertamos la línea de compra
-        String query = "INSERT INTO lineacompra (id_compra, tipo_producto, id_producto, cantidad, subtotal) VALUES (?, ?, ?, ?, ?)";
-        try (Connection connection = MotorSQL.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
-
-            stmt.setInt(1, compra.getIdCompra());  // Usamos el id_compra de la compra recién creada o existente
-            stmt.setString(2, tipo_producto);
-            stmt.setInt(3, idProducto);
-            stmt.setInt(4, cantidad);
-            stmt.setBigDecimal(5, subtotal);  // Usamos BigDecimal para el subtotal
-
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }*/
 
     public boolean eliminarLineaCompra(Usuario usuario, int idProducto) {
         Compra compra = getCompraActivaPorUsuario(usuario);
@@ -292,17 +263,42 @@ public class CompraDAO {
             return false; // No hay compra activa
         }
 
-        String sql = "UPDATE lineacompra SET cantidad = cantidad + ?, subtotal = subtotal + (? * (subtotal / cantidad)) WHERE id_compra = ? AND id_producto = ?";
+        // Get the current quantity and unit price from the database for the specific product
+        String getProductDetailsSql = "SELECT lc.cantidad, p.precio FROM lineacompra lc JOIN Productos p ON lc.id_producto = p.id_producto WHERE lc.id_compra = ? AND lc.id_producto = ?";
+        int currentQuantity = 0;
+        BigDecimal unitPrice = BigDecimal.ZERO;
 
         try (Connection conn = MotorSQL.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmtGetDetails = conn.prepareStatement(getProductDetailsSql)) {
+            stmtGetDetails.setInt(1, compra.getIdCompra());
+            stmtGetDetails.setInt(2, idProducto);
+            ResultSet rs = stmtGetDetails.executeQuery();
+            if (rs.next()) {
+                currentQuantity = rs.getInt("cantidad");
+                unitPrice = BigDecimal.valueOf(rs.getDouble("precio"));
+            } else {
+                return false; // Product not found in lineacompra
+            }
+        }
 
-            stmt.setInt(1, cambio);
-            stmt.setBigDecimal(2, BigDecimal.valueOf(cambio));
-            stmt.setInt(3, compra.getIdCompra());
-            stmt.setInt(4, idProducto);
+        int newQuantity = currentQuantity + cambio;
+        if (newQuantity < 1) { // Ensure quantity doesn't go below 1
+            newQuantity = 1;
+        }
 
-            int rowsUpdated = stmt.executeUpdate();
+        BigDecimal newSubtotal = unitPrice.multiply(BigDecimal.valueOf(newQuantity));
+
+        String updateSql = "UPDATE lineacompra SET cantidad = ?, subtotal = ? WHERE id_compra = ? AND id_producto = ?";
+
+        try (Connection conn = MotorSQL.getConnection();
+             PreparedStatement stmtUpdate = conn.prepareStatement(updateSql)) {
+
+            stmtUpdate.setInt(1, newQuantity);
+            stmtUpdate.setBigDecimal(2, newSubtotal);
+            stmtUpdate.setInt(3, compra.getIdCompra());
+            stmtUpdate.setInt(4, idProducto);
+
+            int rowsUpdated = stmtUpdate.executeUpdate();
             if (rowsUpdated > 0) {
                 actualizarTotalCompra(compra.getIdCompra(), calcularTotalCompra(compra.getIdCompra())); // Recalcular total
 
@@ -311,17 +307,15 @@ public class CompraDAO {
                 if (carrito != null) {
                     for (Producto p : carrito) {
                         if (p.getId() == idProducto) {
-                            p.setCantidad(p.getCantidad() + cambio);
-                            break; // No es necesario seguir buscando
+                            p.setCantidad(newQuantity); // Update with the new calculated quantity
+                            break;
                         }
                     }
                 }
-
                 return true;
             } else {
                 return false;
             }
-
         }
     }
 }
