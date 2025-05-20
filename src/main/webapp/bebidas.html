@@ -6,39 +6,143 @@
     <title>Luría | Nuestras Bebidas</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/home.css"> {/* Considera si este CSS también usa imágenes locales */}
-    <link rel="stylesheet" href="css/cards.css"> {/* Considera si este CSS también usa imágenes locales */}
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/cards.css">
     <link rel="icon" href="https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/flor.png" type="image/png">
-
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap');
+
+        /* Estilos para el Popup */
+        .popup-overlay {
+            display: none; /* Oculto por defecto */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7); /* Fondo oscuro semitransparente */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Asegura que esté por encima de todo */
+        }
+
+        .popup-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: auto; /* Para scroll si la imagen es muy grande */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .popup-content img {
+            max-width: 100%;
+            max-height: 80vh; /* Máximo 80% de la altura de la ventana */
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+
+        .popup-close:hover {
+            color: #D05A31;
+        }
+
+        /* Estilo para el botón "Ver Detalles" */
+        .details-button {
+            background-color: #5cb85c; /* Un verde amigable */
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+            width: 100%; /* Para que ocupe todo el ancho disponible */
+        }
+
+        .details-button:hover {
+            background-color: #4cae4c;
+        }
     </style>
 
     <script>
+        // Mapeo de nombres de bebidas a URLs de imágenes de detalles en S3
+        const detailImageUrls = {
+            "Iced Hojicha": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/iced_hojicha.png",
+            "Matcha Limonada": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/matcha_limonada.png",
+            "Mojito Prueba": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/mojito_prueba.png",
+            "Ramune Uva": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/ramune_uva.png",
+            "Yuzu Soda": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/yuzu_soda.png"
+            // Añade aquí más mapeos si tienes otras bebidas que quieres con popup de detalle
+            // "Nombre de la bebida como viene del backend": "URL_COMPLETA_DE_LA_IMAGEN_DE_DETALLE_EN_S3.png"
+        };
+
+
+        // Función para abrir el popup
+        function openPopup(imageSrc) {
+            const popupOverlay = document.getElementById('popupOverlay');
+            const popupImage = document.getElementById('popupImage');
+            popupImage.src = imageSrc; // Establece la imagen correcta
+            popupOverlay.style.display = 'flex'; // Mostrar el popup
+        }
+
+        // Función para cerrar el popup
+        function closePopup() {
+            const popupOverlay = document.getElementById('popupOverlay');
+            popupOverlay.style.display = 'none'; // Ocultar el popup
+            document.getElementById('popupImage').src = ''; // Opcional: limpia la imagen para liberar memoria
+        }
+
         async function obtenerBebidas() {
           try {
-            const response = await fetch("control?action=getBebidas"); // Esta llamada se mantiene igual
+            const response = await fetch("control?action=getBebidas");
             const data = await response.json();
             const container = document.querySelector('.cards-container');
             container.innerHTML = '';
 
-            const s3BaseUrl = "https://luriaburgers.s3.us-east-1.amazonaws.com/";
+            const s3BaseUrlCards = "https://luriaburgers.s3.us-east-1.amazonaws.com/menu/cards_bebidas_animacion/"; // URL para las imágenes de las cards
+            const s3BaseUrlDetails = "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/"; // URL para las imágenes de detalle
 
             if (data.length > 0) {
               data.forEach(bebida => {
                 const card = document.createElement('div');
                 card.classList.add('card');
 
-                // Asumiendo que 'bebida.imagen_png' solo contiene el nombre del archivo, ej: "cocacola.png"
-                // y que en tu S3 están dentro de "menu/cards_bebidas_animacion/"
-                const imagenSrc = `${s3BaseUrl}menu/cards_bebidas_animacion/${bebida.imagen_png}`;
-                console.log("Intentando cargar imagen desde S3:", imagenSrc);
+                // Imagen para la card principal
+                const cardImagenSrc = `${s3BaseUrlCards}${bebida.imagen_png}`;
+                console.log("Intentando cargar imagen de card desde S3:", cardImagenSrc);
+
+                // Determinar la URL de la imagen de detalle para el popup
+                // Priorizamos la URL de la lista 'detailImageUrls' si existe un mapeo para el nombre de la bebida
+                const popupImageSrc = detailImageUrls[bebida.nombre] || cardImagenSrc;
+                // Si no se encuentra en detailImageUrls, usamos la misma que para la card principal.
+                // Si tu backend te da directamente la URL de detalle, puedes usar: bebida.url_imagen_detalle_popup
+                // si tu backend te da solo el nombre del archivo para la ruta de detalle: `${s3BaseUrlDetails}${bebida.imagen_detalle_png}`
+
 
                 card.innerHTML = `
-                  <img src="${imagenSrc}" alt="${bebida.nombre}">
+                  <img src="${cardImagenSrc}" alt="${bebida.nombre}">
                   <div class="card-info">
                     <h2>${bebida.nombre}</h2>
+                    <button class="details-button" onclick="openPopup('${popupImageSrc}')">Ver detalles</button>
                     <button class="add-to-cart-button" onclick="agregarAlCarrito(${bebida.id}, 'bebida')">
                       Add to cart - S/ ${bebida.precio.toFixed(2)}
                     </button>
@@ -55,7 +159,6 @@
           }
         }
 
-        // **AÑADIENDO LA FUNCIÓN agregarAlCarrito AQUÍ**
         async function agregarAlCarrito(idProducto, categoria) {
           try {
             const response = await fetch("control?action=isUserLoggedIn");
@@ -74,7 +177,7 @@
 
               if (addToCartResult.status === "ok") {
                 window.location.href = addToCartResult.redirect;
-              } else if (addToCartResult.status === "login_required") { // Manejar si AddToCartAction devuelve esto
+              } else if (addToCartResult.status === "login_required") {
                 window.location.href = addToCartResult.redirect;
               }
               else {
@@ -88,7 +191,6 @@
             alert("Error al procesar la solicitud.");
           }
         }
-
 
         document.addEventListener('DOMContentLoaded', obtenerBebidas);
     </script>
@@ -122,6 +224,14 @@
 
 <div class="cards-wrapper">
     <div class="cards-container">
+    </div>
+</div>
+
+{/* Estructura del Popup (fuera del contenedor de cards) */}
+<div id="popupOverlay" class="popup-overlay" onclick="closePopup()">
+    <div class="popup-content" onclick="event.stopPropagation()">
+        <button class="popup-close" onclick="closePopup()">✖</button>
+        <img id="popupImage" src="" alt="Detalles del Producto">
     </div>
 </div>
 
