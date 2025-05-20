@@ -25,18 +25,17 @@
   async function cargarResumenCompra() {
       try {
           const response = await fetch('/webapp-1.0-SNAPSHOT/control?action=getResumenCompra');
-          if (!response.ok) throw new Error('Error al obtener el resumen.');
+          if (!response.ok) throw new Error('Failed in loading cart details. ');
 
           const data = await response.json();
           const contenedor = document.getElementById('contenido-resumen');
 
           if (!data.carrito || data.carrito.length === 0) {
-              contenedor.innerHTML = '<p>El carrito está vacío.</p>';
+              contenedor.innerHTML = '<p>EThe cart is empty.</p>';
               return;
           }
 
           let htmlContenido = ''; // Usaremos esta variable para construir el HTML
-          htmlContenido += '<h2>Detalles del Pedido</h2>'; // Puedes añadir un título si lo deseas
 
           data.carrito.forEach(item => {
               // Generamos cada línea del producto como un div con spans
@@ -51,7 +50,7 @@
           // Añadimos el total al final
           htmlContenido += `
             <div class="item total">
-              <span class="name">Total a pagar</span>
+              <span class="name">Total</span>
               <span class="price">${data.total.toFixed(2)} €</span>
             </div>
           `;
@@ -71,7 +70,7 @@
               },
               onApprove: function (dataPaypal, actions) {
                   return actions.order.capture().then(function (details) {
-                      alert('Pago completado por ' + details.payer.name.given_name);
+                      alert('Pay accepted by ' + details.payer.name.given_name);
                       // Redirigir al backend para finalizar la compra
                       window.location.href = '/webapp-1.0-SNAPSHOT/control?action=finalizarCompra';
                   });
