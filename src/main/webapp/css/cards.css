@@ -178,7 +178,7 @@
 }
 
 .rating-button:hover {
-   background-color: rgb(231 170 148 / 80%);
+   background-color:rgb(231 170 148);
 }
 
 .rating-button:active {
@@ -198,7 +198,7 @@
 }
 
 .send-rating-button:hover {
-    background-color: #45a049;
+    background-color:rgb(231 170 148);
 }
 
 .send-rating-button:active {
@@ -226,7 +226,7 @@
 }
 
 .add-to-cart-button:hover {
-    background-color: #218838; /* Un verde un poco más oscuro al pasar el ratón */
+    background-color:rgb(231 170 148);
 }
 
 .add-to-cart-button:active {
@@ -319,7 +319,8 @@
 
         /* Estilo para el botón "Ver Detalles" */
         .details-button {
-            background-color: #5cb85c; /* Un verde amigable */
+            font-family: 'Montserrat';
+            background-color: #d05a31; /* Un verde amigable */
             color: white;
             padding: 8px 12px;
             border: none;
@@ -328,7 +329,7 @@
             font-size: 0.9em;
             margin-top: 10px;
             transition: background-color 0.3s ease;
-            width: 100%; /* Para que ocupe todo el ancho disponible */
+            width: 100%;
         }
 
         .details-button:hover {
