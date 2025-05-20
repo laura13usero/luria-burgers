@@ -13,9 +13,107 @@
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap');
+
+        /* --- ESTILOS PARA EL POPUP --- */
+        .popup-overlay {
+            display: none; /* Oculto por defecto */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7); /* Fondo oscuro semitransparente */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Asegura que esté por encima de todo */
+        }
+
+        .popup-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: auto; /* Para scroll si la imagen es muy grande */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .popup-content img {
+            max-width: 100%;
+            max-height: 80vh; /* Máximo 80% de la altura de la ventana */
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+
+        .popup-close:hover {
+            color: #D05A31;
+        }
+
+        /* Estilo para el botón "Ver Detalles" */
+        .details-button {
+            background-color: #5cb85c; /* Un verde amigable */
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+            width: 100%; /* Para que ocupe todo el ancho disponible */
+        }
+
+        .details-button:hover {
+            background-color: #4cae4c;
+        }
+        /* --- FIN ESTILOS PARA EL POPUP --- */
     </style>
 
     <script>
+        // Mapeo de nombres de guarniciones a URLs de imágenes de detalles en S3
+        // Las claves deben coincidir EXACTAMENTE con el nombre normalizado (toLowerCase().trim())
+        // que viene de tu backend.
+        // Las URLs son las imágenes de DETALLE que quieres mostrar en el popup.
+        const detailImageUrls = {
+            "bolitas de pulpo": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_complementos/bolitas.png",
+            "edamame": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_complementos/edamame.png",
+            "gyozas": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_complementos/gyozas.png",
+            "patatas": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_complementos/patatas.png",
+            "tempura": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_complementos/veggie_tempura.png"
+        };
+
+
+        // Función para abrir el popup
+        function openPopup(imageSrc) {
+            const popupOverlay = document.getElementById('popupOverlay');
+            const popupImage = document.getElementById('popupImage');
+            popupImage.src = imageSrc; // Establece la imagen correcta
+            popupOverlay.style.display = 'flex'; // Mostrar el popup
+        }
+
+        // Función para cerrar el popup
+        function closePopup() {
+            const popupOverlay = document.getElementById('popupOverlay');
+            popupOverlay.style.display = 'none'; // Ocultar el popup
+            document.getElementById('popupImage').src = ''; // Opcional: limpia la imagen para liberar memoria
+        }
+
         async function obtenerGuarniciones() {
             try {
                 const response = await fetch("control?action=getGuarniciones");
@@ -23,26 +121,39 @@
                 const container = document.querySelector('.cards-container');
                 container.innerHTML = '';
 
-                const s3BaseUrl = "https://luriaburgers.s3.us-east-1.amazonaws.com/";
+                // URL base para las imágenes de las cards principales.
+                const s3BaseUrlCards = "https://luriaburgers.s3.us-east-1.amazonaws.com/menu/cards_complementos_animacion/";
 
                 if (data.length > 0) {
                     data.forEach(guarnicion => {
                         const card = document.createElement('div');
                         card.classList.add('card');
 
-                        //  **¡CRÍTICO!  Revisa ESTA LÍNEA cuidadosamente**
-                        const imagenSrc = `${s3BaseUrl}menu/cards_complementos_animacion/${guarnicion.imagen_png}`;
-                        console.log("Intentando cargar imagen desde:", imagenSrc);
+                        // Construye la URL de la imagen de la card principal
+                        const cardImagenSrc = `${s3BaseUrlCards}${guarnicion.imagen_png}`;
+                        console.log("[DEBUG] Imagen de card principal:", cardImagenSrc); // DEBUG
+
+                        // Normalizar el nombre de la guarnicion para la búsqueda en el mapa `detailImageUrls`
+                        const normalizedGuarnicionNombre = guarnicion.nombre.toLowerCase().trim();
+                        console.log("[DEBUG] Nombre original de la guarnicion:", guarnicion.nombre); // DEBUG
+                        console.log("[DEBUG] Nombre normalizado para búsqueda:", normalizedGuarnicionNombre); // DEBUG
+
+                        // Determinar la URL de la imagen de detalle para el popup
+                        // Si existe una URL específica en `detailImageUrls` para el nombre normalizado, se usa esa.
+                        // De lo contrario, se usa la misma imagen de la card principal (como fallback).
+                        const popupImageSrc = detailImageUrls[normalizedGuarnicionNombre] || cardImagenSrc;
+                        console.log("[DEBUG] URL de popup seleccionada:", popupImageSrc); // DEBUG
 
                         card.innerHTML = `
-                  <img src="${imagenSrc}" alt="${guarnicion.nombre}">
-                  <div class="card-info">
-                    <h2>${guarnicion.nombre}</h2>
-                    <button class="add-to-cart-button" onclick="agregarAlCarrito(${guarnicion.id}, 'guarnicion')">
-                      Add to cart - S/ ${guarnicion.precio.toFixed(2)}
-                    </button>
-                  </div>
-                `;
+                            <img src="${cardImagenSrc}" alt="${guarnicion.nombre}">
+                            <div class="card-info">
+                                <h2>${guarnicion.nombre}</h2>
+                                <button class="details-button" onclick="openPopup('${popupImageSrc}')">Ver detalles</button>
+                                <button class="add-to-cart-button" onclick="agregarAlCarrito(${guarnicion.id}, 'guarnicion')">
+                                    Add to cart - S/ ${guarnicion.precio.toFixed(2)}
+                                </button>
+                            </div>
+                        `;
                         container.appendChild(card);
                     });
                 } else {
@@ -54,7 +165,6 @@
             }
         }
 
-        // **AÑADIENDO LA FUNCIÓN agregarAlCarrito AQUÍ**
         async function agregarAlCarrito(idProducto, categoria) {
             try {
                 const response = await fetch("control?action=isUserLoggedIn");
@@ -73,7 +183,7 @@
 
                     if (addToCartResult.status === "ok") {
                         window.location.href = addToCartResult.redirect;
-                    } else if (addToCartResult.status === "login_required") { // Manejar si AddToCartAction devuelve esto
+                    } else if (addToCartResult.status === "login_required") {
                         window.location.href = addToCartResult.redirect;
                     } else {
                         alert("Error al añadir al carrito: " + addToCartResult.message);
@@ -104,23 +214,22 @@
     </a>
 </div>
 
+
 <div class="menu-container-wrapper">
     <button class="menu-arrow menu-arrow-left" id="menuArrowLeft"></button>
     <nav class="menu-container" id="menuContainer">
-        <a href="hamburguesas.html" class="menu-item"><img
-                src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/hamburguesas.png" alt="Hamburguesas">
+        <a href="hamburguesas.html" class="menu-item"><img src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/hamburguesas.png"
+                                                           alt="Hamburguesas">
             <div class="menu-background"></div>
         </a>
-        <a href="guarniciones.html" class="menu-item active"><img
-                src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/complementos.png" alt="Complementos">
+        <a href="guarniciones.html" class="menu-item active"><img src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/complementos.png"
+                                                                  alt="Complementos">
             <div class="menu-background"></div>
         </a>
-        <a href="postres.html" class="menu-item"><img
-                src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/postres.png" alt="Postres">
+        <a href="postres.html" class="menu-item"><img src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/postres.png" alt="Postres">
             <div class="menu-background"></div>
         </a>
-        <a href="bebidas.html" class="menu-item"><img
-                src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/bebidas.png" alt="Bebidas">
+        <a href="bebidas.html" class="menu-item"><img src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/bebidas.png" alt="Bebidas">
             <div class="menu-background"></div>
         </a>
     </nav>
@@ -131,6 +240,13 @@
 
 <div class="cards-wrapper">
     <div class="cards-container">
+    </div>
+</div>
+
+<div id="popupOverlay" class="popup-overlay" onclick="closePopup()">
+    <div class="popup-content" onclick="event.stopPropagation()">
+        <button class="popup-close" onclick="closePopup()">✖</button>
+        <img id="popupImage" src="" alt="Detalles del Producto">
     </div>
 </div>
 
