@@ -5,7 +5,7 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.ServletException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import model.Usuario; // Asegúrate que la ruta a tu modelo Usuario sea correcta
+import model.Usuario;
 
 public class GetUsuarioLogueadoAction implements Action {
 
@@ -15,21 +15,19 @@ public class GetUsuarioLogueadoAction implements Action {
 
         HttpSession session = request.getSession(false);
         Usuario usuario = (session != null) ? (Usuario) session.getAttribute("usuarioLogueado") : null;
+        String rol = (session != null) ? (String) session.getAttribute("rol") : null; // Recuperar el rol de la sesión
 
         response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8"); // Es buena práctica añadir el encoding
         JsonObject json = new JsonObject();
 
-        if (usuario != null) {
+        if (usuario != null && rol != null) {
             json.addProperty("status", "ok");
-            json.addProperty("nombre", usuario.getNombre()); // Asumiendo que Usuario tiene getNombre()
-            json.addProperty("email", usuario.getEmail());    // AÑADIDO: Asumiendo que Usuario tiene getEmail()
-            json.addProperty("rol", usuario.getRol());      // AÑADIDO: Asumiendo que Usuario tiene getRol()
-            // Puedes añadir más datos si quieres, por ejemplo:
-            // json.addProperty("apellido", usuario.getApellido());
+            json.addProperty("nombre", usuario.getNombre());
+            json.addProperty("rol", rol); // Añadir el rol a la respuesta
+            // Puedes añadir más datos si quieres
         } else {
             json.addProperty("status", "error");
-            json.addProperty("message", "Usuario no logueado");
+            json.addProperty("message", "Usuario no logueado o rol no encontrado");
         }
 
         PrintWriter out = response.getWriter();

@@ -34,7 +34,6 @@ public class ActionFactory {
             case "actualizarRanking" -> new ActualizarRankingAction();
             case "isUserLoggedIn" -> new IsUserLoggedInAction();
             case "actualizarCantidadCarrito" -> new ActualizarCantidadCarritoAction();
-            case "checkSession" -> new CheckSessionAction();
 
 
             default -> new UnknownAction();

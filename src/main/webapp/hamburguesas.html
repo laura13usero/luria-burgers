@@ -256,29 +256,6 @@
 
     // Llamada inicial para cargar las hamburguesas cuando el DOM esté listo
     document.addEventListener('DOMContentLoaded', () => obtenerHamburguesas());
-
-
-</script>
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', async () => {
-        try {
-            const response = await fetch('control?action=checkSession');
-            const data = await response.json();
-            if (!data.loggedIn && data.redirect) {
-                window.location.href = data.redirect;
-            } else if (!data.loggedIn) {
-                // Fallback en caso de que no se proporcione una URL de redirección
-                window.location.href = 'necesitalogin.html';
-            }
-        } catch (error) {
-            console.error('Error al verificar la sesión:', error);
-            // Considera redirigir a una página de error o login en caso de fallo de red
-            window.location.href = 'necesitalogin.html';
-        }
-        obtenerHamburguesas(); // Mueve la carga de hamburguesas aquí para que se ejecute después de la comprobación de sesión
-    });
 </script>
 
 <script src="js/hamburguesas.js"></script>

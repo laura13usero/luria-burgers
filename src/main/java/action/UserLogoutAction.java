@@ -1,14 +1,8 @@
-// src/action/UserLogoutAction.java
 package action;
 
+import jakarta.servlet.http.*;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import com.google.gson.Gson;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class UserLogoutAction implements Action {
 
@@ -16,21 +10,16 @@ public class UserLogoutAction implements Action {
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false); // No crear nueva sesión si no existe
-        Map<String, Object> resultado = new HashMap<>();
-        Gson gson = new Gson();
-
+        HttpSession session = request.getSession(false);
         if (session != null) {
-            session.invalidate(); // Invalida la sesión actual
-            resultado.put("status", "ok");
-            resultado.put("message", "Sesión cerrada exitosamente.");
-        } else {
-            resultado.put("status", "error");
-            resultado.put("message", "No hay sesión activa para cerrar.");
+            session.invalidate();
         }
 
         response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(gson.toJson(resultado));
+        response.getWriter().write("{\"status\":\"ok\"}");
     }
+
 }
+//lalalallalaal
+
+//lalalalalalallal
