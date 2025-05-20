@@ -1,210 +1,286 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-
-body {
+/* ───────────────────────────────────
+   RESET & VARIABLES
+─────────────────────────────────── */
+* {
   margin: 0;
-  font-family: 'Ibarra Real Nova', serif;
-  background-image: url('https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/fondo_carrito.png');
-  background-size: cover;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-primary: #D05A31;
+  --color-text: #333;
+  --overlay-h: 20vh;   /* altura tapa móvil */
+  --menu-offset: 18vh; /* margen-top menú móvil */
+}
+
+/* ───────────────────────────────────
+   CAPA 0 · Fondo base (móvil / tablet)
+─────────────────────────────────── */
+body {
+  font-family: "Caveat Brush", cursive;
+  background-image: url("https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/dashboard.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   background-position: center;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-size: cover;
+  color: var(--color-text);
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-@media (min-width: 768px) {
-  body {
-    background-image: url('https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/carrito_grande.png');
-  }
+/* ───────────────────────────────────
+   CAPA 3 · Tapa (solo móvil / tablet)
+─────────────────────────────────── */
+.top-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--overlay-h);
+  background-image: url("https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/dashboard.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  pointer-events: none;
+  z-index: 250; /* Adjusted z-index */
 }
 
-.container {
-  background: rgb(249 214 126 / 55%);
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  width: 70%;
-  max-width: 400px;
-  font-size: 1.2rem;
-}
 
-
-
-/* Centrar el título */
-h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-/* Productos alineados izquierda-derecha */
-.cart-item {
+/* ───────────────────────────────────
+   ICONOS ESQUINA
+─────────────────────────────────── */
+.corner-links {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px; /* Default height, adjusted for mobile/tablet, overridden for desktop */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  padding: 0 10px; /* Padding from viewport edges */
+  z-index: 400;    /* Highest, so icons are on top */
+  pointer-events: none; /* Allows clicks to pass through transparent parts of this div */
 }
-
-.item-name {
-  font-weight: 500;
-  flex: 1;
-}
-
-.delete-btn {
-  background-color: #D05A31;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  font-family: 'Montserrat', sans-serif;
-  cursor: pointer;
-  border-radius: 4px;
-  margin-left: 1rem;
-}
-
-/* Centrado solo de los botones de abajo */
-.buttons-footer {
-  text-align: center;
-}
-
-button {
-  background-color: #D05A31;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  margin: 10px 5px 0 5px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1rem;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-/* Styles moved from carrito.html */
-.quantity-controls {
+/* Ensure direct children <a> tags are targeted if .corner-link is the class on <a> */
+.corner-links > .corner-link {
+    pointer-events: auto; /* Make the icon links themselves clickable */
     display: flex;
     align-items: center;
 }
-
-.quantity-button {
-    padding: 5px 10px;
-    margin: 0 5px;
-    cursor: pointer;
+.corner-link img {
+  width: 50px;
+  height: auto; /* Maintain aspect ratio */
+  object-fit: contain; /* Good for icons */
+  transition: transform .3s;
+}
+.corner-link img:hover {
+  transform: scale(1.1);
 }
 
-/* Styles from carrito2.html for general layout and elements */
-body {
-    font-family: 'Ibarra Real Nova', serif;
-    display: flex;
+/* ───────────────────────────────────
+   MENÚ + FLECHAS (Mobile/Tablet specific wrapper)
+─────────────────────────────────── */
+.menu-container-wrapper {
+  position: fixed;
+  top: 0; /* Will be adjusted for desktop */
+  width: 100%;
+  z-index: 350; /* Below corner-links, above general content/overlay */
+                  /* This wrapper itself is not the visual bar on desktop */
+}
+
+/* Flechas de scroll */
+.menu-arrow {
+  position: absolute;
+  top: 22vh; /* Relative to mobile menu position */
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  z-index: 370; /* Above menu items if they scroll */
+}
+.menu-arrow::before {
+  content: '';
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-top: 3px solid #FFFFAB;
+  border-right: 3px solid #FFFFAB;
+}
+.menu-arrow-left { left: 5px; }
+.menu-arrow-left::before { transform: rotate(-135deg); }
+.menu-arrow-right { right: 5px; }
+.menu-arrow-right::before { transform: rotate(45deg); }
+
+.menu-container { /* This is the actual list of menu items */
+  position: relative; /* Changed from fixed for desktop context */
+  margin: 0 auto;
+  width: 100%;
+  max-width: 600px; /* Mobile/Tablet constraint for the scrollable area */
+  height: 50px;
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 0 60px; /* Mobile padding for arrows to not overlap items */
+  background: #442C0C; /* Mobile/Tablet background for the menu list */
+  margin-top: var(--menu-offset); /* Mobile positioning */
+  scrollbar-width: none;
+}
+.menu-container::-webkit-scrollbar { display: none; }
+
+.menu-item {
+  position: relative;
+  flex: 0 0 auto;
+  min-width: 140px;
+  height: 100%;
+  margin-right: 10px;
+}
+.menu-item img {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 60px; height: 60px;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+  filter: brightness(1.5) contrast(1.2);
+  z-index: 2;
+}
+.menu-background {
+  position: absolute;
+  inset: 0;
+  border-radius: 15px;
+  background: transparent;
+  transition: background .3s;
+  z-index: 1;
+}
+.menu-item:hover .menu-background,
+.menu-item.active .menu-background {
+  background: rgba(208, 90, 49, 0.8);
+}
+
+/* ───────────────────────────────────
+   TABLET (≥ 768 px)
+─────────────────────────────────── */
+@media (min-width: 768px) {
+  .top-overlay { display: none !important; }
+
+  .corner-links { height: 90px; /* Tablet bar height */ }
+  .corner-link img { width: 60px; }
+
+  .menu-container { /* The scrollable list of menu items */
+    height: 90px;
+    max-width: 800px; /* Wider scrollable area */
+    /* margin-top: var(--menu-offset); still applies if it's not at top:0 */
+  }
+  .menu-item img { width: 80px; height: 80px; }
+  .menu-arrow { top: calc(var(--menu-offset) + 45px); /* Adjust if menu-offset changes or menu is at top */ }
+}
+
+/* ───────────────────────────────────
+   DESKTOP (≥ 900 px)
+─────────────────────────────────── */
+@media (min-width: 900px) {
+  body {
+    background-image: url("https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/elPUTOfondoJODER.png");
+    background-size: cover;
+    background-position: center bottom;
+  }
+
+  .corner-links { /* Full width transparent layer for icon positioning */
+    height: 95px; /* Match visual menu bar height */
+    padding: 0 20px; /* Padding for icons from viewport edge */
+     /* z-index: 400; pointer-events: none; already set globally */
+  }
+  .corner-link img {
+    width: 70px;
+    height: 70px; /* Explicit height */
+  }
+
+  /* menu-container-wrapper is NOT the visual bar on desktop.
+     It's just a wrapper. The .menu-container itself becomes the visual bar. */
+  .menu-container-wrapper {
+    position: fixed;
+    top: 0;
+    /* These define the space for the menu bar, between icons */
+    left: 110px;  /* Approx. 70px icon + 20px padding + 20px buffer */
+    right: 110px; /* Approx. 70px icon + 20px padding + 20px buffer */
+    width: auto; /* Important: override 100% width */
+    height: 95px; /* Visual bar height */
+    z-index: 350; /* Below corner-links, above page content */
+    margin-top: 0; /* Override mobile positioning */
+    display: flex; /* To center the .menu-container if it's not full width of wrapper */
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background-color: #f4f4f4;
-    margin: 0;
-}
+    background: #442C0C; /* THIS IS THE VISIBLE BAR BACKGROUND */
+    padding: 0; /* Wrapper itself has no padding now */
+  }
 
-.container {
-    background-color: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 500px;
-    text-align: center;
-}
-
-h1, h2 {
-    color: #333;
-    margin-bottom: 20px;
-}
-
-#listaCarrito {
-    list-style: none;
-    padding: 0;
-    margin-bottom: 20px;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-#listaCarrito li {
+  .menu-container { /* The list of menu items, now part of the visual bar */
+    margin: 0; /* Reset mobile margins */
+    max-width: none; /* Fills its wrapper */
+    width: 100%;     /* Fills its wrapper */
+    height: 100%;    /* Fills its wrapper */
+    background: transparent; /* Wrapper now has the background */
+    overflow-x: hidden;
+    padding: 0 20px; /* Internal padding for menu items */
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Or space-around, space-between */
     align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px dashed #eee;
+    gap: 30px; /* Adjust as desired */
+  }
+
+  .menu-item {
+    margin-right: 0; /* Gap handles spacing */
+  }
+  .menu-item img {
+    width: 90px;
+    height: 90px;
+  }
+  .menu-arrow {
+    display: none;
+  }
+}
+/* ───────────────────────────────────
+   GRANDES RESOLUCIONES  ≥ 1440 px
+─────────────────────────────────── */
+@media (min-width: 1440px) {
+  .cards-wrapper {
+    width: 100vw; max-width: none; margin: 0 auto; padding: 30px;
+    background-image: url("https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/elPUTOfondoJODER.png");
+    background-attachment: fixed; background-size: cover; background-position-y: bottom;
+  }
+  .cards-container {
+    display: grid; grid-template-columns: repeat(5,1fr); gap: 25px;
+    padding: 30px; margin-top: 0; padding-bottom: 30px;
+  }
+  .card { max-width: 260px; }
+  .card.scrolled-out { opacity: 1; transform: none; }
+
+  /* Adjust spacing for very wide screens if needed */
+  .menu-container-wrapper {
+    left: 150px; /* Example: more space for icons */
+    right: 150px;
+    background-color: transparent;
+  }
+  .menu-container {
+      gap: 180px; /* Example: wider gap for menu items */
+  }
 }
 
-#listaCarrito li:last-child {
-    border-bottom: none;
-}
+/* ───────────────────────────────────
+   PANTALLAS MUY GRANDES  ≥ 2560 px
+─────────────────────────────────── */
+@media (min-width: 2560px) {
+  .cards-wrapper { width: 100vw; max-width: none; }
+  .cards-container { grid-template-columns: repeat(5,1fr); }
+  .card { max-width: 260px; }
 
-.item-name {
-    flex-grow: 1;
-    text-align: left;
-    color: #555;
-}
-
-.quantity-controls {
-    display: flex;
-    align-items: center;
-    margin: 0 10px;
-}
-
-.quantity-button {
-    background-color: #f0f0f0;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    color: #333;
-    font-weight: bold;
-}
-
-.quantity-button:hover {
-    background-color: #e0e0e0;
-}
-
-.cart-item button { /* This will style both delete and quantity buttons */
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9em;
-    margin-left: 10px;
-}
-
-.cart-item button:hover {
-    background-color: #c82333;
-}
-
-hr {
-    border: none;
-    border-top: 1px solid #eee;
-    margin: 20px 0;
-}
-
-.buttons-footer button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    margin: 5px;
-}
-
-.buttons-footer button:hover {
-    background-color: #0056b3;
-}
-
-.buttons-footer button:last-child {
-    background-color: #6c757d;
-}
-
-.buttons-footer button:last-child:hover {
-    background-color: #5a6268;
+  .menu-container-wrapper {
+    left: 200px; /* Example: even more space */
+    right: 200px;
+  }
 }
