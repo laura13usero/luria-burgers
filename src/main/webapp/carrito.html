@@ -12,7 +12,7 @@
     <h2>Your Cart</h2>
 
     <ul id="listaCarrito"></ul>
-    <p><strong>Total:</strong> <span id="total">0.00</span> €</p>
+    <p><strong>Total:</strong> <span id="total">0.00</span> $</p>
 
     <hr />
 
@@ -41,13 +41,13 @@
             data.carrito.forEach((producto, index) => {
                 const li = document.createElement('li');
                 li.innerHTML = `
-                    <span class="item-name"><strong>${producto.nombre}</strong> - ${producto.precio.toFixed(2)} €</span>
+                    <span class="item-name"><strong>${producto.nombre}</strong> - ${producto.precio.toFixed(2)} $</span>
                     <div class="quantity-controls">
                         <button class="quantity-button" onclick="actualizarCantidad(${index}, -1)">-</button>
                         <span id="cantidad-${index}">${producto.cantidad}</span>
                         <button class="quantity-button" onclick="actualizarCantidad(${index}, 1)">+</button>
                     </div>
-                    <button class="delete-btn" onclick="eliminarProducto(${index})">Eliminar</button>
+                    <button class="delete-btn" onclick="eliminarProducto(${index})">Delete</button>
                 `;
                 lista.appendChild(li);
             });
