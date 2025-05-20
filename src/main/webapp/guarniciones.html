@@ -96,6 +96,8 @@
             "gyozas": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_complementos/gyozas.png",
             "patatas": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_complementos/patatas.png",
             "tempura": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_complementos/veggie_tempura.png"
+            // Añade más entradas aquí si los nombres normalizados de tu backend son diferentes
+            // "nombre_normalizado_exacto_del_backend": "URL_A_LA_IMAGEN_DE_MENU_REAL.png"
         };
 
 
@@ -131,18 +133,18 @@
 
                         // Construye la URL de la imagen de la card principal
                         const cardImagenSrc = `${s3BaseUrlCards}${guarnicion.imagen_png}`;
-                        console.log("[DEBUG] Imagen de card principal:", cardImagenSrc); // DEBUG
+                        console.log("[DEBUG] Imagen de card principal:", cardImagenSrc);
 
                         // Normalizar el nombre de la guarnicion para la búsqueda en el mapa `detailImageUrls`
                         const normalizedGuarnicionNombre = guarnicion.nombre.toLowerCase().trim();
-                        console.log("[DEBUG] Nombre original de la guarnicion:", guarnicion.nombre); // DEBUG
-                        console.log("[DEBUG] Nombre normalizado para búsqueda:", normalizedGuarnicionNombre); // DEBUG
+                        console.log("[DEBUG] Nombre original de la guarnicion:", guarnicion.nombre);
+                        console.log("[DEBUG] Nombre normalizado para búsqueda:", normalizedGuarnicionNombre);
 
                         // Determinar la URL de la imagen de detalle para el popup
                         // Si existe una URL específica en `detailImageUrls` para el nombre normalizado, se usa esa.
                         // De lo contrario, se usa la misma imagen de la card principal (como fallback).
                         const popupImageSrc = detailImageUrls[normalizedGuarnicionNombre] || cardImagenSrc;
-                        console.log("[DEBUG] URL de popup seleccionada:", popupImageSrc); // DEBUG
+                        console.log("[DEBUG] URL de popup seleccionada:", popupImageSrc);
 
                         card.innerHTML = `
                             <img src="${cardImagenSrc}" alt="${guarnicion.nombre}">
