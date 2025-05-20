@@ -1,247 +1,257 @@
 /* ───────────────────────────────────
-   RESET & VARIABLES
+   BASE (mobile-first)
 ─────────────────────────────────── */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
-:root {
-  --color-primary: #D05A31;
-  --color-text: #333;
-  --overlay-h: 20vh;   /* altura tapa móvil */
-  --menu-offset: 18vh; /* margen-top menú móvil */
-}
-
-/* ───────────────────────────────────
-   CAPA 0 · Fondo base (móvil / tablet)
-─────────────────────────────────── */
-body {
-  font-family: "Caveat Brush", cursive;
-  background-image: url("https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/dashboard.png");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
-  background-size: cover;
-  color: var(--color-text);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* ───────────────────────────────────
-   CAPA 3 · Tapa (solo móvil / tablet)
-─────────────────────────────────── */
-.top-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
+.cards-wrapper {
   width: 100%;
-  height: var(--overlay-h);
-  background-image: url("https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/dashboard.png");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
-  background-size: cover;
-  pointer-events: none;
-  z-index: 250; /* Adjusted z-index */
-}
-
-
-/* ───────────────────────────────────
-   ICONOS ESQUINA
-─────────────────────────────────── */
-.corner-links {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 50px; /* Default height, adjusted for mobile/tablet, overridden for desktop */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 10px; /* Padding from viewport edges */
-  z-index: 400;    /* Highest, so icons are on top */
-  pointer-events: none; /* Allows clicks to pass through transparent parts of this div */
-}
-/* Ensure direct children <a> tags are targeted if .corner-link is the class on <a> */
-.corner-links > .corner-link {
-    pointer-events: auto; /* Make the icon links themselves clickable */
-    display: flex;
-    align-items: center;
-}
-.corner-link img {
-  width: 50px;
-  height: auto; /* Maintain aspect ratio */
-  object-fit: contain; /* Good for icons */
-  transition: transform .3s;
-}
-.corner-link img:hover {
-  transform: scale(1.1);
-}
-
-/* ───────────────────────────────────
-   MENÚ + FLECHAS (Mobile/Tablet specific wrapper)
-─────────────────────────────────── */
-.menu-container-wrapper {
-  position: fixed;
-  top: 0; /* Will be adjusted for desktop */
-  width: 100%;
-  z-index: 350; /* Below corner-links, above general content/overlay */
-                  /* This wrapper itself is not the visual bar on desktop */
-}
-
-/* Flechas de scroll */
-.menu-arrow {
-  position: absolute;
-  top: 22vh; /* Relative to mobile menu position */
-  transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  z-index: 370; /* Above menu items if they scroll */
-}
-.menu-arrow::before {
-  content: '';
-  display: block;
-  width: 12px;
-  height: 12px;
-  border-top: 3px solid #FFFFAB;
-  border-right: 3px solid #FFFFAB;
-}
-.menu-arrow-left { left: 5px; }
-.menu-arrow-left::before { transform: rotate(-135deg); }
-.menu-arrow-right { right: 5px; }
-.menu-arrow-right::before { transform: rotate(45deg); }
-
-.menu-container { /* This is the actual list of menu items */
-  position: relative; /* Changed from fixed for desktop context */
   margin: 0 auto;
-  width: 100%;
-  max-width: 600px; /* Mobile/Tablet constraint for the scrollable area */
-  height: 50px;
-  display: flex;
-  align-items: center;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  padding: 0 60px; /* Mobile padding for arrows to not overlap items */
-  background: #442C0C; /* Mobile/Tablet background for the menu list */
-  margin-top: var(--menu-offset); /* Mobile positioning */
-  scrollbar-width: none;
+  background-color: transparent;
+  background-size: contain;
+  background-repeat: repeat-y;
+  padding: 15px;
+  margin-top: -5vh;
+  z-index: 100;
 }
-.menu-container::-webkit-scrollbar { display: none; }
 
-.menu-item {
-  position: relative;
-  flex: 0 0 auto;
-  min-width: 140px;
-  height: 100%;
-  margin-right: 10px;
+.cards-container {
+  width: 100%;
+  max-width: 450px;
+  margin-top: 0vh;
+  padding: 15px 10px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }
-.menu-item img {
-  position: absolute;
-  top: 50%; left: 50%;
-  width: 60px; height: 60px;
-  transform: translate(-50%, -50%);
-  object-fit: contain;
-  filter: brightness(1.5) contrast(1.2);
-  z-index: 2;
+
+.card {
+  width: 100%;
+  max-width: 350px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: opacity .3s ease, transform .3s ease, box-shadow .3s ease;
+  display: flex;
+  flex-direction: column; /* Cambiado a column */
 }
-.menu-background {
-  position: absolute;
-  inset: 0;
-  border-radius: 15px;
-  background: transparent;
-  transition: background .3s;
-  z-index: 1;
+.card img {
+  width: 100%;
+  display: block;
+  transition: transform .3s ease;
 }
-.menu-item:hover .menu-background,
-.menu-item.active .menu-background {
-  background: rgba(208, 90, 49, 0.8);
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+.card-content {
+  padding: 15px;
+  background-color: #fff;
+  flex-grow: 1; /* Permite que el contenido ocupe el espacio restante */
+  position: relative; /* Asegura que el z-index de los hijos funcione en relación con el padre */
 }
 
 /* ───────────────────────────────────
-   TABLET (≥ 768 px)
+   CAMBIO APLICADO AQUÍ PARA EL TÍTULO
+─────────────────────────────────── */
+.card-content h3 {
+  font-family: 'Shippori Mincho B1', serif;
+  font-weight: 600;
+  color: #D05A31;
+  margin-bottom: 5px;
+  font-size: 1.4em;
+  text-align: center;
+  /* ↓↓↓ CAMBIOS APLICADOS ↓↓↓ */
+  position: relative; /* Necesario para que top y z-index funcionen */
+  top: -15px; /* Ajusta este valor para subir o bajar el texto */
+  z-index: 1; /* Asegura que se vea por encima de la imagen si se solapa */
+  /* ↑↑↑ FIN DE CAMBIOS ↑↑↑ */
+}
+
+.card-content p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9em;
+  line-height: 1.4;
+  color: #555;
+  margin-bottom: 10px;
+  text-align: justify;
+}
+
+.card-price {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #333;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Stars for rating */
+.rating-stars {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.rating-stars .star {
+    font-size: 1.2em;
+    color: #ccc; /* Default color for empty stars */
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.rating-stars .star.filled {
+    color: #FFD700; /* Gold color for filled stars */
+}
+
+.rating-stars .star:hover {
+    color: #FFD700; /* Gold color on hover */
+}
+
+.rating-input {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.rating-input input {
+    width: 80px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+    font-family: 'Montserrat';
+}
+
+.send-rating-button {
+    margin-left: 10px;
+    padding: 8px 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.send-rating-button:hover {
+    background-color: #45a049;
+}
+
+.send-rating-button:active {
+    background-color: #3e8e41;
+}
+
+.current-rating {
+    font-size: 0.9em;
+    color: #666;
+    margin-left: 10px;
+}
+
+.add-to-cart-button {
+    font-family: 'Montserrat';
+    background-color: #d05a31;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    margin-top: 10px; /* Espacio desde el texto de precio */
+    width: 100%; /* Ancho completo dentro del contenedor */
+}
+
+.add-to-cart-button:hover {
+    background-color: #218838; /* Un verde un poco más oscuro al pasar el ratón */
+}
+
+.add-to-cart-button:active {
+    background-color: #1e7e34; /* Más oscuro al hacer clic */
+    transform: scale(0.98); /* Ligeramente más pequeño al hacer clic */
+}
+
+.filter-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 30vh; /* Ajusta este valor si es necesario */
+    padding: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
+    position: sticky; /* Sticky positioning */
+    top: 0; /* Stick to the top of the viewport */
+    background-color: transparent; /* Semi-transparent background */
+    z-index: 200; /* Ensure it's above other content but below header/menu */
+    backdrop-filter: blur(5px); /* Optional: blur effect for modern browsers */
+    -webkit-backdrop-filter: blur(5px); /* For Safari */
+}
+
+.filter-button {
+    background-color: #D05A31;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    font-size: 0.9em;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.filter-button:hover {
+    background-color: #e67c52;
+    transform: translateY(-2px);
+}
+
+.filter-button.active {
+    background-color: #e67c52; /* Color for active button */
+    font-weight: bold;
+}
+
+
+/* ───────────────────────────────────
+   TABLET (≥ 768px)
 ─────────────────────────────────── */
 @media (min-width: 768px) {
-  .top-overlay { display: none !important; }
-
-  .corner-links { height: 90px; /* Tablet bar height */ }
-  .corner-link img { width: 60px; }
-
-  .menu-container { /* The scrollable list of menu items */
-    height: 90px;
-    max-width: 800px; /* Wider scrollable area */
-    /* margin-top: var(--menu-offset); still applies if it's not at top:0 */
+  .cards-wrapper {
+    padding: 20px;
   }
-  .menu-item img { width: 80px; height: 80px; }
-  .menu-arrow { top: calc(var(--menu-offset) + 45px); /* Adjust if menu-offset changes or menu is at top */ }
+
+  .cards-container {
+    max-width: 700px;
+    padding: 20px 15px 100px;
+    gap: 25px;
+  }
+
+  .card {
+    max-width: 450px;
+  }
 }
 
 /* ───────────────────────────────────
-   DESKTOP (≥ 900 px)
+   DESKTOP (≥ 900px)
 ─────────────────────────────────── */
 @media (min-width: 900px) {
-  body {
-    background-image: url("https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/elPUTOfondoJODER.png");
-    background-size: cover;
-    background-position: center bottom;
+  .cards-wrapper {
+    margin-top: 15vh; /* Ajusta esto si el menú es más grande */
+    padding: 30px;
+    display: flex; /* Añadir display flex para centrar */
+    justify-content: center; /* Centrar horizontalmente */
   }
 
-  .corner-links { /* Full width transparent layer for icon positioning */
-    height: 95px; /* Match visual menu bar height */
-    padding: 0 20px; /* Padding for icons from viewport edge */
-     /* z-index: 400; pointer-events: none; already set globally */
-  }
-  .corner-link img {
-    width: 70px;
-    height: 70px; /* Explicit height */
-  }
-
-  /* menu-container-wrapper is NOT the visual bar on desktop.
-     It's just a wrapper. The .menu-container itself becomes the visual bar. */
-  .menu-container-wrapper {
-    position: fixed;
-    top: 0;
-    /* These define the space for the menu bar, between icons */
-    left: 110px;  /* Approx. 70px icon + 20px padding + 20px buffer */
-    right: 110px; /* Approx. 70px icon + 20px padding + 20px buffer */
-    width: auto; /* Important: override 100% width */
-    height: 95px; /* Visual bar height */
-    z-index: 350; /* Below corner-links, above page content */
-    margin-top: 0; /* Override mobile positioning */
-    display: flex; /* To center the .menu-container if it's not full width of wrapper */
-    justify-content: center;
-    align-items: center;
-    background: #442C0C; /* THIS IS THE VISIBLE BAR BACKGROUND */
-    padding: 0; /* Wrapper itself has no padding now */
+  .cards-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas en desktop */
+    max-width: 1200px; /* Ancho máximo para el contenedor de cards */
+    padding: 30px;
+    padding-bottom: 30px; /* Espacio para el pie de página si lo hay */
+    margin: 0 auto; /* Centrar el grid */
   }
 
-  .menu-container { /* The list of menu items, now part of the visual bar */
-    margin: 0; /* Reset mobile margins */
-    max-width: none; /* Fills its wrapper */
-    width: 100%;     /* Fills its wrapper */
-    height: 100%;    /* Fills its wrapper */
-    background: transparent; /* Wrapper now has the background */
-    overflow-x: hidden;
-    padding: 0 20px; /* Internal padding for menu items */
-    display: flex;
-    justify-content: center; /* Or space-around, space-between */
-    align-items: center;
-    gap: 30px; /* Adjust as desired */
+  .card {
+    max-width: 300px; /* Tamaño de tarjeta más pequeño para caber 3 en fila */
+    margin: 0 auto; /* Centrar cada tarjeta dentro de su celda de la cuadrícula */
   }
-
-  .menu-item {
-    margin-right: 0; /* Gap handles spacing */
-  }
-  .menu-item img {
-    width: 90px;
-    height: 90px;
-  }
-  .menu-arrow {
-    display: none;
+  .filter-buttons {
+    margin-top: 10vh; /* Ajusta este valor para desktop */
   }
 }
 /* ───────────────────────────────────
@@ -250,8 +260,6 @@ body {
 @media (min-width: 1440px) {
   .cards-wrapper {
     width: 100vw; max-width: none; margin: 0 auto; padding: 30px;
-    background-image: url("https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/elPUTOfondoJODER.png");
-    background-attachment: fixed; background-size: cover; background-position-y: bottom;
   }
   .cards-container {
     display: grid; grid-template-columns: repeat(5,1fr); gap: 25px;
@@ -259,16 +267,6 @@ body {
   }
   .card { max-width: 260px; }
   .card.scrolled-out { opacity: 1; transform: none; }
-
-  /* Adjust spacing for very wide screens if needed */
-  .menu-container-wrapper {
-    left: 150px; /* Example: more space for icons */
-    right: 150px;
-    background-color: transparent;
-  }
-  .menu-container {
-      gap: 180px; /* Example: wider gap for menu items */
-  }
 }
 
 /* ───────────────────────────────────
@@ -278,9 +276,4 @@ body {
   .cards-wrapper { width: 100vw; max-width: none; }
   .cards-container { grid-template-columns: repeat(5,1fr); }
   .card { max-width: 260px; }
-
-  .menu-container-wrapper {
-    left: 200px; /* Example: even more space */
-    right: 200px;
-  }
 }
