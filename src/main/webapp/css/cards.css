@@ -268,4 +268,6 @@
 
 .card-info h2 {
   font-family: 'Shippori Mincho B1', serif;
+      margin-top: -8vh;
+      margin-bottom: 2vh;
 }

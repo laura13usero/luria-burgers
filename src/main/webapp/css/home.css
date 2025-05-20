@@ -289,4 +289,5 @@ body {
 h2 {
     text-align: center; /* Centra el título */
     margin-top: -7vh; /* Añade un margen superior para centrarlo en las cards */
+    margin-bottom: 2vh;
 }
