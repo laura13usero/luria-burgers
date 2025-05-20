@@ -3,7 +3,7 @@
 body {
   margin: 0;
   font-family: 'Ibarra Real Nova', serif;
-  background-image: url('fondo_about.png');
+  background-image: url('https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/fondo_about.png');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -15,7 +15,7 @@ body {
 
 @media (min-width: 768px) {
   body {
-    background-image: url('about_grande.png');
+    background-image: url('https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/about_grande.png');
   }
 }
 
