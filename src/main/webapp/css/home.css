@@ -284,3 +284,9 @@ body {
     right: 200px;
   }
 }
+
+
+h2 {
+    text-align: center; /* Centra el título */
+    margin-top: -5vh; /* Añade un margen inferior */
+}
