@@ -93,9 +93,12 @@
         // Las URLs son las imágenes de DETALLE que quieres mostrar en el popup.
         const detailImageUrls = {
             "caja mochi": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/caja_mochi.png",
-            "mochis": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/caja_mochi.png", // Agregado para manejar si el backend envía "mochis"
+            "mochis": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/caja_mochi.png",
+            "mochi box": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/caja_mochi.png", // Nuevo: Añadido según tu debug
             "cheesecake": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/cheesecake.png",
-            "dorayaki": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/dorayaki.png"
+            "matcha cheesecake": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/cheesecake.png", // Nuevo: Añadido según tu debug
+            "dorayaki": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/dorayaki.png",
+            "dorayaki ice cream": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/dorayaki.png" // Nuevo: Añadido según tu debug
         };
 
 
@@ -131,18 +134,18 @@
 
                         // Construye la URL de la imagen de la card principal
                         const cardImagenSrc = `${s3BaseUrlCards}${postre.imagen_png}`;
-                        console.log("[DEBUG] Imagen de card principal:", cardImagenSrc); // DEBUG
+                        console.log("[DEBUG] Imagen de card principal:", cardImagenSrc);
 
                         // Normalizar el nombre del postre para la búsqueda en el mapa `detailImageUrls`
                         const normalizedPostreNombre = postre.nombre.toLowerCase().trim();
-                        console.log("[DEBUG] Nombre original del postre:", postre.nombre); // DEBUG
-                        console.log("[DEBUG] Nombre normalizado para búsqueda:", normalizedPostreNombre); // DEBUG
+                        console.log("[DEBUG] Nombre original del postre:", postre.nombre);
+                        console.log("[DEBUG] Nombre normalizado para búsqueda:", normalizedPostreNombre);
 
                         // Determinar la URL de la imagen de detalle para el popup
                         // Si existe una URL específica en `detailImageUrls` para el nombre normalizado, se usa esa.
                         // De lo contrario, se usa la misma imagen de la card principal.
                         const popupImageSrc = detailImageUrls[normalizedPostreNombre] || cardImagenSrc;
-                        console.log("[DEBUG] URL de popup seleccionada:", popupImageSrc); // DEBUG
+                        console.log("[DEBUG] URL de popup seleccionada:", popupImageSrc);
 
                         card.innerHTML = `
                             <img src="${cardImagenSrc}" alt="${postre.nombre}">
