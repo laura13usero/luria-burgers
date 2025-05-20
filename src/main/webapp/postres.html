@@ -25,72 +25,201 @@
             background: rgba(0, 0, 0, 0.7); /* Fondo oscuro semitransparente */
             justify-content: center;
             align-items: center;
-            z-index: 1000; /* Asegura que esté por encima de otros elementos */
+            z-index: 1000; /* Asegura que esté por encima de todo */
         }
 
         .popup-content {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             position: relative;
-            max-width: 500px;
-            width: 90%;
-            transform: translateY(-20px); /* Para la animación */
-            transition: transform 0.3s ease-out;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: auto; /* Para scroll si la imagen es muy grande */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .popup-overlay.active .popup-content {
-            transform: translateY(0);
+        .popup-content img {
+            max-width: 100%;
+            max-height: 80vh; /* Máximo 80% de la altura de la ventana */
+            display: block;
+            margin-bottom: 15px;
         }
 
         .popup-close {
             position: absolute;
             top: 10px;
-            right: 15px;
+            right: 10px;
             font-size: 24px;
             cursor: pointer;
-            color: #aaa;
+            color: #333;
+            background: none;
+            border: none;
+            padding: 5px;
         }
 
         .popup-close:hover {
-            color: #666;
+            color: #D05A31;
         }
 
-        .popup-content h2 {
-            color: #333;
-            margin-bottom: 20px;
-            font-family: 'Shippori Mincho B1', serif;
-            font-size: 1.8em;
-        }
-
-        .popup-content p {
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 25px;
-        }
-
-        .popup-content button {
-            background-color: #ff6f61; /* Un color de botón vibrante */
+        /* Estilo para el botón "Ver Detalles" */
+        .details-button {
+            background-color: #5cb85c; /* Un verde amigable */
             color: white;
-            padding: 10px 20px;
+            padding: 8px 12px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 0.9em;
+            margin-top: 10px;
             transition: background-color 0.3s ease;
+            width: 100%; /* Para que ocupe todo el ancho disponible */
         }
 
-        .popup-content button:hover {
-            background-color: #e05c50;
+        .details-button:hover {
+            background-color: #4cae4c;
         }
+        /* --- FIN ESTILOS PARA EL POPUP --- */
+
     </style>
+
+    <script>
+        // Mapeo de nombres de postres a URLs de imágenes de detalles en S3
+        // Las claves deben coincidir EXACTAMENTE con el nombre normalizado (toLowerCase().trim())
+        // que viene de tu backend.
+        // Las URLs son las imágenes de DETALLE que quieres mostrar en el popup.
+        const detailImageUrls = {
+            "caja mochi": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/caja_mochi.png",
+            "mochis": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/caja_mochi.png",
+            "mochi box": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/caja_mochi.png", // Nuevo: Añadido según tu debug
+            "cheesecake": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/cheesecake.png",
+            "matcha cheesecake": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/cheesecake.png", // Nuevo: Añadido según tu debug
+            "dorayaki": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/dorayaki.png",
+            "dorayaki ice cream": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/dorayaki.png" // Nuevo: Añadido según tu debug
+        };
+
+
+        // Función para abrir el popup
+        function openPopup(imageSrc) {
+            const popupOverlay = document.getElementById('popupOverlay');
+            const popupImage = document.getElementById('popupImage');
+            popupImage.src = imageSrc; // Establece la imagen correcta
+            popupOverlay.style.display = 'flex'; // Mostrar el popup
+        }
+
+        // Función para cerrar el popup
+        function closePopup() {
+            const popupOverlay = document.getElementById('popupOverlay');
+            popupOverlay.style.display = 'none'; // Ocultar el popup
+            document.getElementById('popupImage').src = ''; // Opcional: limpia la imagen para liberar memoria
+        }
+
+        async function obtenerPostres() {
+            try {
+                const response = await fetch("control?action=getPostres");
+                const data = await response.json();
+                const container = document.querySelector('.cards-container');
+                container.innerHTML = '';
+
+                // URL base para las imágenes de las cards principales.
+                const s3BaseUrlCards = "https://luriaburgers.s3.us-east-1.amazonaws.com/menu/cards_postres_animacion/";
+
+                if (data.length > 0) {
+                    data.forEach(postre => {
+                        const card = document.createElement('div');
+                        card.classList.add('card');
+
+                        // Construye la URL de la imagen de la card principal
+                        const cardImagenSrc = `${s3BaseUrlCards}${postre.imagen_png}`;
+                        console.log("[DEBUG] Imagen de card principal:", cardImagenSrc);
+
+                        // Normalizar el nombre del postre para la búsqueda en el mapa `detailImageUrls`
+                        const normalizedPostreNombre = postre.nombre.toLowerCase().trim();
+                        console.log("[DEBUG] Nombre original del postre:", postre.nombre);
+                        console.log("[DEBUG] Nombre normalizado para búsqueda:", normalizedPostreNombre);
+
+                        // Determinar la URL de la imagen de detalle para el popup
+                        // Si existe una URL específica en `detailImageUrls` para el nombre normalizado, se usa esa.
+                        // De lo contrario, se usa la misma imagen de la card principal.
+                        const popupImageSrc = detailImageUrls[normalizedPostreNombre] || cardImagenSrc;
+                        console.log("[DEBUG] URL de popup seleccionada:", popupImageSrc);
+
+                        card.innerHTML = `
+                            <img src="${cardImagenSrc}" alt="${postre.nombre}">
+                            <div class="card-info">
+                                <h2>${postre.nombre}</h2>
+                                <button class="details-button" onclick="openPopup('${popupImageSrc}')">Ver detalles</button>
+                                <button class="add-to-cart-button" onclick="agregarAlCarrito(${postre.id}, 'postre')">
+                                    Add to cart - S/ ${postre.precio.toFixed(2)}
+                                </button>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                } else {
+                    container.innerHTML = '<p>No se encontraron postres.</p>';
+                }
+            } catch (error) {
+                console.error('Error al obtener los postres:', error);
+                container.innerHTML = '<p>Error al cargar los postres.</p>';
+            }
+        }
+
+        async function agregarAlCarrito(idProducto, categoria) {
+            try {
+                const response = await fetch("control?action=isUserLoggedIn");
+                const data = await response.json();
+
+                if (data.loggedIn) {
+                    const addToCartResponse = await fetch("control?action=addToCart", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        },
+                        body: `idProducto=${idProducto}&categoria=${categoria}`,
+                    });
+
+                    const addToCartResult = await addToCartResponse.json();
+
+                    if (addToCartResult.status === "ok") {
+                        window.location.href = addToCartResult.redirect;
+                    } else if (addToCartResult.status === "login_required") {
+                        window.location.href = addToCartResult.redirect;
+                    } else {
+                        alert("Error al añadir al carrito: " + addToCartResult.message);
+                    }
+                } else {
+                    window.location.href = data.redirect;
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Error al procesar la solicitud.");
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', obtenerPostres);
+    </script>
 </head>
 
 <body>
-<div class="menu-header">
-    <button class="login-button" id="loginRegisterButton"></button>
+
+<div class="top-overlay"></div>
+
+<div class="corner-links">
+    <a href="login.html" class="corner-link">
+        <img src="https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/login.png" alt="Login">
+    </a>
+    <a href="carrito.html" class="corner-link">
+        <img src="https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/carrito_icono.png" alt="Carrito">
+    </a>
+</div>
+
+
+<div class="menu-container-wrapper">
+    <button class="menu-arrow menu-arrow-left" id="menuArrowLeft"></button>
     <nav class="menu-container" id="menuContainer">
         <a href="hamburguesas.html" class="menu-item"><img src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/hamburguesas.png"
                                                            alt="Hamburguesas">
@@ -117,106 +246,14 @@
     </div>
 </div>
 
-<div id="popupOverlay" class="popup-overlay">
-    <div class="popup-content">
-        <span class="popup-close" id="popupClose">&times;</span>
-        <h2 id="popupTitle"></h2>
-        <p id="popupMessage"></p>
-        <button id="popupButton"></button>
+<div id="popupOverlay" class="popup-overlay" onclick="closePopup()">
+    <div class="popup-content" onclick="event.stopPropagation()">
+        <button class="popup-close" onclick="closePopup()">✖</button>
+        <img id="popupImage" src="" alt="Detalles del Producto">
     </div>
 </div>
 
-<script>
-    // Función para mostrar el popup
-    function showPopup(title, message, buttonText, buttonAction) {
-        document.getElementById('popupTitle').innerText = title;
-        document.getElementById('popupMessage').innerText = message;
-        document.getElementById('popupButton').innerText = buttonText;
-        document.getElementById('popupButton').onclick = buttonAction;
-        document.getElementById('popupOverlay').style.display = 'flex';
-        setTimeout(() => {
-            document.getElementById('popupOverlay').classList.add('active');
-        }, 10); // Pequeño retraso para la transición
-    }
 
-    // Función para ocultar el popup
-    function hidePopup() {
-        document.getElementById('popupOverlay').classList.remove('active');
-        setTimeout(() => {
-            document.getElementById('popupOverlay').style.display = 'none';
-        }, 300); // Coincide con la duración de la transición
-    }
-
-    // Event listener para cerrar el popup
-    document.getElementById('popupClose').addEventListener('click', hidePopup);
-
-    // Función para manejar el clic en añadir al carrito
-    async function addToCart(idProducto, categoria) {
-        try {
-            const response = await fetch("control?action=isUserLoggedIn");
-            const data = await response.json();
-
-            if (data.loggedIn) {
-                const addToCartResponse = await fetch("control?action=addToCart", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                    },
-                    body: `idProducto=${idProducto}&categoria=${categoria}`,
-                });
-
-                const addToCartResult = await addToCartResponse.json();
-
-                if (addToCartResult.status === "ok") {
-                    showPopup("Producto Añadido", "El producto se ha añadido a tu carrito correctamente.", "Continuar Comprando", hidePopup);
-                } else if (addToCartResult.status === "login_required") {
-                    showPopup("Iniciar Sesión", "Para añadir productos al carrito, debes iniciar sesión.", "Ir a Iniciar Sesión", () => {
-                        window.location.href = addToCartResult.redirect;
-                    });
-                } else {
-                    showPopup("Error", addToCartResult.message || "Error al añadir al carrito.", "Cerrar", hidePopup);
-                }
-            } else {
-                showPopup("Iniciar Sesión", "Para añadir productos al carrito, debes iniciar sesión.", "Ir a Iniciar Sesión", () => {
-                    window.location.href = 'login.html'; // Redirigir a login.html si no está logueado
-                });
-            }
-        } catch (error) {
-            console.error("Error:", error);
-            showPopup("Error", "Error al procesar la solicitud.", "Cerrar", hidePopup);
-        }
-    }
-
-    // Nueva función para el botón de login/registro
-    document.addEventListener('DOMContentLoaded', () => {
-        const loginRegisterButton = document.getElementById('loginRegisterButton');
-
-        if (loginRegisterButton) {
-            loginRegisterButton.addEventListener('click', async () => {
-                try {
-                    const response = await fetch('control?action=isUserLoggedIn');
-                    const data = await response.json();
-
-                    if (data.loggedIn) {
-                        // Si el usuario está logueado, redirigir a una página en blanco
-                        window.location.href = 'user.html';
-                    } else {
-                        // Si el usuario no está logueado, redirigir al formulario de login
-                        window.location.href = 'login.html';
-                    }
-                } catch (error) {
-                    console.error('Error al verificar el estado de login:', error);
-                    // En caso de error, puedes redirigir por defecto al login o mostrar un mensaje
-                    window.location.href = 'login.html';
-                }
-            });
-        }
-        // Llamada inicial para cargar los postres cuando el DOM esté listo
-        obtenerPostres();
-    });
-</script>
-
-<script src="js/postres.js"></script>
 
 </body>
 
