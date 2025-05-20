@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luría | Nuestras Bebidas</title>
+    <title>Luría | Nuestros Postres</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/home.css">
@@ -13,7 +14,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap');
 
-        /* Estilos para el Popup */
+        /* --- ESTILOS PARA EL POPUP --- */
         .popup-overlay {
             display: none; /* Oculto por defecto */
             position: fixed;
@@ -81,19 +82,20 @@
         .details-button:hover {
             background-color: #4cae4c;
         }
+        /* --- FIN ESTILOS PARA EL POPUP --- */
+
     </style>
 
     <script>
-        // Mapeo de nombres de bebidas a URLs de imágenes de detalles en S3
-        // Las claves están en minúsculas y sin espacios iniciales/finales para una búsqueda más robusta
+        // Mapeo de nombres de postres a URLs de imágenes de detalles en S3
+        // Las claves deben coincidir EXACTAMENTE con el nombre normalizado (toLowerCase().trim())
+        // que viene de tu backend.
         const detailImageUrls = {
-            "iced hojicha": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/iced_hojicha.png",
-            "matcha limonada": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/matcha_limonada.png",
-            "mojito prueba": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/mojito_prueba.png",
-            "ramune uva": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/ramune_uva.png",
-            "yuzu soda": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/yuzu_soda.png"
-            // Añade aquí más mapeos si tienes otras bebidas que quieres con popup de detalle
-            // "nombre de la bebida en minusculas": "URL_COMPLETA_DE_LA_IMAGEN_DE_DETALLE_EN_S3.png"
+            "caja mochi": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/caja_mochi.png",
+            "cheesecake": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/cheesecake.png",
+            "dorayakis": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/dorayaki.png"
+            // Añade aquí más mapeos si tienes otros postres que quieres con popup de detalle
+            // "nombre-exacto-normalizado-del-backend": "URL_COMPLETA_DE_LA_IMAGEN_DE_DETALLE_EN_S3.png"
         };
 
 
@@ -112,95 +114,96 @@
             document.getElementById('popupImage').src = ''; // Opcional: limpia la imagen para liberar memoria
         }
 
-        async function obtenerBebidas() {
-          try {
-            const response = await fetch("control?action=getBebidas");
-            const data = await response.json();
-            const container = document.querySelector('.cards-container');
-            container.innerHTML = '';
+        async function obtenerPostres() {
+            try {
+                const response = await fetch("control?action=getPostres");
+                const data = await response.json();
+                const container = document.querySelector('.cards-container');
+                container.innerHTML = '';
 
-            const s3BaseUrlCards = "https://luriaburgers.s3.us-east-1.amazonaws.com/menu/cards_bebidas_animacion/"; // URL para las imágenes de las cards
+                // URL base para las imágenes de las cards (ajusta si es diferente o la sacas del backend)
+                // Asumiendo una estructura similar a las bebidas, si no es correcta, por favor corrígela
+                const s3BaseUrlCards = "https://luriaburgers.s3.us-east-1.amazonaws.com/menu/cards_postres_animacion/";
 
-            if (data.length > 0) {
-              data.forEach(bebida => {
-                const card = document.createElement('div');
-                card.classList.add('card');
+                if (data.length > 0) {
+                    data.forEach(postre => {
+                        const card = document.createElement('div');
+                        card.classList.add('card');
 
-                // Imagen para la card principal
-                const cardImagenSrc = `${s3BaseUrlCards}${bebida.imagen_png}`;
-                console.log("[DEBUG] Imagen de card principal:", cardImagenSrc);
+                        // Imagen para la card principal
+                        const cardImagenSrc = `${s3BaseUrlCards}${postre.imagen_png}`;
+                        console.log("[DEBUG] Imagen de card principal:", cardImagenSrc);
 
-                // Normalizar el nombre de la bebida para la búsqueda en el mapa
-                const normalizedBebidaNombre = bebida.nombre.toLowerCase().trim();
+                        // Normalizar el nombre del postre para la búsqueda en el mapa
+                        const normalizedPostreNombre = postre.nombre.toLowerCase().trim();
 
-                // *** LÍNEAS DE DEPURACIÓN AÑADIDAS ***
-                console.log("[DEBUG] Nombre original de la bebida:", bebida.nombre);
-                console.log("[DEBUG] Nombre normalizado para búsqueda:", normalizedBebidaNombre);
+                        // Líneas de depuración (puedes eliminarlas una vez que todo funcione)
+                        console.log("[DEBUG] Nombre original del postre:", postre.nombre);
+                        console.log("[DEBUG] Nombre normalizado para búsqueda:", normalizedPostreNombre);
 
-                // Determinar la URL de la imagen de detalle para el popup
-                // Priorizamos la URL de la lista 'detailImageUrls' si existe un mapeo para el nombre normalizado
-                const popupImageSrc = detailImageUrls[normalizedBebidaNombre] || cardImagenSrc;
-                // *** LÍNEA DE DEPURACIÓN AÑADIDA ***
-                console.log("[DEBUG] URL de popup seleccionada:", popupImageSrc);
+                        // Determinar la URL de la imagen de detalle para el popup
+                        // Priorizamos la URL de la lista 'detailImageUrls' si existe un mapeo para el nombre normalizado
+                        const popupImageSrc = detailImageUrls[normalizedPostreNombre] || cardImagenSrc;
+                        // Línea de depuración (puedes eliminarlas una vez que todo funcione)
+                        console.log("[DEBUG] URL de popup seleccionada:", popupImageSrc);
 
-
-                card.innerHTML = `
-                  <img src="${cardImagenSrc}" alt="${bebida.nombre}">
-                  <div class="card-info">
-                    <h2>${bebida.nombre}</h2>
-                    <button class="details-button" onclick="openPopup('${popupImageSrc}')">Ver detalles</button>
-                    <button class="add-to-cart-button" onclick="agregarAlCarrito(${bebida.id}, 'bebida')">
-                      Add to cart - S/ ${bebida.precio.toFixed(2)}
-                    </button>
-                  </div>
-                `;
-                container.appendChild(card);
-              });
-            } else {
-              container.innerHTML = '<p>No se encontraron bebidas.</p>';
+                        card.innerHTML = `
+                            <img src="${cardImagenSrc}" alt="${postre.nombre}">
+                            <div class="card-info">
+                                <h2>${postre.nombre}</h2>
+                                <button class="details-button" onclick="openPopup('${popupImageSrc}')">Ver detalles</button>
+                                <button class="add-to-cart-button" onclick="agregarAlCarrito(${postre.id}, 'postre')">
+                                    Add to cart - S/ ${postre.precio.toFixed(2)}
+                                </button>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                } else {
+                    container.innerHTML = '<p>No se encontraron postres.</p>';
+                }
+            } catch (error) {
+                console.error('Error al obtener los postres:', error);
+                container.innerHTML = '<p>Error al cargar los postres.</p>';
             }
-          } catch (error) {
-            console.error('Error al obtener las bebidas:', error);
-            container.innerHTML = '<p>Error al cargar las bebidas.</p>';
-          }
         }
 
         async function agregarAlCarrito(idProducto, categoria) {
-          try {
-            const response = await fetch("control?action=isUserLoggedIn");
-            const data = await response.json();
+            try {
+                const response = await fetch("control?action=isUserLoggedIn");
+                const data = await response.json();
 
-            if (data.loggedIn) {
-              const addToCartResponse = await fetch("control?action=addToCart", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: `idProducto=${idProducto}&categoria=${categoria}`,
-              });
+                if (data.loggedIn) {
+                    const addToCartResponse = await fetch("control?action=addToCart", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        },
+                        body: `idProducto=${idProducto}&categoria=${categoria}`,
+                    });
 
-              const addToCartResult = await addToCartResponse.json();
+                    const addToCartResult = await addToCartResponse.json();
 
-              if (addToCartResult.status === "ok") {
-                window.location.href = addToCartResult.redirect;
-              } else if (addToCartResult.status === "login_required") {
-                window.location.href = addToCartResult.redirect;
-              }
-              else {
-                alert("Error al añadir al carrito: " + addToCartResult.message);
-              }
-            } else {
-              window.location.href = data.redirect;
+                    if (addToCartResult.status === "ok") {
+                        window.location.href = addToCartResult.redirect;
+                    } else if (addToCartResult.status === "login_required") {
+                        window.location.href = addToCartResult.redirect;
+                    } else {
+                        alert("Error al añadir al carrito: " + addToCartResult.message);
+                    }
+                } else {
+                    window.location.href = data.redirect;
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Error al procesar la solicitud.");
             }
-          } catch (error) {
-            console.error("Error:", error);
-            alert("Error al procesar la solicitud.");
-          }
         }
 
-        document.addEventListener('DOMContentLoaded', obtenerBebidas);
+        document.addEventListener('DOMContentLoaded', obtenerPostres);
     </script>
 </head>
+
 <body>
 
 <div class="top-overlay"></div>
@@ -216,12 +219,22 @@
 
 
 <div class="menu-container-wrapper">
-    <button class="menu-arrow menu-arrow-left"  id="menuArrowLeft"></button>
-    <nav    class="menu-container"              id="menuContainer">
-        <a href="hamburguesas.html"      class="menu-item"><img src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/hamburguesas.png" alt="Hamburguesas"><div class="menu-background"></div></a>
-        <a href="guarniciones.html" class="menu-item"><img src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/complementos.png" alt="Complementos"><div class="menu-background"></div></a>
-        <a href="postres.html"      class="menu-item"><img src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/postres.png"      alt="Postres"><div class="menu-background"></div></a>
-        <a href="bebidas.html"      class="menu-item active"><img src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/bebidas.png"      alt="Bebidas"><div class="menu-background"></div></a>
+    <button class="menu-arrow menu-arrow-left" id="menuArrowLeft"></button>
+    <nav class="menu-container" id="menuContainer">
+        <a href="hamburguesas.html" class="menu-item"><img src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/hamburguesas.png"
+                                                           alt="Hamburguesas">
+            <div class="menu-background"></div>
+        </a>
+        <a href="guarniciones.html" class="menu-item"><img src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/complementos.png"
+                                                           alt="Complementos">
+            <div class="menu-background"></div>
+        </a>
+        <a href="postres.html" class="menu-item active"><img src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/postres.png" alt="Postres">
+            <div class="menu-background"></div>
+        </a>
+        <a href="bebidas.html" class="menu-item"><img src="https://luriaburgers.s3.us-east-1.amazonaws.com/nav_icons/bebidas.png" alt="Bebidas">
+            <div class="menu-background"></div>
+        </a>
     </nav>
     <button class="menu-arrow menu-arrow-right" id="menuArrowRight"></button>
 </div>
@@ -233,7 +246,6 @@
     </div>
 </div>
 
-{/* Estructura del Popup (fuera del contenedor de cards) */}
 <div id="popupOverlay" class="popup-overlay" onclick="closePopup()">
     <div class="popup-content" onclick="event.stopPropagation()">
         <button class="popup-close" onclick="closePopup()">✖</button>
@@ -242,4 +254,5 @@
 </div>
 
 </body>
+
 </html>
