@@ -90,11 +90,12 @@
         // Mapeo de nombres de postres a URLs de imágenes de detalles en S3
         // Las claves deben coincidir EXACTAMENTE con el nombre normalizado (toLowerCase().trim())
         // que viene de tu backend.
+        // Las URLs son las imágenes de DETALLE que quieres mostrar en el popup.
         const detailImageUrls = {
             "caja mochi": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/caja_mochi.png",
             "cheesecake": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/cheesecake.png",
             "dorayakis": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_postres/dorayaki.png"
-            // Añade aquí más mapeos si tienes otros postres que quieres con popup de detalle
+            // Si hay otros postres en el futuro con imágenes de detalle específicas, añádelos aquí:
             // "nombre-exacto-normalizado-del-backend": "URL_COMPLETA_DE_LA_IMAGEN_DE_DETALLE_EN_S3.png"
         };
 
@@ -121,8 +122,8 @@
                 const container = document.querySelector('.cards-container');
                 container.innerHTML = '';
 
-                // URL base para las imágenes de las cards (ajusta si es diferente o la sacas del backend)
-                // Asumiendo una estructura similar a las bebidas, si no es correcta, por favor corrígela
+                // URL base para las imágenes de las cards principales.
+                // Esta es la ruta donde se espera que estén las imágenes PNG de las cards (ej. cheesecake.png, mochi.png, etc.)
                 const s3BaseUrlCards = "https://luriaburgers.s3.us-east-1.amazonaws.com/menu/cards_postres_animacion/";
 
                 if (data.length > 0) {
@@ -130,22 +131,22 @@
                         const card = document.createElement('div');
                         card.classList.add('card');
 
-                        // Imagen para la card principal
+                        // Construye la URL de la imagen de la card principal
+                        // Asumimos que `postre.imagen_png` contiene el nombre del archivo PNG (ej. "cheesecake.png")
                         const cardImagenSrc = `${s3BaseUrlCards}${postre.imagen_png}`;
-                        console.log("[DEBUG] Imagen de card principal:", cardImagenSrc);
+                        // console.log("[DEBUG] Imagen de card principal:", cardImagenSrc); // Para depuración
 
-                        // Normalizar el nombre del postre para la búsqueda en el mapa
+                        // Normalizar el nombre del postre para la búsqueda en el mapa `detailImageUrls`
                         const normalizedPostreNombre = postre.nombre.toLowerCase().trim();
 
-                        // Líneas de depuración (puedes eliminarlas una vez que todo funcione)
-                        console.log("[DEBUG] Nombre original del postre:", postre.nombre);
-                        console.log("[DEBUG] Nombre normalizado para búsqueda:", normalizedPostreNombre);
+                        // console.log("[DEBUG] Nombre original del postre:", postre.nombre); // Para depuración
+                        // console.log("[DEBUG] Nombre normalizado para búsqueda:", normalizedPostreNombre); // Para depuración
 
                         // Determinar la URL de la imagen de detalle para el popup
-                        // Priorizamos la URL de la lista 'detailImageUrls' si existe un mapeo para el nombre normalizado
+                        // Si existe una URL específica en `detailImageUrls` para el nombre normalizado, se usa esa.
+                        // De lo contrario, se usa la misma imagen de la card principal.
                         const popupImageSrc = detailImageUrls[normalizedPostreNombre] || cardImagenSrc;
-                        // Línea de depuración (puedes eliminarlas una vez que todo funcione)
-                        console.log("[DEBUG] URL de popup seleccionada:", popupImageSrc);
+                        // console.log("[DEBUG] URL de popup seleccionada:", popupImageSrc); // Para depuración
 
                         card.innerHTML = `
                             <img src="${cardImagenSrc}" alt="${postre.nombre}">
