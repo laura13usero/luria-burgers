@@ -236,7 +236,7 @@
                 const addToCartResult = await addToCartResponse.json();
 
                 if (addToCartResult.status === "ok") {
-                    window.location.href = addToCartResult.redirect;
+                        window.location.href = addToCartResult.redirect;
                 } else if (addToCartResult.status === "login_required") {
                     window.location.href = addToCartResult.redirect;
                 } else {
@@ -252,7 +252,7 @@
     }
 
     // Llamada inicial para cargar las hamburguesas cuando el DOM esté listo
-    document.addEventListener('DOMContentLoaded', () => obtenerHamburguesas()); //
+    document.addEventListener('DOMContentLoaded', () => obtenerHamburguesas());
 </script>
 
 <script src="js/hamburguesas.js"></script>
