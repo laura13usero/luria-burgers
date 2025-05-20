@@ -11,7 +11,6 @@
 <body>
 
 <div class="ticket">
-  <h1>Order details</h1>
 
   <div id="contenido-resumen">
     <p>Loading order details...</p>
@@ -19,27 +18,27 @@
 
   <div id="paypal-button-container" style="margin-top: 20px;"></div>
 
-  <button onclick="window.location.href = 'carrito.html'" style="margin-top: 20px;">Volver al carrito</button>
+  <button onclick="window.location.href = 'carrito.html'" style="margin-top: 20px;">Back to cart</button>
 </div>
 
 <script>
   async function cargarResumenCompra() {
       try {
           const response = await fetch('/webapp-1.0-SNAPSHOT/control?action=getResumenCompra');
-          if (!response.ok) throw new Error('Error al obtener el resumen.');
+          if (!response.ok) throw new Error('Failed in loading cart details.');
 
           const data = await response.json();
           const contenedor = document.getElementById('contenido-resumen');
 
           if (!data.carrito || data.carrito.length === 0) {
-              contenedor.innerHTML = '<p>Tu carrito está vacío.</p>';
+              contenedor.innerHTML = '<p>Your cart is empty.</p>';
               return;
           }
 
           // Crear tabla de productos
           let tablaHTML = `
               <table border="1" cellpadding="5">
-                  <tr><th>Producto</th><th>Precio</th></tr>
+                  <tr><th>Producto</th><th>Price</th></tr>
           `;
 
           data.carrito.forEach(producto => {
@@ -53,7 +52,7 @@
 
           tablaHTML += `
               <tr>
-                  <td><strong>Total a pagar</strong></td>
+                  <td><strong>Total</strong></td>
                   <td><strong>$${data.total.toFixed(2)}</strong></td>
               </tr>
               </table>
@@ -82,8 +81,8 @@
           }).render('#paypal-button-container');
 
       } catch (error) {
-          console.error('Error al cargar el resumen de compra:', error);
-          document.getElementById('contenido-resumen').innerHTML = '<p>Error al cargar el resumen.</p>';
+          console.error('Failed loading cart details:', error);
+          document.getElementById('contenido-resumen').innerHTML = '<p>Failed loading cart details.</p>';
       }
   }
 
