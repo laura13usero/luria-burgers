@@ -157,10 +157,6 @@ body {
   transition: background .3s;
   z-index: 1;
 }
-.menu-item:hover .menu-background,
-.menu-item.active .menu-background {
-  background: rgba(208, 90, 49, 0.8);
-}
 
 /* ───────────────────────────────────
    TABLET (≥ 768 px)
