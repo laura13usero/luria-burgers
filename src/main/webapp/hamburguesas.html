@@ -172,7 +172,9 @@
         document.getElementById('popupImage').src = '';
     }
 
-    // Modificación de obtenerHamburguesas para incluir el botón "Ver detalles" y la lógica del popup (MODIFICADA)
+    // AHORA SÍ, la función obtenerHamburguesas está diseñada para INCLUIR el botón "Ver detalles"
+    // manteniendo la estructura original de tu tarjeta y asumiendo que cualquier funcionalidad de rating
+    // se maneja por 'js/hamburguesas.js' o CSS/atributos de datos.
     async function obtenerHamburguesas(filtro = '') {
         try {
             const response = await fetch("control?action=getHamburguesas" + (filtro ? `&filtro=${filtro}` : ''));
@@ -197,6 +199,7 @@
                     const popupImageSrc = detailImageUrls[normalizedHamburguesaNombre] || cardImagenSrc;
                     // console.log("[DEBUG] URL de popup seleccionada:", popupImageSrc); // Mantengo los logs de debug
 
+                    // Aquí está la clave: construimos el innerHTML para incluir AMBOS botones.
                     card.innerHTML = `
                         <img src="${cardImagenSrc}" alt="${hamburguesa.nombre}">
                         <div class="card-info">
