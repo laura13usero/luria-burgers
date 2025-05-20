@@ -4,53 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="css/index.css" />
-  <title>Welcome</title>
+  <link rel="icon" href="https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/flor.png" type="image/png">
+  <title>Welcome to Luría's Burger!</title>
 </head>
 <body>
 <div class="container">
-  <button onclick="location.href='home.html'">View Menu</button>
+  <button onclick="location.href='hamburguesas.html'">View Menu</button>
 </div>
-
-<script>
-  async function comprobarSesion() {
-    try {
-      const res = await fetch('/webapp-1.0-SNAPSHOT/control?action=getUsuarioLogueado');
-      const data = await res.json();
-
-      const userStatus = document.getElementById('userStatus');
-      const authButtons = document.getElementById('authButtons');
-      const logoutContainer = document.getElementById('logoutContainer');
-
-      if (data.status === "ok") {
-        userStatus.innerHTML = `<p>Hello, <strong>${data.nombre}</strong>. You are logged in.</p>`;
-        authButtons.innerHTML = '';
-        logoutContainer.innerHTML = `
-          <button onclick="logout()">Log out</button>
-        `;
-      } else {
-        userStatus.innerHTML = `<p>Welcome, Please log in to access more features.</p>`;
-        authButtons.innerHTML = `
-          <button onclick="window.location.href = 'registro.html'">Sign Up!</button>
-          <button onclick="window.location.href = 'login.html'">Log In</button>
-        `;
-        logoutContainer.innerHTML = '';
-      }
-
-    } catch (e) {
-      console.error('Error fetching session data', e);
-    }
-  }
-
-  async function logout() {
-    await fetch('/webapp-1.0-SNAPSHOT/control', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: 'action=logout'
-    });
-    window.location.href = 'index.html';
-  }
-
-  comprobarSesion();
-</script>
 </body>
 </html>
