@@ -85,15 +85,16 @@
 
     <script>
         // Mapeo de nombres de bebidas a URLs de imágenes de detalles en S3
-        // Las claves están en minúsculas y sin espacios iniciales/finales para una búsqueda más robusta
+        // IMPORTANTE: Las claves deben coincidir EXACTAMENTE con el nombre normalizado (toLowerCase().trim())
+        // que viene de tu backend.
         const detailImageUrls = {
-            "iced hojicha": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/iced_hojicha.png",
-            "matcha limonada": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/matcha_limonada.png",
-            "mojito prueba": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/mojito_prueba.png",
-            "ramune uva": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/ramune_uva.png",
+            "iced hojicha latte": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/iced_hojicha.png",
+            "matcha lemonade": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/matcha_limonada.png",
+            "sake mojito": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/mojito_prueba.png",
+            "ramune": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/ramune_uva.png",
             "yuzu soda": "https://luriaburgers.s3.us-east-1.amazonaws.com/menu_real/cards_bebidas/yuzu_soda.png"
-            // Añade aquí más mapeos si tienes otras bebidas que quieres con popup de detalle
-            // "nombre de la bebida en minusculas": "URL_COMPLETA_DE_LA_IMAGEN_DE_DETALLE_EN_S3.png"
+            // Si tienes otras bebidas que quieres con popup de detalle, añádelas aquí:
+            // "nombre-exacto-normalizado-del-backend": "URL_COMPLETA_DE_LA_IMAGEN_DE_DETALLE_EN_S3.png"
         };
 
 
@@ -133,14 +134,14 @@
                 // Normalizar el nombre de la bebida para la búsqueda en el mapa
                 const normalizedBebidaNombre = bebida.nombre.toLowerCase().trim();
 
-                // *** LÍNEAS DE DEPURACIÓN AÑADIDAS ***
+                // Líneas de depuración (puedes eliminarlas una vez que todo funcione)
                 console.log("[DEBUG] Nombre original de la bebida:", bebida.nombre);
                 console.log("[DEBUG] Nombre normalizado para búsqueda:", normalizedBebidaNombre);
 
                 // Determinar la URL de la imagen de detalle para el popup
                 // Priorizamos la URL de la lista 'detailImageUrls' si existe un mapeo para el nombre normalizado
                 const popupImageSrc = detailImageUrls[normalizedBebidaNombre] || cardImagenSrc;
-                // *** LÍNEA DE DEPURACIÓN AÑADIDA ***
+                // Línea de depuración (puedes eliminarlas una vez que todo funcione)
                 console.log("[DEBUG] URL de popup seleccionada:", popupImageSrc);
 
 
