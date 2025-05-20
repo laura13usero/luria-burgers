@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background-image: url('https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/index_fondo.jpg');
+  background-size: cover;
+  background-position: left;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  body {
+    background-image: url('https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/index_grande.png');
+  }
+}
+
+.container {
+  text-align: center;
+}
+
+button {
+  background-color: #D05A31;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  font-family: 'Montserrat', sans-serif;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 70vh;
+}
+
+button:hover {
+  opacity: 0.9;
+}

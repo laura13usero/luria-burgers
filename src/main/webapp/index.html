@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Home Page</title>
+  <title>Welcome</title>
   <style>
     body {
       background-image: url('https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/index.png');
@@ -11,42 +11,65 @@
       background-repeat: no-repeat; /* Para evitar que la imagen se repita */
       /* Opcional: Ajustar el color del texto si la imagen de fondo dificulta la lectura */
       color: white; /* Por ejemplo, blanco */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh; /* Asegura que el cuerpo ocupe al menos toda la altura de la ventana */
+      margin: 0;
+      font-family: sans-serif; /* Puedes añadir una fuente si no tienes 'index.css' */
     }
     /* Opcional: Puedes añadir estilos para otros elementos si es necesario para mejorar la legibilidad con el fondo */
     h1 {
       background-color: rgba(0, 0, 0, 0.5); /* Añade un fondo semitransparente al título */
       padding: 10px;
+      margin-bottom: 20px;
     }
     button {
       /* Puedes ajustar el estilo de los botones para que se vean bien con el fondo */
       padding: 8px 15px;
-      margin-right: 5px;
+      margin: 5px; /* Ajusta el margen para los botones */
       border: none;
       cursor: pointer;
+      background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente para los botones */
+      color: black;
+      border-radius: 5px;
     }
-    button[style*="background-color: #333; color: #fff;"] {
-      /* Mantener el estilo específico del botón de Login Intranet */
+    button[onclick*="loginintranet.html"] { /* Estilo específico para Login Intranet */
+      background-color: #333;
+      color: #fff;
+    }
+    .container {
+      text-align: center;
+    }
+    #userStatus, #authButtons, #logoutContainer {
+        margin-top: 10px;
+        text-align: center;
     }
   </style>
 </head>
 <body>
-<h1>Welcome to the Home Page</h1>
+<div class="container">
+  <h1>Welcome to the Home Page</h1>
 
-<div id="userStatus"></div>
-<div id="authButtons"></div>
+  <div id="userStatus"></div>
+  <div id="authButtons"></div>
 
-<button onclick="window.location.href = 'loginintranet.html'" style="background-color: #333; color: #fff;">
-  Login Intranet
-</button>
+  <button onclick="window.location.href = 'loginintranet.html'">
+    Login Intranet
+  </button>
 
-<button onclick="window.location.href = 'hamburguesas.html'">Burgers</button>
-<button onclick="window.location.href = 'bebidas.html'">Drinks</button>
-<button onclick="window.location.href = 'guarniciones.html'">Side Dishes</button>
-<button onclick="window.location.href = 'postres.html'">Desserts</button>
+  <button onclick="window.location.href = 'hamburguesas.html'">Burgers</button>
+  <button onclick="window.location.href = 'bebidas.html'">Drinks</button>
+  <button onclick="window.location.href = 'guarniciones.html'">Side Dishes</button>
+  <button onclick="window.location.href = 'postres.html'">Desserts</button>
 
-<button onclick="window.location.href = 'carrito.html'" style="margin-top: 10px;">Cart</button>
+  <button onclick="window.location.href = 'carrito.html'">Cart</button>
 
-<div id="logoutContainer" style="margin-top: 20px;"></div>
+  <div id="logoutContainer"></div>
+
+  <button onclick="location.href='home.html'">View Menu</button>
+</div>
 
 <script>
   async function comprobarSesion() {

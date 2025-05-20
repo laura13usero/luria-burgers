@@ -1,0 +1,36 @@
+body {
+  margin: 0;
+  font-family: 'Ibarra Real Nova', serif;
+  background-image: url('https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/resumencompra_fondo.png');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.ticket {
+  background: rgba(255, 255, 255, 0);
+  width: 55%;
+  max-width: 400px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.total {
+  font-weight: bold;
+  border-top: 1px solid #ccc;
+  padding-top: 1rem;
+}
+
+@media (min-width: 768px) {
+  body {
+    background-image: url('https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/resumencompra_grande.png');
+  }
+}
