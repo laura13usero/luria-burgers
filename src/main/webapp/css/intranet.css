@@ -35,7 +35,8 @@ body.login-intranet-background {
     background-attachment: fixed; /* Opcional: fija la imagen de fondo */
     display: flex; /* Para centrar el contenido del formulario */
     justify-content: center; /* Centrado horizontal */
-    align-items: flex-end; /* Alineado al final (abajo) para los elementos del formulario */
+    /* CAMBIO CLAVE AQUÍ: Para subir el contenedor, cambia align-items a 'center' o 'flex-start' y ajusta el margin-top si es necesario */
+    align-items: center; /* Cambiado de flex-end a center para centrar verticalmente o subirlo */
     min-height: 100vh; /* Asegura que el body ocupe toda la altura de la ventana */
 }
 
@@ -48,8 +49,12 @@ body.login-intranet-background {
     width: 90%;
     max-width: 400px; /* Ancho máximo para el formulario */
     text-align: center;
-    margin-bottom: 5vh; /* Ajusta la distancia desde la parte inferior de la pantalla */
-    transform: translateY(100px); /* Ajusta esta propiedad para mover el formulario hacia arriba o hacia abajo */
+    /* Puedes ajustar uno de estos para controlar la altura final: */
+    /* margin-bottom: 15vh; */ /* Si usas align-items: flex-end, aumenta este valor */
+    /* margin-top: -10vh; */ /* Si usas align-items: center, puedes usar un margen negativo para subirlo más */
+    /* O simplemente elimina margin-bottom si align-items: center es suficiente */
+    margin-bottom: 0; /* Lo reseteamos si queremos que 'align-items: center' sea el que mande */
+    transform: translateY(0px); /* Reseteamos o ajustamos si queremos un desplazamiento adicional */
     opacity: 0;
     animation: fadeInForm 1s forwards; /* Animación para que aparezca suavemente */
 }
