@@ -41,7 +41,7 @@ body.login-intranet-background {
 
 /* Estilos para el contenedor del formulario en loginintranet.html */
 .login-intranet-container {
-    background-color: rgba(255, 255, 255, 0.85); /* Fondo semitransparente para el formulario */
+    background-color: rgba(255, 255, 255, 0.6); /* Fondo más transparente: de 0.85 a 0.6 */
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -70,7 +70,7 @@ body.login-intranet-background {
 
 .login-intranet-container label {
     display: block;
-    margin-bottom: 15px;
+    margin-bottom: 10px; /* Reducido de 15px a 10px para acercar un poco los campos */
     text-align: left;
     font-weight: 500;
 }
@@ -83,7 +83,14 @@ body.login-intranet-background {
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1rem;
+    margin-bottom: 10px; /* Añadido un margin-bottom para separar del siguiente label/input */
 }
+
+/* Puedes añadir un estilo específico para el input de contraseña si solo quieres mover ese */
+.login-intranet-container input[type="password"] {
+    margin-bottom: 5px; /* Reducido el margen inferior de la contraseña para que suba un poco */
+}
+
 
 /* Estilos para el botón "Entrar" */
 .login-intranet-container button {
