@@ -72,7 +72,7 @@
             color: #D05A31;
         }
 
-        /* Estilo para el botón "Ver Detalles" (AÑADIDO) */
+        /* Estilo para el botón "View Details" (AÑADIDO) */
         .details-button {
             background-color: #5cb85c; /* Un verde amigable */
             color: white;
@@ -173,7 +173,7 @@
         document.getElementById('popupImage').src = '';
     }
 
-    // AHORA SÍ, la función obtenerHamburguesas está diseñada para INCLUIR el botón "Ver detalles"
+    // AHORA SÍ, la función obtenerHamburguesas está diseñada para INCLUIR el botón "View Details"
     // manteniendo la estructura original de tu tarjeta y asumiendo que cualquier funcionalidad de rating
     // se maneja por 'js/hamburguesas.js' o CSS/atributos de datos.
     async function obtenerHamburguesas(filtro = '') {
@@ -205,7 +205,7 @@
                         <img src="${cardImagenSrc}" alt="${hamburguesa.nombre}">
                         <div class="card-info">
                             <h2>${hamburguesa.nombre}</h2>
-                            <button class="details-button" onclick="openPopup('${popupImageSrc}')">Ver detalles</button>
+                            <button class="details-button" onclick="openPopup('${popupImageSrc}')">View Details</button>
                             <button class="add-to-cart-button" onclick="agregarAlCarrito(${hamburguesa.id}, 'hamburguesa')">
                                 Add to cart - S/ ${hamburguesa.precio.toFixed(2)}
                             </button>
