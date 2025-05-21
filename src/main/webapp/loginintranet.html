@@ -8,14 +8,16 @@
     <link href="css/intranet.css" rel="stylesheet">
     <title>Login Intranet</title>
 </head>
-<body>
-<h2>Iniciar sesión en la Intranet</h2>
+<body class="login-intranet-background">
+<div class="login-intranet-container">
+    <h2>Iniciar sesión en la Intranet</h2>
 
-<label>Email: <input type="email" id="email" required></label><br>
-<label>Contraseña: <input type="password" id="contrasena" required></label><br>
-<button onclick="loginIntranet()">Entrar</button>
+    <label>Email: <input type="email" id="email" required></label><br>
+    <label>Contraseña: <input type="password" id="contrasena" required></label><br>
+    <button onclick="loginIntranet()">Entrar</button>
 
-<p id="error" style="color: red;"></p>
+    <p id="error" style="color: red;"></p>
+</div>
 
 <script>
     async function loginIntranet() {
