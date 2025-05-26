@@ -18,7 +18,7 @@ html { font-size:16px; scroll-behavior:smooth; }
 body {
   font-family:'Poppins',sans-serif;
   /* Eliminar o comentar la línea de background-image si existe una global */
-  /* background-image: url("https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/fondo_intranet.png"); */
+  background-image: url("https://luriaburgers.s3.us-east-1.amazonaws.com/fondos_recursos/fondo_intranet.png"); */
   background-repeat: no-repeat;
   background-position: absolute;
   background-size: cover;
